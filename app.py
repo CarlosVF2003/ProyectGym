@@ -22,7 +22,7 @@ st.title('Análisis de nuestro progreso en el GYM ❤️')
 #Registro de datos.
 # Inicializar el DataFrame en el estado de la sesión si no existe
 if 'Progreso_ind' not in st.session_state:
-    st.session_state['Progreso_ind'] = pd.DataFrame()
+    st.session_state['Progreso_ind'] = pd.DataFrame('Progreso')
 
 with st.form(key='mi_formulario'):
     # Tus widgets de entrada aquí
