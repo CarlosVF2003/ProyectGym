@@ -42,6 +42,7 @@ if submit_button:
     Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': Peso, 'Descanso': Descanso, 'Series': Series, 'Repeticiones': Repeticiones}
     # Asegúrate de que Progreso_ind ya esté definido antes de este punto, posiblemente como un DataFrame vacío
     Progreso_ind = pd.concat([Progreso, pd.DataFrame([Progreso_new])], ignore_index=True)
+    Progreso_ind.to_csv('Libro.csv')
     st.success('¡Datos registrados con éxito!')
 
 # Mostrar el DataFrame resultante
