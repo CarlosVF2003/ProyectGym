@@ -12,17 +12,16 @@ from wordcloud import WordCloud, STOPWORDS
 
 import streamlit as st
 
-#Leeremos nuestras tablas
-Progreso = pd.read_csv("Libro1.csv",delimiter=';')
-Progreso_ind= Progreso.set_index("Dia")
+# Leeremos nuestras tablas
+Progreso = pd.read_csv("Libro1.csv", delimiter=';')
 
 # Título de la aplicación
 st.title('Análisis de nuestro progreso en el GYM ❤️')
 
-#Registro de datos.
+# Registro de datos.
 # Inicializar el DataFrame en el estado de la sesión si no existe
 if 'Progreso_ind' not in st.session_state:
-    st.session_state['Progreso_ind'] = pd.DataFrame('Progreso')
+    st.session_state['Progreso_ind'] = pd.DataFrame()
 
 with st.form(key='mi_formulario'):
     # Tus widgets de entrada aquí
@@ -49,7 +48,8 @@ if submit_button:
     # Mensaje de éxito
     st.success('¡Datos registrados con éxito!')
 
-print(Progreso_ind)
-#Graficos
+# Para imprimir el DataFrame, debes acceder a él a través del estado de la sesión
+print(st.session_state['Progreso_ind'])
+
 
 
