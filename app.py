@@ -1,7 +1,5 @@
 import pandas as pd
-import re
 
-import regex
 import demoji
 
 import numpy as np
