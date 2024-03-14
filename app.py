@@ -35,14 +35,15 @@ if st.button('Registrar datos'):
     Series = st.slider('Selecciona las repeticiones:', 0, 100, 30)
     Repeticiones = st.slider('Selecciona las repeticiones:', 0, 100, 30)
     # Crear un nuevo registro
-    Progreso_new = {'Persona': Persona, 'Maquina': Maquina, 'Series': Series, 'Repeticiones': Repeticiones, 'Descanso': Descanso, 'Peso': Peso, 'Dia':Dia}
+    if st.button('Registrar')
+        Progreso_new = {'Persona': Persona, 'Maquina': Maquina, 'Series': Series, 'Repeticiones': Repeticiones, 'Descanso': Descanso, 'Peso': Peso, 'Dia':Dia}
+        # Concatenar con el DataFrame existente (Progreso_ind)
+        Progreso_ind = pd.concat([Progreso_ind, pd.DataFrame([Progreso_new])], ignore_index=True)
+        Progreso.to_csv('Libro1.csv')
+        Progreso = pd.read_csv("Libro1.csv",delimiter=';')
+        Progreso_ind= Progreso.set_index("Dia") 
 
-    # Concatenar con el DataFrame existente (Progreso_ind)
-    Progreso_ind = pd.concat([Progreso_ind, pd.DataFrame([Progreso_new])], ignore_index=True)
-    Progreso.to_csv('Libro1.csv')
-    Progreso = pd.read_csv("Libro1.csv",delimiter=';')
-    Progreso_ind= Progreso.set_index("Dia") 
-
+    
 
 # Mostrar el DataFrame resultante
 st.write('Registro de progreso:')
