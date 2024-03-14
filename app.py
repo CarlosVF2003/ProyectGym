@@ -20,7 +20,10 @@ Progreso_ind= Progreso.set_index("Dia")
 st.title('Análisis de nuestro progreso en el GYM ❤️')
 
 #Registro de datos.
-# Crear un botón para registrar los datos
+# Inicializar el DataFrame en el estado de la sesión si no existe
+if 'Progreso_ind' not in st.session_state:
+    st.session_state['Progreso_ind'] = pd.DataFrame()
+
 with st.form(key='mi_formulario'):
     # Tus widgets de entrada aquí
     Dia = st.text_input('Ingresa el Dia:')
@@ -35,22 +38,17 @@ with st.form(key='mi_formulario'):
 
 # Procesar la información una vez que se envía el formulario
 if submit_button:
-    # Suponiendo que ya has recogido todos los datos en las variables correspondientes
     Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': Peso, 'Descanso': Descanso, 'Series': Series, 'Repeticiones': Repeticiones}
     
-    # Añadir los nuevos datos al DataFrame existente
-    Progreso_ind = pd.concat([Progreso, pd.DataFrame([Progreso_new])], ignore_index=True)
+    # Añadir los nuevos datos al DataFrame en el estado de la sesión
+    st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
     
     # Guardar el DataFrame actualizado en un archivo CSV
-    Progreso.to_csv('Libro.csv', index=False)
+    st.session_state['Progreso_ind'].to_csv('Libro.csv', index=False)
     
     # Mensaje de éxito
     st.success('¡Datos registrados con éxito!')
 
-# Mostrar el DataFrame resultante
-st.write('Registro de progreso:')
-st.write(Progreso_ind)
-print(Progreso_ind)
 
 #Graficos
 
