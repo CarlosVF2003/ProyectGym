@@ -27,7 +27,7 @@ print(Progreso_ind)
 # Crear un botón para registrar los datos
 with st.form(key='mi_formulario'):
     Dia = st.text_input('Ingresa el Dia:')
-    Persona = st.multiselect('Su nombre:', ('Carlos', 'Cinthia'))
+    Persona = st.selectbox('Su nombre:', ('Carlos', 'Cinthia'))
     Maquina = st.selectbox('Selecciona una maquina:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
     Peso = st.slider('Selecciona el peso:', 0, 100, 40)
     Descanso = st.selectbox('Selecciona la cantidad de tiempo:', ('1-2 min', '2-3 min', '3-4 min'))
@@ -49,3 +49,7 @@ if submit_button:
 st.write('Registro de progreso:')
 st.write(Progreso_ind)
 print(Progreso_ind)
+
+#Graficos
+
+
