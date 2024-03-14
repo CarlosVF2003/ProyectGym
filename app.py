@@ -38,11 +38,7 @@ if st.button('Registrar datos'):
     if st.button('Registrar'):
         Progreso_new = {'Persona': Persona, 'Maquina': Maquina, 'Series': Series, 'Repeticiones': Repeticiones, 'Descanso': Descanso, 'Peso': Peso, 'Dia':Dia}
         # Concatenar con el DataFrame existente (Progreso_ind)
-        Progreso_ind = pd.concat([Progreso_ind, pd.DataFrame([Progreso_new])], ignore_index=True)
-        
-    Progreso.to_csv('Libro1.csv')
-    Progreso = pd.read_csv("Libro1.csv",delimiter=';')
-    Progreso_ind= Progreso.set_index("Dia") 
+        Progreso_ind = pd.concat([Progreso_ind, pd.DataFrame([Progreso_new])], ignore_index=True) 
     
 
 # Mostrar el DataFrame resultante
