@@ -28,20 +28,12 @@ print(Progreso_ind)
 if st.button('Registrar datos'):
     # Solicitar información al usuario
     Dia = st.text_input('Ingresa el Dia:')
-    st.write('Hoy es tu dia,', Dia, '!')
     Persona = st.multiselect('Su nombre:', ('Carlos', 'Cinthia'))
-    st.write('Tu nombre es:', Persona)
     Maquina = st.selectbox('Selecciona una opción:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
-    st.write('Seleccionaste:', Maquina)
     Peso = st.slider('Selecciona el peso:', 0, 100, 30)
-    st.write('Cargaste', Peso, 'Kg')
     Descanso = st.selectbox('Selecciona una opción:', ('1-2', '2-3', '3-4'))
-    st.write('Seleccionaste:', Descanso, 'min')
     Series = st.slider('Selecciona las repeticiones:', 0, 100, 30)
-    st.write('Hiciste', Series)
     Repeticiones = st.slider('Selecciona las repeticiones:', 0, 100, 30)
-    st.write('Hiciste', Repeticiones)
-
     # Crear un nuevo registro
     Progreso_new = {'Persona': Persona, 'Maquina': Maquina, 'Series': Series, 'Repeticiones': Repeticiones, 'Descanso': Descanso, 'Peso': Peso, 'Dia':Dia}
 
