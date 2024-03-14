@@ -12,16 +12,12 @@ from wordcloud import WordCloud, STOPWORDS
 
 import streamlit as st
 
-###################################
-###################################
-# Título de la aplicación
-st.title('Análisis de nuestro progreso en el GYM ❤️')
-###################################
-###################################
 #Leeremos nuestras tablas
 Progreso = pd.read_csv("Libro1.csv",delimiter=';')
 Progreso_ind= Progreso.set_index("Dia")
-print(Progreso_ind)
+
+# Título de la aplicación
+st.title('Análisis de nuestro progreso en el GYM ❤️')
 
 #Registro de datos.
 # Crear un botón para registrar los datos
