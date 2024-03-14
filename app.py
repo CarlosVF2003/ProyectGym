@@ -11,7 +11,7 @@ st.title('Análisis de nuestro progreso en el GYM ❤️')
 
 # Intentar leer el archivo CSV y si no existe, inicializar un DataFrame vacío
 try:
-    Progreso_ind = pd.read_csv("Libro1.csv", delimiter=';').set_index("Dia")
+    Progreso_ind = pd.read_csv("Libro1.csv", delimiter=';')
 except FileNotFoundError:
     Progreso_ind = pd.DataFrame()
 
