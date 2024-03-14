@@ -49,7 +49,7 @@ if submit_button:
     # Mensaje de éxito
     st.success('¡Datos registrados con éxito!')
 
-
+print(Progreso_ind)
 #Graficos
 
 
