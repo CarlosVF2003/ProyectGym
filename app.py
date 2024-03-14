@@ -15,8 +15,9 @@ try:
 except FileNotFoundError:
     Progreso_ind = pd.DataFrame()
 
-# Guardar el DataFrame en el estado de la sesión
-st.session_state['Progreso_ind'] = Progreso_ind
+# Guardar el DataFrame en el estado de la sesión solo si está vacío
+if 'Progreso_ind' not in st.session_state:
+    st.session_state['Progreso_ind'] = Progreso_ind
 
 # Registro de datos.
 with st.form(key='mi_formulario'):
@@ -39,7 +40,7 @@ if submit_button:
     st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=False)
     
     # Guardar el DataFrame actualizado en un archivo CSV
-    st.session_state['Progreso_ind'].reset_index().to_csv('Libro1.csv', index=False, sep=';')
+    st.session_state['Progreso_ind'].reset_index(drop=True).to_csv('Libro1.csv', index=False, sep=';')
     
     # Mensaje de éxito
     st.success('¡Datos registrados con éxito!')
