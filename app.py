@@ -30,7 +30,7 @@ with st.form(key='mi_formulario'):
     Persona = st.multiselect('Su nombre:', ('Carlos', 'Cinthia'))
     Maquina = st.selectbox('Selecciona una maquina:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
     Peso = st.slider('Selecciona el peso:', 0, 100, 30)
-    Descanso = st.selectbox('Selecciona la cantidad de tiempo:', ('1-2', '2-3', '3-4'))
+    Descanso = st.selectbox('Selecciona la cantidad de tiempo:', ('1-2 min', '2-3 min', '3-4 min'))
     Series = st.slider('Selecciona la cantidad de series:', 0, 100, 30)
     Repeticiones = st.slider('Selecciona las repeticiones:', 0, 100, 30)
     
