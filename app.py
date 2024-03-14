@@ -1,30 +1,26 @@
 import pandas as pd
-
-import demoji
-
 import numpy as np
-from collections import Counter
-
 import plotly.express as px
 import matplotlib.pyplot as plt
 from PIL import Image
 from wordcloud import WordCloud, STOPWORDS
-
 import streamlit as st
-
-# Leeremos nuestras tablas
-Progreso = pd.read_csv("Libro1.csv", delimiter=';')
 
 # Título de la aplicación
 st.title('Análisis de nuestro progreso en el GYM ❤️')
 
-# Registro de datos.
-# Inicializar el DataFrame en el estado de la sesión si no existe
-if 'Progreso_ind' not in st.session_state:
-    st.session_state['Progreso_ind'] = pd.DataFrame()
+# Intentar leer el archivo CSV y si no existe, inicializar un DataFrame vacío
+try:
+    Progreso_ind = pd.read_csv("Libro1.csv", delimiter=';').set_index("Dia")
+except FileNotFoundError:
+    Progreso_ind = pd.DataFrame()
 
+# Guardar el DataFrame en el estado de la sesión
+st.session_state['Progreso_ind'] = Progreso_ind
+
+# Registro de datos.
 with st.form(key='mi_formulario'):
-    # Tus widgets de entrada aquí
+    # Widgets de entrada
     Dia = st.text_input('Ingresa el Dia:')
     Persona = st.selectbox('Su nombre:', ('Carlos', 'Cinthia'))
     Maquina = st.selectbox('Selecciona una maquina:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
@@ -40,16 +36,16 @@ if submit_button:
     Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': Peso, 'Descanso': Descanso, 'Series': Series, 'Repeticiones': Repeticiones}
     
     # Añadir los nuevos datos al DataFrame en el estado de la sesión
-    st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+    st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=False)
     
     # Guardar el DataFrame actualizado en un archivo CSV
-    st.session_state['Progreso_ind'].to_csv('Libro.csv', index=False)
+    st.session_state['Progreso_ind'].reset_index().to_csv('Libro1.csv', index=False, sep=';')
     
     # Mensaje de éxito
     st.success('¡Datos registrados con éxito!')
 
-# Para imprimir el DataFrame, debes acceder a él a través del estado de la sesión
-print(st.session_state['Progreso_ind'])
+# Para depurar o verificar, puedes mostrar el DataFrame actualizado
+st.write(st.session_state['Progreso_ind'])
 
 
 
