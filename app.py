@@ -25,15 +25,15 @@ print(Progreso_ind)
 
 #Registro de datos.
 # Crear un botón para registrar los datos
-if st.button1('Registrar datos'):
+if st.button('Registrar datos'):
     # Solicitar información al usuario
     Dia = st.text_input('Ingresa el Dia:')
     Persona = st.multiselect('Su nombre:', ('Carlos', 'Cinthia'))
-    Maquina = st.selectbox1('Selecciona una opción:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
-    Peso = st.slider1('Selecciona el peso:', 0, 100, 30)
-    Descanso = st.selectbox2('Selecciona una opción:', ('1-2', '2-3', '3-4'))
-    Series = st.slider2('Selecciona las repeticiones:', 0, 100, 30)
-    Repeticiones = st.slider3('Selecciona las repeticiones:', 0, 100, 30)
+    Maquina = st.selectbox('Selecciona una maquina:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
+    Peso = st.slider('Selecciona el peso:', 0, 100, 30)
+    Descanso = st.selectbox('Selecciona la cantidad de tiempo:', ('1-2', '2-3', '3-4'))
+    Series = st.slider('Selecciona la cantidad de series:', 0, 100, 30)
+    Repeticiones = st.slider('Selecciona las repeticiones:', 0, 100, 30)
     # Crear un nuevo registro
     if st.button2('Registrar'):
         Progreso_new = {'Persona': Persona, 'Maquina': Maquina, 'Series': Series, 'Repeticiones': Repeticiones, 'Descanso': Descanso, 'Peso': Peso, 'Dia':Dia}
