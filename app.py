@@ -25,8 +25,7 @@ print(Progreso_ind)
 
 #Registro de datos.
 # Crear un botón para registrar los datos
-if st.button('Registrar datos'):
-    # Solicitar información al usuario
+with st.form(key='mi_formulario'):
     Dia = st.text_input('Ingresa el Dia:')
     Persona = st.multiselect('Su nombre:', ('Carlos', 'Cinthia'))
     Maquina = st.selectbox('Selecciona una maquina:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
@@ -34,12 +33,16 @@ if st.button('Registrar datos'):
     Descanso = st.selectbox('Selecciona la cantidad de tiempo:', ('1-2', '2-3', '3-4'))
     Series = st.slider('Selecciona la cantidad de series:', 0, 100, 30)
     Repeticiones = st.slider('Selecciona las repeticiones:', 0, 100, 30)
-    # Crear un nuevo registro
-    if st.button('Guardar'):
-        Progreso_new = {'Persona': Persona, 'Maquina': Maquina, 'Series': Series, 'Repeticiones': Repeticiones, 'Descanso': Descanso, 'Peso': Peso, 'Dia':Dia}
-        # Concatenar con el DataFrame existente (Progreso_ind)
-        Progreso_ind = pd.concat([Progreso_ind, pd.DataFrame([Progreso_new])], ignore_index=True) 
     
+    # Botón de envío del formulario
+    submit_button = st.form_submit_button(label='Guardar')
+
+# Procesar la información una vez que se envía el formulario
+if submit_button:
+    Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': Peso, 'Descanso': Descanso, 'Series': Series, 'Repeticiones': Repeticiones}
+    # Asegúrate de que Progreso_ind ya esté definido antes de este punto, posiblemente como un DataFrame vacío
+    Progreso_ind = pd.concat([Progreso_ind, pd.DataFrame([Progreso_new])], ignore_index=True)
+    st.success('¡Datos registrados con éxito!')
 
 # Mostrar el DataFrame resultante
 st.write('Registro de progreso:')
