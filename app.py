@@ -29,7 +29,6 @@ if st.button('Registrar datos'):
     # Solicitar información al usuario
     Dia = st.text_input('Ingresa el Dia:')
     st.write('Hoy es tu dia,', Dia, '!')
-    st.write('Tu nombre es:', Persona)
     Persona = st.multiselect('Su nombre:', ('Carlos', 'Cinthia'))
     st.write('Tu nombre es:', Persona)
     Maquina = st.selectbox('Selecciona una opción:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
