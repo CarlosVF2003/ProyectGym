@@ -35,7 +35,7 @@ if st.button('Registrar datos'):
     Series = st.slider('Selecciona la cantidad de series:', 0, 100, 30)
     Repeticiones = st.slider('Selecciona las repeticiones:', 0, 100, 30)
     # Crear un nuevo registro
-    if st.button2('Registrar'):
+    if st.button('Guardar'):
         Progreso_new = {'Persona': Persona, 'Maquina': Maquina, 'Series': Series, 'Repeticiones': Repeticiones, 'Descanso': Descanso, 'Peso': Peso, 'Dia':Dia}
         # Concatenar con el DataFrame existente (Progreso_ind)
         Progreso_ind = pd.concat([Progreso_ind, pd.DataFrame([Progreso_new])], ignore_index=True) 
