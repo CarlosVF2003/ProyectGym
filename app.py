@@ -7,7 +7,7 @@ from wordcloud import WordCloud, STOPWORDS
 import streamlit as st
 
 # Título de la aplicación
-st.title('Análisis de nuestro progreso en el GYM ❤️')
+st.title('Nuestro progreso en el GYM 💪')
 
 # Intentar leer el archivo CSV y si no existe, inicializar un DataFrame vacío
 try:
@@ -22,15 +22,15 @@ if 'Progreso_ind' not in st.session_state:
 # Registro de datos.
 with st.form(key='mi_formulario'):
     # Widgets de entrada
-    Dia = st.text_input('Ingresa el Dia:')
-    Persona = st.selectbox('Su nombre:', ('Carlos', 'Cinthia'))
-    Maquina = st.selectbox('Selecciona una maquina:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
-    Peso = st.slider('Selecciona el peso:', 0, 100, 40)
-    Descanso = st.selectbox('Selecciona la cantidad de tiempo:', ('1-2 min', '2-3 min', '3-4 min'))
-    Series = st.slider('Selecciona la cantidad de series:', 0, 4, 3)
-    Repeticiones = st.slider('Selecciona las repeticiones:', 0, 30, 15)
+    Dia = st.text_input('Ingresa el Dia 🗓:')
+    Persona = st.selectbox('Su nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
+    Maquina = st.selectbox('Selecciona una maquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
+    Peso = st.slider('Selecciona el peso ⚖:', 0, 100, 40)
+    Descanso = st.selectbox('Selecciona la cantidad de tiempo ⌛:', ('1-2 min', '2-3 min', '3-4 min'))
+    Series = st.slider('Selecciona la cantidad de series 🎲:', 0, 4, 3)
+    Repeticiones = st.slider('Selecciona las repeticiones 🎲:', 0, 30, 15)
     # Botón de envío del formulario
-    submit_button = st.form_submit_button(label='Guardar')
+    submit_button = st.form_submit_button(label='Guardar 💾')
 
 # Procesar la información una vez que se envía el formulario
 if submit_button:
