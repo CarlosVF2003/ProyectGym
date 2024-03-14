@@ -46,6 +46,7 @@ if submit_button:
     st.success('¡Datos registrados con éxito!')
 
 # Para depurar o verificar, puedes mostrar el DataFrame actualizado
+print("Tabla de Progreso 💪")
 st.write(st.session_state['Progreso_ind'])
 
 
