@@ -22,7 +22,7 @@ if 'Progreso_ind' not in st.session_state:
 # Registro de datos.
 with st.form(key='mi_formulario'):
     # Widgets de entrada
-    Dia = st.text_input('Ingresa el Dia 🗓:')
+    Dia = st.text_input('Ingresa el Dia 📆:')
     Persona = st.selectbox('Su nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
     Maquina = st.selectbox('Selecciona una maquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
     Peso = st.slider('Selecciona el peso ⚖:', 0, 100, 40)
