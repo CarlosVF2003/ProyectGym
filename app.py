@@ -60,28 +60,28 @@ with pestaña1:
         # Botón de envío del formulario
         submit_button = st.form_submit_button(label='Guardar 💾')
 
-    # Procesar la información una vez que se envía el formulario
-    if submit_button:
-        # Mostrar formulario correspondiente al enfoque seleccionado en una ventana emergente
-        if Enfoque == 'Desarrollo de Fuerza':
-            pesos, repeticiones = formulario_desarrollo_fuerza(sets)
-        elif Enfoque == 'Mejora de la Resistencia':
-            pesos, repeticiones = formulario_mejora_resistencia(sets)
-        else:  # Hipertrofia Muscular
-            pesos, repeticiones = formulario_hipertrofia_muscular(sets)
-        
-        # Calcular y registrar los datos para cada set según el enfoque
-        for i, (peso, repeticion) in enumerate(zip(pesos, repeticiones), start=1):
-            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': '-', 'Series': i, 'Repeticiones': repeticion}
+        # Procesar la información una vez que se envía el formulario
+        if submit_button:
+            # Mostrar formulario correspondiente al enfoque seleccionado en una ventana emergente
+            if Enfoque == 'Desarrollo de Fuerza':
+                pesos, repeticiones = formulario_desarrollo_fuerza(sets)
+            elif Enfoque == 'Mejora de la Resistencia':
+                pesos, repeticiones = formulario_mejora_resistencia(sets)
+            else:  # Hipertrofia Muscular
+                pesos, repeticiones = formulario_hipertrofia_muscular(sets)
             
-            # Añadir los nuevos datos al DataFrame en el estado de la sesión
-            st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-        
-        # Guardar el DataFrame actualizado en un archivo CSV
-        st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
-        
-        # Mensaje de éxito
-        st.success('¡Datos registrados con éxito!')
+            # Calcular y registrar los datos para cada set según el enfoque
+            for i, (peso, repeticion) in enumerate(zip(pesos, repeticiones), start=1):
+                Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': '-', 'Series': i, 'Repeticiones': repeticion}
+                
+                # Añadir los nuevos datos al DataFrame en el estado de la sesión
+                st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+            
+            # Guardar el DataFrame actualizado en un archivo CSV
+            st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
+            
+            # Mensaje de éxito
+            st.success('¡Datos registrados con éxito!')
 
     # Visualización de datos
     st.subheader("Visualización de datos registrados")
