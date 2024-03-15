@@ -78,7 +78,7 @@ with pestaña1:
                 if Enfoque == 'Desarrollo de Fuerza':
                     pesos, repeticiones, descansos = formulario_desarrollo_fuerza(sets)
                 elif Enfoque == 'Mejora de la Resistencia':
-                    pesos, repeticiones, descansos, _ = formulario_mejora_resistencia(sets)
+                    pesos, repeticiones, descansos, sets= formulario_mejora_resistencia(sets)
                 else:  # Hipertrofia Muscular
                     pesos, repeticiones, descansos = formulario_hipertrofia_muscular(sets)
                     
