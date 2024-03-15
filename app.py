@@ -27,7 +27,8 @@ with pestaña1:
 
     def formulario_desarrollo_fuerza(sets):
         pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
-        return pesos, [15] * sets  # Las repeticiones son constantes para el desarrollo de fuerza
+        repeticiones = st.number_input('Repeticiones :', min_value=0, max_value=100, step=1)
+        return pesos, repeticiones * sets  # Las repeticiones son constantes para el desarrollo de fuerza
 
     def formulario_mejora_resistencia(sets):
         pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
@@ -36,7 +37,8 @@ with pestaña1:
 
     def formulario_hipertrofia_muscular(sets):
         peso = st.number_input('Peso (kg):', min_value=0, max_value=100, step=1)
-        return [peso] * sets, [15] * sets  # Tanto el peso como las repeticiones son constantes para la hipertrofia muscular
+        repeticiones = st.number_input('Repeticiones :', min_value=0, max_value=100, step=1)
+        return [peso] * sets, [repeticiones] * sets  # Tanto el peso como las repeticiones son constantes para la hipertrofia muscular
 
     st.title('Nuestro progreso en el Gimnasio 💪')
 
