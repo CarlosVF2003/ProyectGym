@@ -56,76 +56,42 @@ with pestaña1:
         Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
         Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
         sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
-        
+            
         # Botón de envío del formulario
         guardar_button = st.form_submit_button(label='Guardar 💾')
 
     # Procesar la información una vez que se envía el formulario
     if guardar_button:
-        # Mostrar formulario correspondiente al enfoque seleccionado en una ventana emergente
         if Enfoque == 'Desarrollo de Fuerza':
             pesos, repeticiones = formulario_desarrollo_fuerza(sets)
         elif Enfoque == 'Mejora de la Resistencia':
             pesos, repeticiones = formulario_mejora_resistencia(sets)
         else:  # Hipertrofia Muscular
             pesos, repeticiones = formulario_hipertrofia_muscular(sets)
-            
+                
         # Calcular y registrar los datos para cada set según el enfoque
         for i, (peso, repeticion) in enumerate(zip(pesos, repeticiones), start=1):
             Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': '-', 'Series': i, 'Repeticiones': repeticion}
-            
-            # Añadir los nuevos datos al DataFrame en el estado de la sesión
             st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-            
+                
         # Guardar el DataFrame actualizado en un archivo CSV
         st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
-            
-         # Mensaje de éxito
+                
+        # Mensaje de éxito
         st.success('¡Datos registrados con éxito!')
 
     # Visualización de datos
     st.subheader("Visualización de datos registrados")
     st.write(st.session_state['Progreso_ind'])
 
-    # Procesar la información una vez que se envía el formulario
-        if submit_button:
-            if Forma == 'Forma 1':
-                # Crear diccionario de datos para la Forma 1
-                Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Forma': Forma, 
-                                'Peso inicial': Peso_inicial, 'Peso final': Peso_final, 'Repeticiones por set': Repeticiones_set, 'Sets': Sets}
-            elif Forma == 'Forma 2':
-                # Crear diccionario de datos para la Forma 2
-                Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Forma': Forma, 
-                                'Peso 1': Peso_1, 'Repeticiones 1': Repeticiones_1, 'Peso 2': Peso_2, 
-                                'Repeticiones 2': Repeticiones_2, 'Peso 3': Peso_3, 'Repeticiones 3': Repeticiones_3}
-            elif Forma == 'Forma 3':
-                # Crear diccionario de datos para la Forma 3
-                Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Forma': Forma, 
-                                'Peso': Peso, 'Repeticiones por set': Repeticiones, 'Sets': Sets}
-            
-            # Añadir los nuevos datos al DataFrame en el estado de la sesión
-            st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-            
-            # Guardar el DataFrame actualizado en un archivo CSV
-            st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
-            
-            # Mensaje de éxito
-            st.success('¡Datos registrados con éxito!')
-        # Visualización de datos
-    st.subheader("Visualización de datos registrados")
-    st.write(st.session_state['Progreso_ind'])
-
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
-
-    # Agrupar por persona y calcular el promedio de Peso levantado
     avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
-
-    # Visualizar el gráfico de barras
     fig, ax = plt.subplots()
     sns.barplot(data=avg_peso, x='Persona', y='Peso', ax=ax)
     ax.set_title('Promedio de peso levantado por persona')
     st.pyplot(fig)
+
     # Histograma de repeticiones por máquina y persona
     st.subheader("Histograma de repeticiones por máquina y persona")
     fig, ax = plt.subplots()
