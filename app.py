@@ -27,8 +27,7 @@ with pestaña1:
 
     def formulario_desarrollo_fuerza(sets):
         pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
-        repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
-        return pesos, repeticiones
+        return pesos, [15] * sets  # Las repeticiones son constantes para el desarrollo de fuerza
 
     def formulario_mejora_resistencia(sets):
         pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
@@ -37,19 +36,13 @@ with pestaña1:
 
     def formulario_hipertrofia_muscular(sets):
         peso = st.number_input('Peso (kg):', min_value=0, max_value=100, step=1)
-        repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
-        return [peso] * sets, repeticiones
+        return [peso] * sets, [15] * sets  # Tanto el peso como las repeticiones son constantes para la hipertrofia muscular
 
     st.title('Nuestro progreso en el Gimnasio 💪')
 
     # Botón para abrir el formulario principal
     if st.button("Abrir Formulario Principal"):
-        st.session_state['show_main_form'] = True
-
-    # Botón para seleccionar el enfoque de entrenamiento
-    if st.session_state.get('show_main_form', False):
-        if st.button("Seleccionar Enfoque de Entrenamiento"):
-            st.session_state['show_enfoque_form'] = True
+        st.session_state['show_enfoque_form'] = True
 
     # Registro de datos.
     if st.session_state.get('show_enfoque_form', False):
@@ -98,6 +91,7 @@ with pestaña1:
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
     avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset
+
     fig, ax = plt.subplots()
     sns.barplot(data=avg_peso, x='Persona', y='Peso', ax=ax)
     ax.set_title('Promedio de peso levantado por persona')
