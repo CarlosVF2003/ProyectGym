@@ -58,10 +58,10 @@ with pestaña1:
         sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
         
         # Botón de envío del formulario
-        submit_button = st.form_submit_button(label='Guardar 💾')
+        guardar_button = st.form_submit_button(label='Guardar 💾')
 
-        # Procesar la información una vez que se envía el formulario
-    if submit_button:
+    # Procesar la información una vez que se envía el formulario
+    if guardar_button:
         # Mostrar formulario correspondiente al enfoque seleccionado en una ventana emergente
         if Enfoque == 'Desarrollo de Fuerza':
             pesos, repeticiones = formulario_desarrollo_fuerza(sets)
