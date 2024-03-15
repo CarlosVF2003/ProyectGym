@@ -81,7 +81,7 @@ with pestaña1:
                         else:
                             sets = sets
                     else:
-                        sets = 1
+                        sets = sum(repeticiones) // repeticiones[0]  # Enfoque de Fuerza y Resistencia
 
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
                         Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
@@ -105,7 +105,6 @@ with pestaña1:
     unique_values['Sets'] = unique_values.groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('count')
     unique_values['Valores_unicos_repetidos'] = unique_values.duplicated(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'], keep=False)
     st.write(unique_values)
-
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
     avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
