@@ -75,13 +75,12 @@ with pestaña1:
                 if form_completo:
                     if Enfoque == 'Hipertrofia Muscular':
                         if len(set(pesos)) == 1 and len(set(repeticiones)) == 1:  # Verifica si todos los pesos y repeticiones son iguales
-                            sets = sum(repeticiones) // repeticiones[0]  # Calcula la cantidad de sets dividiendo la suma total de repeticiones entre la cantidad de repeticiones individuales
                             pesos = [pesos[0]]
                             repeticiones = [repeticiones[0]]
                         else:
                             sets = sets
                     else:
-                        sets = sum(repeticiones) // repeticiones[0]  # Enfoque de Fuerza y Resistencia
+                        sets = sets
 
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
                         Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
@@ -103,7 +102,6 @@ with pestaña1:
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
     unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     unique_values['Sets'] = unique_values.groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('count')
-    unique_values['Valores_unicos_repetidos'] = unique_values.duplicated(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'], keep=False)
     st.write(unique_values)
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
