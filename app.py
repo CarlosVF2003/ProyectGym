@@ -91,14 +91,16 @@ with pestaña1:
                     # Mensaje de éxito
                     st.success('¡Datos registrados con éxito!')
                     
-                    # Ocultar el formulario
+                    # Limpiar campos del formulario
                     st.session_state['show_enfoque_form'] = False
+                    st.session_state['show_enfoque_form'] = True
                 else:
                     st.warning('Por favor completa todos los campos del formulario.')
 
     # Visualización de datos
     st.subheader("Visualización de datos registrados")
     st.write(st.session_state['Progreso_ind'])
+
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
     avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
