@@ -31,7 +31,7 @@ with pestaña1:
 
     def formulario_mejora_resistencia(sets):
         pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
-        repeticiones = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
+        repeticiones = [st.number_input(f'Repeticiones: {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
         descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
         return pesos, repeticiones, [descanso] * sets
 
@@ -67,7 +67,7 @@ with pestaña1:
                 if Enfoque == 'Desarrollo de Fuerza':
                     pesos, repeticiones, descansos = formulario_desarrollo_fuerza(sets)
                 elif Enfoque == 'Mejora de la Resistencia':
-                    pesos, repeticiones, descansos, _ = formulario_mejora_resistencia(sets)
+                    pesos, repeticiones, descansos = formulario_mejora_resistencia(sets)
                 else:  # Hipertrofia Muscular
                     pesos, repeticiones, descansos = formulario_hipertrofia_muscular(sets)
                     
@@ -89,7 +89,7 @@ with pestaña1:
                             sets = sets_por_peso[peso]
                         elif Enfoque == 'Mejora de la Resistencia':
                             sets = sets_por_peso_repeticiones[(peso, repeticion)]
-                            
+
                         # Verificar si la fila ya existe en el DataFrame
                         if not st.session_state['Progreso_ind'].isin({'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}).all(axis=1).any():
                             Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
