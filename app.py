@@ -21,7 +21,7 @@ pestaña1, pestaña2 = st.tabs(titulos_pestanas)
 
 # Agregar contenido a la pestaña 'Tema A'
 with pestaña1:
-    # Inicializar Progreso_ind si no existe en la sesión
+# Inicializar Progreso_ind si no existe en la sesión
     if 'Progreso_ind' not in st.session_state:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
