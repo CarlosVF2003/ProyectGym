@@ -24,7 +24,7 @@ with pestaña1:
     # Inicializar Progreso_ind si no existe en la sesión
     Progreso = pd.read_csv("Libro.csv")
     if 'Progreso_ind' not in st.session_state:
-        st.session_state['Progreso_ind'] = pd.DataFrame(Progreso)
+        st.session_state['Progreso_ind'] = pd.DataFrame('Progreso')
 
     def formulario_desarrollo_fuerza(sets):
         pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
