@@ -77,9 +77,7 @@ with pestaña1:
                         if len(set(pesos)) == 1 and len(set(repeticiones)) == 1:  # Verifica si todos los pesos y repeticiones son iguales
                             pesos = [pesos[0]]
                             repeticiones = [repeticiones[0]]
-                            sets = sets
-                        else:
-                            sets = 0
+                    
 
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
                         Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
