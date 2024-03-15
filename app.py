@@ -21,7 +21,6 @@ pestaña1, pestaña2 = st.tabs(titulos_pestanas)
 
 # Agregar contenido a la pestaña 'Tema A'
 with pestaña1:
-# Inicializar Progreso_ind si no existe en la sesión
     if 'Progreso_ind' not in st.session_state:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
@@ -75,12 +74,13 @@ with pestaña1:
                 if form_completo:
                     if Enfoque == 'Hipertrofia Muscular':
                         if len(set(pesos)) == 1 and len(set(repeticiones)) == 1:  # Verifica si todos los pesos y repeticiones son iguales
+                            sets = sum(repeticiones) // repeticiones[0]  # Calcula la cantidad de sets dividiendo la suma total de repeticiones entre la cantidad de repeticiones individuales
                             pesos = [pesos[0]]
                             repeticiones = [repeticiones[0]]
                         else:
                             sets = sets
                     else:
-                            sets = len(set(pesos))
+                        sets = 1
 
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
                         Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
@@ -103,6 +103,7 @@ with pestaña1:
     unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     unique_values['Sets'] = unique_values.groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('count')
     st.write(unique_values)
+
 
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
