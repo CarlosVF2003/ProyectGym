@@ -21,7 +21,7 @@ pestaña1, pestaña2 = st.tabs(titulos_pestanas)
 
 # Agregar contenido a la pestaña 'Tema A'
 with pestaña1:
-# Inicializar Progreso_ind si no existe en la sesión
+    # Inicializar Progreso_ind si no existe en la sesión
     if 'Progreso_ind' not in st.session_state:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
@@ -87,9 +87,12 @@ with pestaña1:
                             sets = sets_por_peso[peso]
                         elif Enfoque == 'Mejora de la Resistencia':
                             sets = sets_por_peso_repeticiones[(peso, repeticion)]
-
-                        # Verificar si la fila ya existe en el DataFrame
+                        else:
+                            sets = sets_por_peso[peso]
+                            
+                        # Verificar si el registro ya existe en el DataFrame
                         if not st.session_state['Progreso_ind'].isin({'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}).all(axis=1).any():
+                            # Crear el nuevo registro y agregarlo al DataFrame
                             Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
                             st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
 
