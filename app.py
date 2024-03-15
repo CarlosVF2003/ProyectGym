@@ -53,7 +53,7 @@ with pestaña1:
             sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
             
             # Botón de envío del formulario
-            if st.button("Seleccionar Enfoque de Entrenamiento")
+            if st.button("Seleccionar Enfoque de Entrenamiento"):
                 if Enfoque == 'Desarrollo de Fuerza':
                     pesos, repeticiones = formulario_desarrollo_fuerza(sets)
                 elif Enfoque == 'Mejora de la Resistencia':
@@ -62,10 +62,10 @@ with pestaña1:
                     pesos, repeticiones = formulario_hipertrofia_muscular(sets)
 
         # Botón para seleccionar el enfoque de entrenamiento
-         if st.form_submit_button(label='Guardar 💾')
+        if st.form_submit_button(label='Guardar 💾'):
          # Calcular y registrar los datos para cada set según el enfoque
             for i, (peso, repeticion) in enumerate(zip(pesos, repeticiones), start=1):
-               Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': '-', 'Series': i, 'Repeticiones': repeticion}
+                Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': '-', 'Series': i, 'Repeticiones': repeticion}
                 st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                     
            # Guardar el DataFrame actualizado en un archivo CSV
