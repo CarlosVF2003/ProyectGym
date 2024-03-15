@@ -75,6 +75,33 @@ with pestaña1:
     sns.barplot(data=avg_peso, x='Persona', y='Peso', ax=ax)
     ax.set_title('Promedio de peso levantado por persona')
     st.pyplot(fig)
+    # Histograma de repeticiones por máquina y persona
+    st.subheader("Histograma de repeticiones por máquina y persona")
+    fig, ax = plt.subplots()
+    sns.histplot(data=st.session_state['Progreso_ind'], x='Repeticiones', hue='Persona', multiple='stack', bins=10, ax=ax)
+    ax.set_title('Distribución de repeticiones por máquina y persona')
+    st.pyplot(fig)
+
+    # Box plot de pesos por día y persona
+    st.subheader("Box plot de pesos por día y persona")
+    fig, ax = plt.subplots()
+    sns.boxplot(data=st.session_state['Progreso_ind'], x='Dia', y='Peso', hue='Persona', ax=ax)
+    ax.set_title('Distribución de pesos por día y persona')
+    st.pyplot(fig)
+
+    # Gráfico de línea de series por día
+    st.subheader("Gráfico de línea de series por día")
+    fig, ax = plt.subplots()
+    sns.lineplot(data=st.session_state['Progreso_ind'], x='Dia', y='Series', hue='Persona', markers=True, ax=ax)
+    ax.set_title('Número de series por día')
+    st.pyplot(fig)
+
+    # Diagrama de dispersión de peso vs repeticiones
+    st.subheader("Diagrama de dispersión de peso vs repeticiones")
+    fig, ax = plt.subplots()
+    sns.scatterplot(data=st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', hue='Persona', ax=ax)
+    ax.set_title('Peso vs Repeticiones')
+    st.pyplot(fig)
 
 # Agregar contenido a la pestaña 'Tema B'
 with pestaña2:
