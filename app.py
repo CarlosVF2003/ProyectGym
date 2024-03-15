@@ -30,21 +30,10 @@ with pestaña1:
         return pesos, [repeticiones] * sets, [descanso] * sets
 
     def formulario_mejora_resistencia(sets):
-        pesos = []
-        repeticiones = []
-        datos_set = {}
-        
-        for i in range(sets):
-            peso = st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1)
-            repeticion = st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1)
-            datos_set[(peso, repeticion)] = datos_set.get((peso, repeticion), 0) + 1
-            
-        for (peso, repeticion), cantidad in datos_set.items():
-            repeticiones.extend([repeticion] * cantidad)
-            pesos.extend([peso] * cantidad)
-
+        pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
+        repeticiones = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
         descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-        return pesos, repeticiones, [descanso] * len(pesos), datos_set
+        return pesos, repeticiones, [descanso] * sets
 
     def formulario_hipertrofia_muscular(sets):
         peso = st.number_input('Peso (kg):', min_value=0, max_value=100, step=1)
@@ -100,10 +89,11 @@ with pestaña1:
                             sets = sets_por_peso[peso]
                         elif Enfoque == 'Mejora de la Resistencia':
                             sets = sets_por_peso_repeticiones[(peso, repeticion)]
-                        
-                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
-                        st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-                    
+                            
+                        # Verificar si la fila ya existe en el DataFrame
+                        if not st.session_state['Progreso_ind'].isin({'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}).all(axis=1).any():
+                            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
+                            st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                     # Guardar el DataFrame actualizado en un archivo CSV
                     st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
                     
