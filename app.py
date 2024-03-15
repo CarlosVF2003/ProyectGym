@@ -34,7 +34,7 @@ with pestaña1:
     def formulario_mejora_resistencia(sets):
         pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
         repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
-        descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
+        descansos = [st.selectbox(f'Tiempo de descanso para el set {i+1}:', ('1-2 min', '2-3 min', '3-4 min')) for i in range(sets)]
         return pesos, repeticiones, descansos
 
     def formulario_hipertrofia_muscular(sets):
@@ -47,12 +47,7 @@ with pestaña1:
 
     # Botón para abrir el formulario principal
     if st.button("Abrir Formulario Principal"):
-        st.session_state['show_main_form'] = True
-
-    # Botón para seleccionar el enfoque de entrenamiento
-    if st.session_state.get('show_main_form', False):
-        if st.button("Seleccionar Enfoque de Entrenamiento"):
-            st.session_state['show_enfoque_form'] = True
+        st.session_state['show_enfoque_form'] = True
 
     # Registro de datos.
     if st.session_state.get('show_enfoque_form', False):
@@ -79,8 +74,12 @@ with pestaña1:
                 
                 if form_completo:
                     # Calcular y registrar los datos para cada set según el enfoque
-                    for i, (peso, repeticion, descanso) in enumerate(zip(pesos, repeticiones, descansos), start=1):
-                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Series': sets, 'Repeticiones': repeticion}
+                    for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
+                        if Enfoque == 'Desarrollo de Fuerza' or (Enfoque == 'Mejora de la Resistencia' and len(set(peso)) == len(set(repeticion))):
+                            sets = 1
+                        else:
+                            sets = len(peso)
+                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
                         st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                     
                     # Guardar el DataFrame actualizado en un archivo CSV
@@ -105,7 +104,6 @@ with pestaña1:
     sns.barplot(data=avg_peso, x='Persona', y='Peso', ax=ax)
     ax.set_title('Promedio de peso levantado por persona')
     st.pyplot(fig)
-
     # Histograma de repeticiones por máquina y persona
     st.subheader("Histograma de repeticiones por máquina y persona")
     fig, ax = plt.subplots()
