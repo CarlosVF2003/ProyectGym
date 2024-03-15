@@ -80,7 +80,7 @@ with pestaña1:
                         else:
                             sets = sets
                     else:
-                            sets = sum(repeticiones) // repeticiones[0]  # Calcula la cantidad de sets dividiendo la suma total de repeticiones entre la cantidad de repeticiones individuales
+                            sets = len(set(pesos))
 
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
                         Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
