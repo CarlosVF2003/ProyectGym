@@ -24,20 +24,24 @@ with pestaña1:
     # Inicializar Progreso_ind si no existe en la sesión
     if 'Progreso_ind' not in st.session_state:
         st.session_state['Progreso_ind'] = pd.DataFrame()
+
     def formulario_desarrollo_fuerza(sets):
         pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
         repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
-        return pesos, [repeticiones] * sets  # Las repeticiones son constantes para el desarrollo de fuerza
+        descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
+        return pesos, [repeticiones] * sets, [descanso] * sets  # Las repeticiones y el tiempo de descanso son constantes para el desarrollo de fuerza
 
     def formulario_mejora_resistencia(sets):
         pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
         repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
-        return pesos, repeticiones
+        descansos = [st.selectbox(f'Tiempo de descanso para el set {i+1}:', ('1-2 min', '2-3 min', '3-4 min')) for i in range(sets)]
+        return pesos, repeticiones, descansos
 
     def formulario_hipertrofia_muscular(sets):
         peso = st.number_input('Peso (kg):', min_value=0, max_value=100, step=1)
         repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
-        return [peso] * sets, [repeticiones] * sets  # Tanto el peso como las repeticiones son constantes para la hipertrofia muscular
+        descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
+        return [peso] * sets, [repeticiones] * sets, [descanso] * sets  # Tanto el peso, las repeticiones y el tiempo de descanso son constantes para la hipertrofia muscular
 
     st.title('Nuestro progreso en el Gimnasio 💪')
 
@@ -64,19 +68,19 @@ with pestaña1:
             guardar_button = st.form_submit_button(label='Guardar 💾')
             if guardar_button:
                 if Enfoque == 'Desarrollo de Fuerza':
-                    pesos, repeticiones = formulario_desarrollo_fuerza(sets)
+                    pesos, repeticiones, descansos = formulario_desarrollo_fuerza(sets)
                 elif Enfoque == 'Mejora de la Resistencia':
-                    pesos, repeticiones = formulario_mejora_resistencia(sets)
+                    pesos, repeticiones, descansos = formulario_mejora_resistencia(sets)
                 else:  # Hipertrofia Muscular
-                    pesos, repeticiones = formulario_hipertrofia_muscular(sets)
+                    pesos, repeticiones, descansos = formulario_hipertrofia_muscular(sets)
                     
                 # Verificar que ambos formularios estén completos
-                form_completo = all(pesos) and all(repeticiones)
+                form_completo = all(pesos) and all(repeticiones) and all(descansos)
                 
                 if form_completo:
                     # Calcular y registrar los datos para cada set según el enfoque
-                    for i, (peso, repeticion) in enumerate(zip(pesos, repeticiones), start=1):
-                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': '-', 'Series': i, 'Repeticiones': repeticion}
+                    for i, (peso, repeticion, descanso) in enumerate(zip(pesos, repeticiones, descansos), start=1):
+                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Series': sets, 'Repeticiones': repeticion}
                         st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                     
                     # Guardar el DataFrame actualizado en un archivo CSV
@@ -96,8 +100,7 @@ with pestaña1:
 
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
-    avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset        
-
+    avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
     fig, ax = plt.subplots()
     sns.barplot(data=avg_peso, x='Persona', y='Peso', ax=ax)
     ax.set_title('Promedio de peso levantado por persona')
@@ -120,7 +123,16 @@ with pestaña1:
     # Gráfico de línea de series por día
     st.subheader("Gráfico de línea de series por día")
     fig, ax = plt.subplots()
-    sns.lineplot(data=st.session_state['Progreso_ind'], x='Dia', y='Series', hue='Persona', markers=True)
+    sns.lineplot(data=st.session_state['Progreso_ind'], x='Dia', y='Series', hue='Persona', markers=True, ax=ax)
+    ax.set_title('Número de series por día')
+    st.pyplot(fig)
+
+    # Diagrama de dispersión de peso vs repeticiones
+    st.subheader("Diagrama de dispersión de peso vs repeticiones")
+    fig, ax = plt.subplots()
+    sns.scatterplot(data=st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', hue='Persona', ax=ax)
+    ax.set_title('Peso vs Repeticiones')
+    st.pyplot(fig)
 
 
 # Agregar contenido a la pestaña 'Tema B'
