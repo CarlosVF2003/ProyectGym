@@ -104,7 +104,7 @@ with pestaña1:
     # Gráfico de línea de series por día
     st.subheader("Gráfico de línea de series por día")
     fig, ax = plt.subplots()
-    sns.lineplot(data=st.session_state['Progreso_ind'], x='Dia', y='Series', hue='Persona', markers=True
+    sns.lineplot(data=st.session_state['Progreso_ind'], x='Dia', y='Series', hue='Persona', markers=True)
 
 
 # Agregar contenido a la pestaña 'Tema B'
