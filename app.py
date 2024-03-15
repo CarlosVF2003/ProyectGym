@@ -69,31 +69,31 @@ with pestaña1:
                     else:  # Hipertrofia Muscular
                         pesos, repeticiones, descansos = formulario_hipertrofia_muscular(sets)
                         
-                    # Verificar que ambos formularios estén completos
-                    form_completo = all(pesos) and all(repeticiones) and all(descansos)
+                # Verificar que ambos formularios estén completos
+                form_completo = all(pesos) and all(repeticiones) and all(descansos)
                     
-                    if form_completo:
-                        for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
-                            st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-                        # Guardar el DataFrame actualizado en un archivo CSV
-                        # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
-                        st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
-                        st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
+                if form_completo:
+                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
+                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
+                        st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+                     # Guardar el DataFrame actualizado en un archivo CSV
+                     # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
+                     st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
+                     st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
                         
-                        # Mensaje de éxito
-                        st.success('¡Datos registrados con éxito!')
+                     # Mensaje de éxito
+                     st.success('¡Datos registrados con éxito!')
                         
                         # Ocultar el formulario
-                        st.session_state['show_enfoque_form'] = False
-                    else:
-                        st.warning('Por favor completa todos los campos del formulario.')
+                     st.session_state['show_enfoque_form'] = False
+                else:
+                     st.warning('Por favor completa todos los campos del formulario.')
 
-        # Visualización de datos
-        st.subheader("Visualización de datos registrados")
-        # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
-        unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
-        st.write(unique_values)
+    # Visualización de datos
+    st.subheader("Visualización de datos registrados")
+    # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
+    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
+    st.write(unique_values)
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
     avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
