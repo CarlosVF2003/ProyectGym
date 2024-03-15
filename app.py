@@ -38,8 +38,8 @@ with pestaña1:
 
     st.title('Nuestro progreso en el Gimnasio 💪')
 
-    # Botón para mostrar el formulario
-    if st.button("Abrir Formulario"):
+    # Botón para seleccionar el enfoque de entrenamiento
+    if st.button("Seleccionar Enfoque de Entrenamiento"):
         st.session_state['show_form'] = True
 
     # Registro de datos.
@@ -53,28 +53,26 @@ with pestaña1:
             sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
             
             # Botón de envío del formulario
-            if st.button("Seleccionar Enfoque de Entrenamiento"):
+            if st.form_submit_button(label='Guardar 💾'):
                 if Enfoque == 'Desarrollo de Fuerza':
                     pesos, repeticiones = formulario_desarrollo_fuerza(sets)
                 elif Enfoque == 'Mejora de la Resistencia':
                     pesos, repeticiones = formulario_mejora_resistencia(sets)
                 else:  # Hipertrofia Muscular
                     pesos, repeticiones = formulario_hipertrofia_muscular(sets)
-
-        # Botón para seleccionar el enfoque de entrenamiento
-            if st.form_submit_button(label='Guardar 💾'):
-            # Calcular y registrar los datos para cada set según el enfoque
+                    
+                # Calcular y registrar los datos para cada set según el enfoque
                 for i, (peso, repeticion) in enumerate(zip(pesos, repeticiones), start=1):
                     Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': '-', 'Series': i, 'Repeticiones': repeticion}
                     st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-                        
-            # Guardar el DataFrame actualizado en un archivo CSV
+                    
+                # Guardar el DataFrame actualizado en un archivo CSV
                 st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
-                        
+                    
                 # Mensaje de éxito
                 st.success('¡Datos registrados con éxito!')
-                    
-                    # Ocultar el formulario
+                
+                # Ocultar el formulario
                 st.session_state['show_form'] = False
 
     # Visualización de datos
@@ -106,16 +104,8 @@ with pestaña1:
     # Gráfico de línea de series por día
     st.subheader("Gráfico de línea de series por día")
     fig, ax = plt.subplots()
-    sns.lineplot(data=st.session_state['Progreso_ind'], x='Dia', y='Series', hue='Persona', markers=True, ax=ax)
-    ax.set_title('Número de series por día')
-    st.pyplot(fig)
+    sns.lineplot(data=st.session_state['Progreso_ind'], x='Dia', y='Series', hue='Persona', markers=True
 
-    # Diagrama de dispersión de peso vs repeticiones
-    st.subheader("Diagrama de dispersión de peso vs repeticiones")
-    fig, ax = plt.subplots()
-    sns.scatterplot(data=st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', hue='Persona', ax=ax)
-    ax.set_title('Peso vs Repeticiones')
-    st.pyplot(fig)
 
 # Agregar contenido a la pestaña 'Tema B'
 with pestaña2:
