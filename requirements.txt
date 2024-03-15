@@ -4,3 +4,4 @@ demoji
 plotly
 wordcloud
 seaborn
+path
