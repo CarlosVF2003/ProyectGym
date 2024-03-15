@@ -21,8 +21,22 @@ pestaña1, pestaña2 = st.tabs(titulos_pestanas)
 
 # Agregar contenido a la pestaña 'Tema A'
 with pestaña1:
-    # Título de la aplicación
-    st.title('Nuestro progreso en el Gymnasio 💪')
+    def formulario_desarrollo_fuerza(sets):
+        pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
+        repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
+        return pesos, repeticiones
+
+    def formulario_mejora_resistencia(sets):
+        pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
+        repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
+        return pesos, repeticiones
+
+    def formulario_hipertrofia_muscular(sets):
+        peso = st.number_input('Peso (kg):', min_value=0, max_value=100, step=1)
+        repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
+        return [peso] * sets, repeticiones
+
+    st.title('Nuestro progreso en el Gimnasio 💪')
 
     # Intentar leer el archivo CSV y si no existe, inicializar un DataFrame vacío
     try:
@@ -35,52 +49,71 @@ with pestaña1:
         st.session_state['Progreso_ind'] = Progreso_ind
 
     # Registro de datos.
-with st.form(key='mi_formulario'):
-    # Widgets de entrada        
-    Dia = st.text_input('Ingresa el Día 📆:')
-    Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
-    Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
-    Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
-    Sets = st.slider('Número de Sets:', min_value=0, max_value=10, value=4)
-
-    if Enfoque == 'Desarrollo de Fuerza':
-        pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(Sets)]
-        repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(Sets)]
-    elif Enfoque == 'Mejora de la Resistencia':
-        pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(Sets)]
-        repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(Sets)]
-    else:  # Hipertrofia Muscular
-        peso = st.number_input('Peso (kg):', min_value=0, max_value=100, step=1)
-        repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(Sets)]
+    with st.form(key='mi_formulario'):
+        # Widgets de entrada
+        Dia = st.text_input('Ingresa el Día 📆:')
+        Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
+        Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
+        Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
+        sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
         
-    # Botón de envío del formulario
-    submit_button = st.form_submit_button(label='Guardar 💾')
+        # Botón de envío del formulario
+        submit_button = st.form_submit_button(label='Guardar 💾')
 
-# Procesar la información una vez que se envía el formulario
+    # Procesar la información una vez que se envía el formulario
     if submit_button:
-        if Forma == 'Forma 1':
-            # Crear diccionario de datos para la Forma 1
-            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Forma': Forma, 
-                            'Peso inicial': Peso_inicial, 'Peso final': Peso_final, 'Repeticiones por set': Repeticiones_set, 'Sets': Sets}
-        elif Forma == 'Forma 2':
-            # Crear diccionario de datos para la Forma 2
-            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Forma': Forma, 
-                            'Peso 1': Peso_1, 'Repeticiones 1': Repeticiones_1, 'Peso 2': Peso_2, 
-                            'Repeticiones 2': Repeticiones_2, 'Peso 3': Peso_3, 'Repeticiones 3': Repeticiones_3}
-        elif Forma == 'Forma 3':
-            # Crear diccionario de datos para la Forma 3
-            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Forma': Forma, 
-                            'Peso': Peso, 'Repeticiones por set': Repeticiones, 'Sets': Sets}
+        # Mostrar formulario correspondiente al enfoque seleccionado en una ventana emergente
+        if Enfoque == 'Desarrollo de Fuerza':
+            pesos, repeticiones = formulario_desarrollo_fuerza(sets)
+        elif Enfoque == 'Mejora de la Resistencia':
+            pesos, repeticiones = formulario_mejora_resistencia(sets)
+        else:  # Hipertrofia Muscular
+            pesos, repeticiones = formulario_hipertrofia_muscular(sets)
         
-        # Añadir los nuevos datos al DataFrame en el estado de la sesión
-        st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+        # Calcular y registrar los datos para cada set según el enfoque
+        for i, (peso, repeticion) in enumerate(zip(pesos, repeticiones), start=1):
+            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': '-', 'Series': i, 'Repeticiones': repeticion}
+            
+            # Añadir los nuevos datos al DataFrame en el estado de la sesión
+            st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
         
         # Guardar el DataFrame actualizado en un archivo CSV
         st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
         
         # Mensaje de éxito
         st.success('¡Datos registrados con éxito!')
-        st.write(st.session_state['Progreso_ind'])
+
+    # Visualización de datos
+    st.subheader("Visualización de datos registrados")
+    st.write(st.session_state['Progreso_ind'])
+
+    # Procesar la información una vez que se envía el formulario
+        if submit_button:
+            if Forma == 'Forma 1':
+                # Crear diccionario de datos para la Forma 1
+                Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Forma': Forma, 
+                                'Peso inicial': Peso_inicial, 'Peso final': Peso_final, 'Repeticiones por set': Repeticiones_set, 'Sets': Sets}
+            elif Forma == 'Forma 2':
+                # Crear diccionario de datos para la Forma 2
+                Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Forma': Forma, 
+                                'Peso 1': Peso_1, 'Repeticiones 1': Repeticiones_1, 'Peso 2': Peso_2, 
+                                'Repeticiones 2': Repeticiones_2, 'Peso 3': Peso_3, 'Repeticiones 3': Repeticiones_3}
+            elif Forma == 'Forma 3':
+                # Crear diccionario de datos para la Forma 3
+                Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Forma': Forma, 
+                                'Peso': Peso, 'Repeticiones por set': Repeticiones, 'Sets': Sets}
+            
+            # Añadir los nuevos datos al DataFrame en el estado de la sesión
+            st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+            
+            # Guardar el DataFrame actualizado en un archivo CSV
+            st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
+            
+            # Mensaje de éxito
+            st.success('¡Datos registrados con éxito!')
+        # Visualización de datos
+    st.subheader("Visualización de datos registrados")
+    st.write(st.session_state['Progreso_ind'])
 
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
