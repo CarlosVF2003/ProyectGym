@@ -77,10 +77,12 @@ with pestaña1:
                         if len(set(pesos)) == 1 and len(set(repeticiones)) == 1:  # Verifica si todos los pesos y repeticiones son iguales
                             pesos = [pesos[0]]
                             repeticiones = [repeticiones[0]]
-                        else:
                             sets = sets
+                        else:
+                            sets = 0
+
                     else:
-                        sets = sets
+                        sets = pesos.groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('count')
 
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
                         Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
@@ -101,7 +103,6 @@ with pestaña1:
     st.subheader("Visualización de datos registrados")
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
     unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
-    unique_values['Sets'] = unique_values.groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('count')
     st.write(unique_values)
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
