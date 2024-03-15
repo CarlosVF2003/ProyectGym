@@ -22,78 +22,78 @@ pestaña1, pestaña2 = st.tabs(titulos_pestanas)
 # Agregar contenido a la pestaña 'Tema A'
 with pestaña1:
     # Inicializar Progreso_ind si no existe en la sesión
-if 'Progreso_ind' not in st.session_state:
-    st.session_state['Progreso_ind'] = pd.DataFrame()
+    if 'Progreso_ind' not in st.session_state:
+        st.session_state['Progreso_ind'] = pd.DataFrame()
 
-def formulario_desarrollo_fuerza(sets):
-    pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
-    repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
-    descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return pesos, [repeticiones] * sets, [descanso] * sets  # Las repeticiones y el tiempo de descanso son constantes para el desarrollo de fuerza
+    def formulario_desarrollo_fuerza(sets):
+        pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
+        repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
+        descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
+        return pesos, [repeticiones] * sets, [descanso] * sets  # Las repeticiones y el tiempo de descanso son constantes para el desarrollo de fuerza
 
-def formulario_mejora_resistencia(sets):
-    pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
-    repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
-    descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return pesos, repeticiones, [descanso] * sets
+    def formulario_mejora_resistencia(sets):
+        pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
+        repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
+        descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
+        return pesos, repeticiones, [descanso] * sets
 
-def formulario_hipertrofia_muscular(sets):
-    peso = st.number_input('Peso (kg):', min_value=0, max_value=100, step=1)
-    repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
-    descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return [peso] * sets, [repeticiones] * sets, [descanso] * sets  # Tanto el peso, las repeticiones y el tiempo de descanso son constantes para la hipertrofia muscular
+    def formulario_hipertrofia_muscular(sets):
+        peso = st.number_input('Peso (kg):', min_value=0, max_value=100, step=1)
+        repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
+        descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
+        return [peso] * sets, [repeticiones] * sets, [descanso] * sets  # Tanto el peso, las repeticiones y el tiempo de descanso son constantes para la hipertrofia muscular
 
-st.title('Nuestro progreso en el Gimnasio 💪')
+    st.title('Nuestro progreso en el Gimnasio 💪')
 
-# Botón para abrir el formulario principal
-if st.button("Abrir Formulario Principal"):
-    st.session_state['show_enfoque_form'] = True
+    # Botón para abrir el formulario principal
+    if st.button("Abrir Formulario Principal"):
+        st.session_state['show_enfoque_form'] = True
 
-# Registro de datos.
-    if st.session_state.get('show_enfoque_form', False):
-        with st.form(key='mi_formulario'):
-            # Widgets de entrada
-            Dia = st.text_input('Ingresa el Día 📆:')
-            Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
-            Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
-            Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
-            sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
-            
-            # Botón de envío del formulario
-            guardar_button = st.form_submit_button(label='Guardar 💾')
-            if guardar_button:
-                if Enfoque == 'Desarrollo de Fuerza':
-                    pesos, repeticiones, descansos = formulario_desarrollo_fuerza(sets)
-                elif Enfoque == 'Mejora de la Resistencia':
-                    pesos, repeticiones, descansos = formulario_mejora_resistencia(sets)
-                else:  # Hipertrofia Muscular
-                    pesos, repeticiones, descansos = formulario_hipertrofia_muscular(sets)
-                    
-                # Verificar que ambos formularios estén completos
-                form_completo = all(pesos) and all(repeticiones) and all(descansos)
+    # Registro de datos.
+        if st.session_state.get('show_enfoque_form', False):
+            with st.form(key='mi_formulario'):
+                # Widgets de entrada
+                Dia = st.text_input('Ingresa el Día 📆:')
+                Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
+                Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
+                Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
+                sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
                 
-                if form_completo:
-                    for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
-                        st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-                    # Guardar el DataFrame actualizado en un archivo CSV
-                    # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
-                    st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
-                    st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
+                # Botón de envío del formulario
+                guardar_button = st.form_submit_button(label='Guardar 💾')
+                if guardar_button:
+                    if Enfoque == 'Desarrollo de Fuerza':
+                        pesos, repeticiones, descansos = formulario_desarrollo_fuerza(sets)
+                    elif Enfoque == 'Mejora de la Resistencia':
+                        pesos, repeticiones, descansos = formulario_mejora_resistencia(sets)
+                    else:  # Hipertrofia Muscular
+                        pesos, repeticiones, descansos = formulario_hipertrofia_muscular(sets)
+                        
+                    # Verificar que ambos formularios estén completos
+                    form_completo = all(pesos) and all(repeticiones) and all(descansos)
                     
-                    # Mensaje de éxito
-                    st.success('¡Datos registrados con éxito!')
-                    
-                    # Ocultar el formulario
-                    st.session_state['show_enfoque_form'] = False
-                else:
-                    st.warning('Por favor completa todos los campos del formulario.')
+                    if form_completo:
+                        for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
+                            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
+                            st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+                        # Guardar el DataFrame actualizado en un archivo CSV
+                        # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
+                        st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
+                        st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
+                        
+                        # Mensaje de éxito
+                        st.success('¡Datos registrados con éxito!')
+                        
+                        # Ocultar el formulario
+                        st.session_state['show_enfoque_form'] = False
+                    else:
+                        st.warning('Por favor completa todos los campos del formulario.')
 
-    # Visualización de datos
-    st.subheader("Visualización de datos registrados")
-    # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
-    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
-    st.write(unique_values)
+        # Visualización de datos
+        st.subheader("Visualización de datos registrados")
+        # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
+        unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
+        st.write(unique_values)
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
     avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
