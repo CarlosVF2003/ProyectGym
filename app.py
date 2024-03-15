@@ -27,9 +27,9 @@ with pestaña1:
 
     def formulario_desarrollo_fuerza(sets):
         pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
-        repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
+        repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
         descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-        return pesos, [repeticiones] * sets, [descanso] * sets
+        return pesos, repeticiones, [descanso] * sets
 
     def formulario_mejora_resistencia(sets):
         pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
@@ -76,7 +76,7 @@ with pestaña1:
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
                         if Enfoque == 'Desarrollo de Fuerza':
                             # Suma la cantidad de sets y registra el peso una sola vez
-                            sets_total = sum(repeticiones)/repeticiones[0]
+                            sets_total = sum(repeticiones)
                             Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets_total, 'Repeticiones': repeticion}
                             st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                         elif Enfoque == 'Mejora de la Resistencia':
@@ -87,9 +87,6 @@ with pestaña1:
                             # Registra un solo peso y una sola repetición, junto con la cantidad total de sets realizados
                             Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
                             st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-                        
-                    # Guardar el DataFrame actualizado en un archivo CSV
-                    st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
                     
                     # Mensaje de éxito
                     st.success('¡Datos registrados con éxito!')
@@ -102,7 +99,6 @@ with pestaña1:
     # Visualización de datos
     st.subheader("Visualización de datos registrados")
     st.write(st.session_state['Progreso_ind'])
-
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
     avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
