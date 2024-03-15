@@ -78,7 +78,7 @@ with pestaña1:
                 if Enfoque == 'Desarrollo de Fuerza':
                     pesos, repeticiones, descansos = formulario_desarrollo_fuerza(sets)
                 elif Enfoque == 'Mejora de la Resistencia':
-                    pesos, repeticiones, descansos, sets= formulario_mejora_resistencia(sets)
+                    pesos, repeticiones, descansos, _ = formulario_mejora_resistencia(sets)
                 else:  # Hipertrofia Muscular
                     pesos, repeticiones, descansos = formulario_hipertrofia_muscular(sets)
                     
@@ -86,8 +86,22 @@ with pestaña1:
                 form_completo = all(pesos) and all(repeticiones) and all(descansos)
                 
                 if form_completo:
-                    for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': 1, 'Repeticiones': repeticion}
+                    if Enfoque == 'Desarrollo de Fuerza':
+                        # Calcular el número de sets para cada peso único
+                        sets_por_peso = {peso: pesos.count(peso) for peso in set(pesos)}
+                    elif Enfoque == 'Mejora de la Resistencia':
+                        # Calcular el número de sets para cada par peso-repeticiones único
+                        sets_por_peso_repeticiones = {key: pesos.count(key[0]) for key in set(zip(pesos, repeticiones))}
+                    else:
+                        sets_por_peso = {peso: sets for peso in set(pesos)}
+                        
+                    for i, (peso, repeticion, descanso) in enumerate(zip(pesos, repeticiones, descansos)):
+                        if Enfoque == 'Desarrollo de Fuerza':
+                            sets = sets_por_peso[peso]
+                        elif Enfoque == 'Mejora de la Resistencia':
+                            sets = sets_por_peso_repeticiones[(peso, repeticion)]
+                        
+                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
                         st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                     
                     # Guardar el DataFrame actualizado en un archivo CSV
@@ -100,6 +114,7 @@ with pestaña1:
                     st.session_state['show_enfoque_form'] = False
                 else:
                     st.warning('Por favor completa todos los campos del formulario.')
+
     # Visualización de datos
     st.subheader("Visualización de datos registrados")
     st.write(st.session_state['Progreso_ind'])
