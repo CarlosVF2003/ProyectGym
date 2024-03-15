@@ -88,9 +88,9 @@ with pestaña1:
                 else:
                     st.warning('Por favor completa todos los campos del formulario.')
                 
-            save_button = st.button(laben= 'Save')
-            if save_button:
-                 st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
+        save_button = st.button(laben= 'Save')
+        if save_button:
+            st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
 
     # Visualización de datos
     st.subheader("Visualización de datos registrados")
