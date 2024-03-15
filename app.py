@@ -30,10 +30,21 @@ with pestaña1:
         return pesos, [repeticiones] * sets, [descanso] * sets
 
     def formulario_mejora_resistencia(sets):
-        pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
-        repeticiones = [st.number_input(f'Repeticiones: {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
+        pesos = []
+        repeticiones = []
+        datos_set = {}
+        
+        for i in range(sets):
+            peso = st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1)
+            repeticion = st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1)
+            datos_set[(peso, repeticion)] = datos_set.get((peso, repeticion), 0) + 1
+            
+        for (peso, repeticion), cantidad in datos_set.items():
+            repeticiones.extend([repeticion] * cantidad)
+            pesos.extend([peso] * cantidad)
+
         descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-        return pesos, repeticiones, [descanso] * sets
+        return pesos, repeticiones, [descanso] * len(pesos), datos_set
 
     def formulario_hipertrofia_muscular(sets):
         peso = st.number_input('Peso (kg):', min_value=0, max_value=100, step=1)
