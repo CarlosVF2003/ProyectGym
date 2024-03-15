@@ -36,30 +36,23 @@ with pestaña1:
 
     # Registro de datos.
 with st.form(key='mi_formulario'):
-    # Widgets de entrada
-    Dia = st.text_input('Ingresa el Dia 📆:')
-    Persona = st.selectbox('Su nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
-    Maquina = st.selectbox('Selecciona una maquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
-    Forma = st.selectbox('Selecciona la forma de repeticiones:', ('Forma 1', 'Forma 2', 'Forma 3'))
+    # Widgets de entrada        
+    Dia = st.text_input('Ingresa el Día 📆:')
+    Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
+    Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
+    Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
+    Sets = st.slider('Número de Sets:', min_value=0, max_value=10, value=4)
 
-    # Widgets específicos para cada forma de repeticiones
-    if Forma == 'Forma 1':
-        Peso_inicial = st.number_input('Peso inicial (kg):', min_value=0, value=50)
-        Peso_final = st.number_input('Peso final (kg):', min_value=0, value=80)
-        Repeticiones_set = st.number_input('Repeticiones por set:', min_value=0, value=20)
-        Sets = st.slider('Número de sets:', min_value=0, max_value=10, value=4)
-    elif Forma == 'Forma 2':
-        Peso_1 = st.number_input('Peso para la primera serie (kg):', min_value=0, value=5)
-        Repeticiones_1 = st.number_input('Repeticiones para la primera serie:', min_value=0, value=20)
-        Peso_2 = st.number_input('Peso para la segunda serie (kg):', min_value=0, value=10)
-        Repeticiones_2 = st.number_input('Repeticiones para la segunda serie:', min_value=0, value=15)
-        Peso_3 = st.number_input('Peso para la tercera serie (kg):', min_value=0, value=15)
-        Repeticiones_3 = st.number_input('Repeticiones para la tercera serie:', min_value=0, value=12)
-    elif Forma == 'Forma 3':
-        Peso = st.number_input('Peso (kg):', min_value=0, value=80)
-        Repeticiones = st.number_input('Repeticiones por set:', min_value=0, value=15)
-        Sets = st.slider('Número de sets:', min_value=0, max_value=10, value=4)
-
+    if Enfoque == 'Desarrollo de Fuerza':
+        pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(Sets)]
+        repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(Sets)]
+    elif Enfoque == 'Mejora de la Resistencia':
+        pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(Sets)]
+        repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(Sets)]
+    else:  # Hipertrofia Muscular
+        peso = st.number_input('Peso (kg):', min_value=0, max_value=100, step=1)
+        repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(Sets)]
+        
     # Botón de envío del formulario
     submit_button = st.form_submit_button(label='Guardar 💾')
 
