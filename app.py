@@ -74,7 +74,7 @@ with pestaña1:
                 
                 if form_completo:
                     if len(set(pesos)) == 1 and len(set(repeticiones)) == 1:  # Verifica si todos los pesos y repeticiones son iguales
-                        if sum(repeticiones) == repeticiones[0] * sets:  # Verifica si la suma total de repeticiones es igual al producto del número de repeticiones individuales y la cantidad de sets
+                        if sum(repeticiones) != repeticiones[0] * sets:  # Verifica si la suma total de repeticiones es igual al producto del número de repeticiones individuales y la cantidad de sets
                             sets = 1
                         else:
                             sets = sum(repeticiones) // repeticiones[0]  # Calcula la cantidad de sets dividiendo la suma total de repeticiones entre la cantidad de repeticiones individuales
