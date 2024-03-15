@@ -73,43 +73,40 @@ with pestaña1:
                 form_completo = all(pesos) and all(repeticiones) and all(descansos)
                 
                 if form_completo:
-                    if Enfoque == 'Desarrollo de Fuerza':
-                        # Calcular el número de sets para cada peso único
-                        sets_por_peso = {peso: pesos.count(peso) for peso in set(pesos)}
-                    elif Enfoque == 'Mejora de la Resistencia':
-                        # Calcular el número de sets para cada par peso-repeticiones único
-                        sets_por_peso_repeticiones = {key: pesos.count(key[0]) for key in set(zip(pesos, repeticiones))}
-                    else:
-                        sets_por_peso = {peso: sets for peso in set(pesos)}
-                        
-                    for i, (peso, repeticion, descanso) in enumerate(zip(pesos, repeticiones, descansos)):
+                    # Verificar si ya existe una fila con los mismos valores en el DataFrame
+                    if not st.session_state['Progreso_ind'].empty:
                         if Enfoque == 'Desarrollo de Fuerza':
-                            sets = sets_por_peso[peso]
+                            form_exists = st.session_state['Progreso_ind'].isin({'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': pesos[0], 'Descanso': descansos[0]}).all(axis=1).any()
                         elif Enfoque == 'Mejora de la Resistencia':
-                            sets = sets_por_peso_repeticiones[(peso, repeticion)]
+                            form_exists = st.session_state['Progreso_ind'].isin({'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': pesos[0], 'Repeticiones': repeticiones[0], 'Descanso': descansos[0]}).all(axis=1).any()
                         else:
-                            sets = sets_por_peso[peso]
+                            form_exists = False
                             
-                        # Verificar si el registro ya existe en el DataFrame
-                        if not st.session_state['Progreso_ind'].isin({'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}).all(axis=1).any():
-                            # Crear el nuevo registro y agregarlo al DataFrame
-                            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
+                        if not form_exists:
+                            for i in range(sets):
+                                Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': pesos[i], 'Descanso': descansos[i], 'Sets': sets, 'Repeticiones': repeticiones[i]}
+                                st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+                            # Guardar el DataFrame actualizado en un archivo CSV
+                            st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
+                            # Mensaje de éxito
+                            st.success('¡Datos registrados con éxito!')
+                        else:
+                            st.warning('Ya existe un registro con los mismos valores.')
+                    else:
+                        for i in range(sets):
+                            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': pesos[i], 'Descanso': descansos[i], 'Sets': sets, 'Repeticiones': repeticiones[i]}
                             st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-
-                    # Guardar el DataFrame actualizado en un archivo CSV
-                    st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
-                    
-                    # Mensaje de éxito
-                    st.success('¡Datos registrados con éxito!')
-                    
-                    # Ocultar el formulario
-                    st.session_state['show_enfoque_form'] = False
+                        # Guardar el DataFrame actualizado en un archivo CSV
+                        st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
+                        # Mensaje de éxito
+                        st.success('¡Datos registrados con éxito!')
                 else:
                     st.warning('Por favor completa todos los campos del formulario.')
 
     # Visualización de datos
     st.subheader("Visualización de datos registrados")
     st.write(st.session_state['Progreso_ind'])
+
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
     avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
