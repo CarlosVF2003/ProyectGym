@@ -22,7 +22,7 @@ pestaña1, pestaña2 = st.tabs(titulos_pestanas)
 # Agregar contenido a la pestaña 'Tema A'
 with pestaña1:
     # Inicializar Progreso_ind si no existe en la sesión
-    #st.experimental_singleton
+    @st.experimental_singleton
     def init_progreso():
         return pd.DataFrame()
 
@@ -74,12 +74,14 @@ with pestaña1:
                 form_completo = all(pesos) and all(repeticiones) and all(descansos)
                 
                 if form_completo:
+                    progreso_ind = st.experimental_singleton(init_progreso)
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
                         Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
-                        st.experimental_singleton['Progreso_ind'] = pd.concat([st.experimental_singleton['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+                        progreso_ind = pd.concat([progreso_ind, pd.DataFrame([Progreso_new])], ignore_index=True)
                     # Guardar el DataFrame actualizado en un archivo CSV
-                    st.experimental_singleton['Progreso_ind']['Sets'] = st.experimental_singleton['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
-                    st.experimental_singleton['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
+                    progreso_ind['Sets'] = progreso_ind.groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
+                    st.experimental_singleton['Progreso_ind'] = progreso_ind
+                    progreso_ind.to_csv('Libro1.csv', index=False, sep=';')
                     
                     # Mensaje de éxito
                     st.success('¡Datos registrados con éxito!')
@@ -91,7 +93,8 @@ with pestaña1:
 
     # Visualización de datos
     st.subheader("Visualización de datos registrados")
-    unique_values = st.experimental_singleton['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
+    progreso_ind = st.experimental_singleton(init_progreso)
+    unique_values = progreso_ind.drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     st.write(unique_values)
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
