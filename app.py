@@ -38,18 +38,8 @@ with pestaña1:
 
     st.title('Nuestro progreso en el Gimnasio 💪')
 
-    # Intentar leer el archivo CSV y si no existe, inicializar un DataFrame vacío
-    try:
-        Progreso_ind = pd.read_csv("Libro1.csv", delimiter=';')
-    except FileNotFoundError:
-        Progreso_ind = pd.DataFrame()
-
-    # Guardar el DataFrame en el estado de la sesión solo si está vacío
-    if 'Progreso_ind' not in st.session_state:
-        st.session_state['Progreso_ind'] = Progreso_ind
-
-    # Botón para mostrar el formulario de enfoque de entrenamiento
-    if st.button("Seleccionar Enfoque de Entrenamiento"):
+    # Botón para mostrar el formulario
+    if st.button("Abrir Formulario"):
         st.session_state['show_form'] = True
 
     # Registro de datos.
@@ -81,6 +71,13 @@ with pestaña1:
                     
                 # Mensaje de éxito
                 st.success('¡Datos registrados con éxito!')
+                
+                # Ocultar el formulario
+                st.session_state['show_form'] = False
+
+    # Botón para seleccionar el enfoque de entrenamiento
+    if st.button("Seleccionar Enfoque de Entrenamiento"):
+        st.session_state['show_form'] = True
 
     # Visualización de datos
     st.subheader("Visualización de datos registrados")
