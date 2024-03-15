@@ -74,7 +74,6 @@ with pestaña1:
                 form_completo = all(pesos) and all(repeticiones) and all(descansos)
                 
                 if form_completo:
-                    progreso_ind = st.experimental_singleton(init_progreso)
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
                         Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
                         progreso_ind = pd.concat([progreso_ind, pd.DataFrame([Progreso_new])], ignore_index=True)
