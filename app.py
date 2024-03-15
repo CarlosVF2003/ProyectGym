@@ -73,7 +73,7 @@ with pestaña1:
                 form_completo = all(pesos) and all(repeticiones) and all(descansos)
                 
                 if form_completo:
-                    if Enfoque != 'Hipertrofia Muscular':
+                    if Enfoque == 'Hipertrofia Muscular':
                         if len(set(pesos)) == 1 and len(set(repeticiones)) == 1:  # Verifica si todos los pesos y repeticiones son iguales
                             sets = sum(repeticiones) // repeticiones[0]  # Calcula la cantidad de sets dividiendo la suma total de repeticiones entre la cantidad de repeticiones individuales
                             pesos = [pesos[0]]
