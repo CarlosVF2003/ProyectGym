@@ -27,7 +27,7 @@ with pestaña1:
 
     def formulario_desarrollo_fuerza(sets):
         pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
-        repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)        
+        repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
         descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
         return pesos, [repeticiones] * sets, [descanso] * sets
 
@@ -73,15 +73,21 @@ with pestaña1:
                 form_completo = all(pesos) and all(repeticiones) and all(descansos)
                 
                 if form_completo:
-                    if Enfoque == 'Hipertrofia Muscular':
-                        sets = sets
-                    else:
-                        sets = 1
-
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
-                        st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-                    
+                        if Enfoque == 'Desarrollo de Fuerza':
+                            # Suma la cantidad de sets y registra el peso una sola vez
+                            sets_total = sum(repeticiones)
+                            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets_total, 'Repeticiones': repeticion}
+                            st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+                        elif Enfoque == 'Mejora de la Resistencia':
+                            # Registra pesos y repeticiones una sola vez, sumando la cantidad de sets
+                            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
+                            st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+                        else:  # Hipertrofia Muscular
+                            # Registra un solo peso y una sola repetición, junto con la cantidad total de sets realizados
+                            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
+                            st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+                        
                     # Guardar el DataFrame actualizado en un archivo CSV
                     st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
                     
