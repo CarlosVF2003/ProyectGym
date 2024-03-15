@@ -35,21 +35,49 @@ with pestaña1:
         st.session_state['Progreso_ind'] = Progreso_ind
 
     # Registro de datos.
-    with st.form(key='mi_formulario'):
-        # Widgets de entrada
-        Dia = st.text_input('Ingresa el Dia 📆:')
-        Persona = st.selectbox('Su nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
-        Maquina = st.selectbox('Selecciona una maquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
-        Peso = st.slider('Selecciona el peso ⚖:', 0, 100, 40)
-        Descanso = st.selectbox('Selecciona la cantidad de tiempo ⌛:', ('1-2 min', '2-3 min', '3-4 min'))
-        Series = st.slider('Selecciona la cantidad de series 🎲:', 0, 4, 3)
-        Repeticiones = st.slider('Selecciona las repeticiones 🎲:', 0, 30, 15)
-        # Botón de envío del formulario
-        submit_button = st.form_submit_button(label='Guardar 💾')
+with st.form(key='mi_formulario'):
+    # Widgets de entrada
+    Dia = st.text_input('Ingresa el Dia 📆:')
+    Persona = st.selectbox('Su nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
+    Maquina = st.selectbox('Selecciona una maquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores'))
+    Forma = st.selectbox('Selecciona la forma de repeticiones:', ('Forma 1', 'Forma 2', 'Forma 3'))
 
-    # Procesar la información una vez que se envía el formulario
+    # Widgets específicos para cada forma de repeticiones
+    if Forma == 'Forma 1':
+        Peso_inicial = st.number_input('Peso inicial (kg):', min_value=0, value=50)
+        Peso_final = st.number_input('Peso final (kg):', min_value=0, value=80)
+        Repeticiones_set = st.number_input('Repeticiones por set:', min_value=0, value=20)
+        Sets = st.slider('Número de sets:', min_value=0, max_value=10, value=4)
+    elif Forma == 'Forma 2':
+        Peso_1 = st.number_input('Peso para la primera serie (kg):', min_value=0, value=5)
+        Repeticiones_1 = st.number_input('Repeticiones para la primera serie:', min_value=0, value=20)
+        Peso_2 = st.number_input('Peso para la segunda serie (kg):', min_value=0, value=10)
+        Repeticiones_2 = st.number_input('Repeticiones para la segunda serie:', min_value=0, value=15)
+        Peso_3 = st.number_input('Peso para la tercera serie (kg):', min_value=0, value=15)
+        Repeticiones_3 = st.number_input('Repeticiones para la tercera serie:', min_value=0, value=12)
+    elif Forma == 'Forma 3':
+        Peso = st.number_input('Peso (kg):', min_value=0, value=80)
+        Repeticiones = st.number_input('Repeticiones por set:', min_value=0, value=15)
+        Sets = st.slider('Número de sets:', min_value=0, max_value=10, value=4)
+
+    # Botón de envío del formulario
+    submit_button = st.form_submit_button(label='Guardar 💾')
+
+# Procesar la información una vez que se envía el formulario
     if submit_button:
-        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': Peso, 'Descanso': Descanso, 'Series': Series, 'Repeticiones': Repeticiones}
+        if Forma == 'Forma 1':
+            # Crear diccionario de datos para la Forma 1
+            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Forma': Forma, 
+                            'Peso inicial': Peso_inicial, 'Peso final': Peso_final, 'Repeticiones por set': Repeticiones_set, 'Sets': Sets}
+        elif Forma == 'Forma 2':
+            # Crear diccionario de datos para la Forma 2
+            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Forma': Forma, 
+                            'Peso 1': Peso_1, 'Repeticiones 1': Repeticiones_1, 'Peso 2': Peso_2, 
+                            'Repeticiones 2': Repeticiones_2, 'Peso 3': Peso_3, 'Repeticiones 3': Repeticiones_3}
+        elif Forma == 'Forma 3':
+            # Crear diccionario de datos para la Forma 3
+            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Forma': Forma, 
+                            'Peso': Peso, 'Repeticiones por set': Repeticiones, 'Sets': Sets}
         
         # Añadir los nuevos datos al DataFrame en el estado de la sesión
         st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
@@ -59,10 +87,7 @@ with pestaña1:
         
         # Mensaje de éxito
         st.success('¡Datos registrados con éxito!')
-
-    # Visualización de datos
-    st.subheader("Visualización de datos registrados")
-    st.write(st.session_state['Progreso_ind'])
+        st.write(st.session_state['Progreso_ind'])
 
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
