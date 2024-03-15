@@ -62,20 +62,20 @@ with pestaña1:
                     pesos, repeticiones = formulario_hipertrofia_muscular(sets)
 
         # Botón para seleccionar el enfoque de entrenamiento
-        if st.form_submit_button(label='Guardar 💾'):
-         # Calcular y registrar los datos para cada set según el enfoque
-            for i, (peso, repeticion) in enumerate(zip(pesos, repeticiones), start=1):
-                Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': '-', 'Series': i, 'Repeticiones': repeticion}
-                st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+            if st.form_submit_button(label='Guardar 💾'):
+            # Calcular y registrar los datos para cada set según el enfoque
+                for i, (peso, repeticion) in enumerate(zip(pesos, repeticiones), start=1):
+                    Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': '-', 'Series': i, 'Repeticiones': repeticion}
+                    st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+                        
+            # Guardar el DataFrame actualizado en un archivo CSV
+                st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
+                        
+                # Mensaje de éxito
+                st.success('¡Datos registrados con éxito!')
                     
-           # Guardar el DataFrame actualizado en un archivo CSV
-            st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
-                    
-            # Mensaje de éxito
-            st.success('¡Datos registrados con éxito!')
-                
-                # Ocultar el formulario
-            st.session_state['show_form'] = False
+                    # Ocultar el formulario
+                st.session_state['show_form'] = False
 
     # Visualización de datos
     st.subheader("Visualización de datos registrados")
