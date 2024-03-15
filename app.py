@@ -80,10 +80,10 @@ with pestaña1:
                             sets = sum(repeticiones) // repeticiones[0]  # Calcula la cantidad de sets dividiendo la suma total de repeticiones entre la cantidad de repeticiones individuales
                         
                                 
-                for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                    Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
-                    st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-                    
+                    for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
+                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
+                        st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+                        
                     # Guardar el DataFrame actualizado en un archivo CSV
                     st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
                     
