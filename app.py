@@ -81,13 +81,10 @@ with pestaña1:
                         else:
                             sets = 0
 
-                    else:
-                        sets = pesos.count
-
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
                         Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
                         st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-                    
+                        st.session_state['Sets'] =  st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso','Repeticiones','Maquina'].transform('count')
                     # Guardar el DataFrame actualizado en un archivo CSV
                     st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
                     
