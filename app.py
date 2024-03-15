@@ -82,7 +82,7 @@ with pestaña1:
                             sets = 0
 
                     else:
-                        sets = pesos.groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('count')
+                        sets = pesos.count
 
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
                         Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
