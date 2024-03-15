@@ -22,7 +22,7 @@ pestaña1, pestaña2 = st.tabs(titulos_pestanas)
 # Agregar contenido a la pestaña 'Tema A'
 with pestaña1:
     # Inicializar Progreso_ind si no existe en la sesión
-    @st.experimental_singleton
+    #st.experimental_singleton
     def init_progreso():
         return pd.DataFrame()
 
