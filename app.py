@@ -76,7 +76,7 @@ with pestaña1:
                     # Verificar si ya existe una fila con los mismos valores en el DataFrame
                     if not st.session_state['Progreso_ind'].empty:
                         if Enfoque == 'Desarrollo de Fuerza':
-                            form_exists = st.session_state['Progreso_ind'].isin({'Dia': [Dia], 'Persona': [Persona], 'Maquina': [Maquina], 'Peso': pesos, 'Descanso': [descansos[0]]}).all(axis=1).any()
+                            form_exists = st.session_state['Progreso_ind'].isin({'Dia': [Dia], 'Persona': [Persona], 'Maquina': [Maquina], 'Peso': pesos, 'Repeticiones': repeticiones, 'Descanso': [descansos[0]]}).all(axis=1).any()
                         elif Enfoque == 'Mejora de la Resistencia':
                             form_exists = st.session_state['Progreso_ind'].isin({'Dia': [Dia], 'Persona': [Persona], 'Maquina': [Maquina], 'Peso': pesos, 'Repeticiones': repeticiones, 'Descanso': [descansos[0]]}).all(axis=1).any()
                         else:
