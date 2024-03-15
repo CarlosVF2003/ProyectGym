@@ -59,6 +59,7 @@ with pestaña1:
         
         # Mensaje de éxito
         st.success('¡Datos registrados con éxito!')
+    print(Progreso_ind)
 
 # Agregar contenido a la pestaña 'Tema B'
 with pestaña2:
