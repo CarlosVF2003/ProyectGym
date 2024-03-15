@@ -101,6 +101,7 @@ with pestaña1:
     sns.barplot(data=avg_peso, x='Persona', y='Peso', ax=ax)
     ax.set_title('Promedio de peso levantado por persona')
     st.pyplot(fig)
+
     # Histograma de repeticiones por máquina y persona
     st.subheader("Histograma de repeticiones por máquina y persona")
     fig, ax = plt.subplots()
@@ -118,7 +119,7 @@ with pestaña1:
     # Gráfico de línea de series por día
     st.subheader("Gráfico de línea de series por día")
     fig, ax = plt.subplots()
-    sns.lineplot(data=st.session_state['Progreso_ind'], x='Dia', y='Series', hue='Persona', markers=True, ax=ax)
+    sns.lineplot(data=st.session_state['Progreso_ind'], x='Dia', y='Sets', hue='Persona', markers=True, ax=ax)
     ax.set_title('Número de series por día')
     st.pyplot(fig)
 
