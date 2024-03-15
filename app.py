@@ -76,7 +76,7 @@ with pestaña1:
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
                         if Enfoque == 'Desarrollo de Fuerza':
                             # Suma la cantidad de sets y registra el peso una sola vez
-                            sets_total = sum(repeticiones)
+                            sets_total = sum(repeticiones)/repeticiones[0]
                             Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets_total, 'Repeticiones': repeticion}
                             st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                         elif Enfoque == 'Mejora de la Resistencia':
