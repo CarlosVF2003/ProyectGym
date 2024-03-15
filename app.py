@@ -73,14 +73,16 @@ with pestaña1:
                 form_completo = all(pesos) and all(repeticiones) and all(descansos)
                 
                 if form_completo:
-                    # Calcular y registrar los datos para cada set según el enfoque
-                    for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                        if Enfoque == 'Desarrollo de Fuerza' or (Enfoque == 'Mejora de la Resistencia' and len(set(peso)) == len(set(repeticion))):
+                    if len(set(pesos)) == 1 and len(set(repeticiones)) == 1:  # Verifica si todos los pesos y repeticiones son iguales
+                        if sum(repeticiones) == repeticiones[0] * sets:  # Verifica si la suma total de repeticiones es igual al producto del número de repeticiones individuales y la cantidad de sets
                             sets = 1
                         else:
-                            sets = sets
-                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
-                        st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+                            sets = sum(repeticiones) // repeticiones[0]  # Calcula la cantidad de sets dividiendo la suma total de repeticiones entre la cantidad de repeticiones individuales
+                        
+                                
+                for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
+                    Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
+                    st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                     
                     # Guardar el DataFrame actualizado en un archivo CSV
                     st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
