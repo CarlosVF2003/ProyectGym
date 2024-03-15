@@ -53,7 +53,7 @@ with pestaña1:
             sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
             
             # Botón de envío del formulario
-            if st.form_submit_button(label='Guardar 💾'):
+            if st.button("Seleccionar Enfoque de Entrenamiento")
                 if Enfoque == 'Desarrollo de Fuerza':
                     pesos, repeticiones = formulario_desarrollo_fuerza(sets)
                 elif Enfoque == 'Mejora de la Resistencia':
@@ -76,7 +76,7 @@ with pestaña1:
                 st.session_state['show_form'] = False
 
     # Botón para seleccionar el enfoque de entrenamiento
-    if st.button("Seleccionar Enfoque de Entrenamiento"):
+    if st.form_submit_button(label='Guardar 💾')
         st.session_state['show_form'] = True
 
     # Visualización de datos
