@@ -11,7 +11,7 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from PIL import Image
 from wordcloud import WordCloud, STOPWORDS
-
+import seaborn as sns
 import streamlit as st
 
 
@@ -52,14 +52,29 @@ with pestaña1:
         Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': Peso, 'Descanso': Descanso, 'Series': Series, 'Repeticiones': Repeticiones}
         
         # Añadir los nuevos datos al DataFrame en el estado de la sesión
-        st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=False)
+        st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
         
         # Guardar el DataFrame actualizado en un archivo CSV
         st.session_state['Progreso_ind'].to_csv('Libro1.csv', index=False, sep=';')
         
         # Mensaje de éxito
         st.success('¡Datos registrados con éxito!')
-    print(Progreso_ind)
+
+    # Visualización de datos
+    st.subheader("Visualización de datos registrados")
+    st.write(st.session_state['Progreso_ind'])
+
+    # Gráfico de comparación entre personas
+    st.subheader("Comparación de progreso entre personas")
+
+    # Agrupar por persona y calcular el promedio de Peso levantado
+    avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
+
+    # Visualizar el gráfico de barras
+    fig, ax = plt.subplots()
+    sns.barplot(data=avg_peso, x='Persona', y='Peso', ax=ax)
+    ax.set_title('Promedio de peso levantado por persona')
+    st.pyplot(fig)
 
 # Agregar contenido a la pestaña 'Tema B'
 with pestaña2:
