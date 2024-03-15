@@ -22,9 +22,9 @@ pestaña1, pestaña2 = st.tabs(titulos_pestanas)
 # Agregar contenido a la pestaña 'Tema A'
 with pestaña1:
     # Inicializar Progreso_ind si no existe en la sesión
-    @st.experimental_singleton
-    def init_progreso():
-        return pd.DataFrame()
+    if 'Progreso_ind' not in st.session_state:
+        st.session_state['Progreso_ind'] = pd.DataFrame()
+
 
     def formulario_desarrollo_fuerza(sets):
         pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
