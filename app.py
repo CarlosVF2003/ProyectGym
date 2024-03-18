@@ -93,7 +93,7 @@ with pestaña1:
     # Visualización de datos
     st.subheader("Visualización de datos registrados")
     # Mostrar datos sin índice
-    st.table(st.session_state['Progreso_ind'], index=False)
+    st.table(st.session_state['Progreso_ind'])
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
     unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     st.write(unique_values)
