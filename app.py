@@ -109,6 +109,59 @@ if not datos_filtrados.empty:
 # Mostrar gráficos y tablas si hay datos filtrados
 if not datos_filtrados.empty:
     # Gráficos y tablas aquí...
-    st.write(datos_filtrados)
+    st.subheader("Gráficos de Líneas")
+    
+    # Gráfico de progreso individual por persona
+    fig_progress_persona = px.line(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Progreso Individual por Persona')
+    st.plotly_chart(fig_progress_persona, use_container_width=True)
+    
+    # Gráfico de progreso por máquina o ejercicio
+    fig_progress_maquina = px.line(datos_filtrados, x='Dia', y='Peso', color='Maquina', title='Progreso por Máquina o Ejercicio')
+    st.plotly_chart(fig_progress_maquina, use_container_width=True)
+    
+    st.subheader("Gráficos de Barras")
+    
+    # Gráfico de rendimiento por día
+    fig_rendimiento_dia = px.bar(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Rendimiento por Día')
+    st.plotly_chart(fig_rendimiento_dia, use_container_width=True)
+    
+    # Gráfico de número de sets
+    fig_sets = px.bar(datos_filtrados, x='Persona', y='Sets', title='Número de Sets por Persona')
+    st.plotly_chart(fig_sets, use_container_width=True)
+    
+    # Gráfico de peso levantado
+    fig_peso = px.bar(datos_filtrados, x='Dia', y='Peso', title='Peso Levantado por Día')
+    st.plotly_chart(fig_peso, use_container_width=True)
+    
+    st.subheader("Histogramas")
+    
+    # Histograma de repeticiones por ejercicio
+    fig_repeticiones = px.histogram(datos_filtrados, x='Repeticiones', title='Distribución de Repeticiones por Ejercicio')
+    st.plotly_chart(fig_repeticiones, use_container_width=True)
+    
+    # Histograma de descanso
+    fig_descanso = px.histogram(datos_filtrados, x='Descanso', title='Distribución de Tiempo de Descanso')
+    st.plotly_chart(fig_descanso, use_container_width=True)
+    
+    st.subheader("Gráficos de Dispersión")
+    
+    # Gráfico de peso vs. descanso
+    fig_peso_vs_descanso = px.scatter(datos_filtrados, x='Peso', y='Descanso', title='Peso vs. Descanso')
+    st.plotly_chart(fig_peso_vs_descanso, use_container_width=True)
+    
+    # Gráfico de peso vs. repeticiones
+    fig_peso_vs_repeticiones = px.scatter(datos_filtrados, x='Peso', y='Repeticiones', title='Peso vs. Repeticiones')
+    st.plotly_chart(fig_peso_vs_repeticiones, use_container_width=True)
+    
+    st.subheader("Tablas de Progreso")
+    
+    # Tabla de progreso por persona
+    st.write("Tabla de Progreso por Persona")
+    st.write(datos_filtrados.groupby('Persona').agg({'Peso': 'mean', 'Repeticiones': 'mean', 'Sets': 'sum'}).reset_index())
+    
+    # Tabla de progreso por máquina o ejercicio
+    st.write("Tabla de Progreso por Máquina o Ejercicio")
+    st.write(datos_filtrados.groupby('Maquina').agg({'Peso': 'mean', 'Repeticiones': 'mean', 'Sets': 'sum'}).reset_index())
+    
 else:
     st.write('No hay datos disponibles para los filtros seleccionados.')
