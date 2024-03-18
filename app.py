@@ -3,9 +3,6 @@ import pandas as pd
 import streamlit as st
 import plotly.express as px
 from pathlib import Path
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error
 
 # Cargar el archivo Progreso.csv si existe
 if 'Progreso_ind' not in st.session_state:
@@ -59,14 +56,17 @@ with st.expander("Registrar Sesión de Entrenamiento"):
     if form_completo:
         Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': pesos, 'Descanso': descansos, 'Sets': sets, 'Repeticiones': repeticiones}
         st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-        # Guardar el DataFrame actualizado en un archivo CSV
-        st.session_state['Progreso_ind'].to_csv('Progreso.csv', index= False, sep= ';')
         st.success('¡Datos registrados con éxito!')
+        st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
     else:
         st.warning('Por favor completa todos los campos del formulario.')
 
 # Sección del dashboard
 st.title('Dashboard de Progreso en el Gimnasio')
+
+# Tabla de Sesiones de Entrenamiento
+st.header('Tabla de Sesiones de Entrenamiento')
+st.write(st.session_state['Progreso_ind'][['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']])
 
 # Filtros
 st.sidebar.header('Filtros')
@@ -102,16 +102,6 @@ if not datos_filtrados.empty:
     # Gráfico de Progresión General
     fig_progresion = px.line(datos_filtrados.groupby('Dia').sum().reset_index(), x='Dia', y='Peso', title='Progresión General de Peso Levantado')
     st.plotly_chart(fig_progresion)
-
-    # Tabla de Sesiones de Entrenamiento
-    st.header('Tabla de Sesiones de Entrenamiento')
-    st.write(datos_filtrados[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']])
-
-    # Tabla de Resumen Semanal
-    datos_filtrados['Semana'] = pd.to_datetime(datos_filtrados['Dia']).dt.to_period('W-MON')
-    resumen_semanal = datos_filtrados.groupby(['Semana', 'Persona']).agg({'Peso': 'sum', 'Repeticiones': 'sum'}).reset_index()
-    st.header('Tabla de Resumen Semanal')
-    st.write(resumen_semanal)
 
 else:
     st.warning('No hay datos disponibles para los filtros seleccionados.')
