@@ -7,3 +7,4 @@ seaborn
 path
 pandas 
 Image
+scikit-learn
