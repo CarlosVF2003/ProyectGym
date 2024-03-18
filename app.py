@@ -3,7 +3,6 @@ import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 from pathlib import Path
-from datetime import datetime
 
 # Cargar el archivo Progreso.csv si existe
 if 'Progreso_ind' not in st.session_state:
@@ -42,7 +41,7 @@ if st.button("📝 Abrir Formulario Principal"):
 if st.session_state.get('show_enfoque_form', False):
     with st.form(key='mi_formulario'):
         # Widgets de entrada
-        Dia = st.text_input('Ingresa el Día 📆:')
+        Dia = st.text_input('Ingresa el Día 📆 (Número):')
         Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
         Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores','Press de pecho','Extension de hombro',
                                                                     'Extension tricep en polea','Extension lateral','Extension frontal'))
@@ -64,7 +63,7 @@ if st.session_state.get('show_enfoque_form', False):
                 
             if form_completo:
                 for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                    Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
+                    Progreso_new = {'Dia': int(Dia), 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
                     st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                 # Guardar el DataFrame actualizado en un archivo CSV
                 # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
@@ -90,13 +89,13 @@ filtro_maquina = st.sidebar.selectbox('Selecciona máquina o ejercicio:', ['Todo
 
 # Filtro por Rango de Fechas
 if not st.session_state['Progreso_ind'].empty:
-    min_fecha = datetime.strptime(min(st.session_state['Progreso_ind']['Dia']), '%Y-%m-%d')
-    max_fecha = datetime.strptime(max(st.session_state['Progreso_ind']['Dia']), '%Y-%m-%d')
-    min_fecha = st.sidebar.date_input('Fecha mínima:', min_value=min_fecha, max_value=max_fecha, value=min_fecha)
-    max_fecha = st.sidebar.date_input('Fecha máxima:', min_value=min_fecha, max_value=max_fecha, value=max_fecha)
+    min_fecha = min(st.session_state['Progreso_ind']['Dia'])
+    max_fecha = max(st.session_state['Progreso_ind']['Dia'])
+    min_fecha = st.sidebar.number_input('Día mínimo:', min_value=min_fecha, max_value=max_fecha, value=min_fecha)
+    max_fecha = st.sidebar.number_input('Día máximo:', min_value=min_fecha, max_value=max_fecha, value=max_fecha)
 else:
-    min_fecha = st.sidebar.date_input('Fecha mínima:', None)
-    max_fecha = st.sidebar.date_input('Fecha máxima:', None)
+    min_fecha = st.sidebar.number_input('Día mínimo:', None)
+    max_fecha = st.sidebar.number_input('Día máximo:', None)
 
 # Aplicar filtros
 datos_filtrados = st.session_state['Progreso_ind']
