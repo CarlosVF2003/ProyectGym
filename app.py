@@ -91,12 +91,12 @@ filtro_persona = st.sidebar.selectbox('Selecciona persona:', ['Todos'] + list(st
 filtro_maquina = st.sidebar.selectbox('Selecciona máquina o ejercicio:', ['Todos'] + list(st.session_state['Progreso_ind']['Maquina'].unique()))
 
 # Filtro por Rango de Fechas
-if not st.session_state['Progreso_ind'].empty:
-    min_fecha = st.sidebar.date_input('Fecha mínima:', min(st.session_state['Progreso_ind']['Dia']))
-    max_fecha = st.sidebar.date_input('Fecha máxima:', max(st.session_state['Progreso_ind']['Dia']))
+if not st.session_state['Progreso_ind'].empty and 'Dia' in st.session_state['Progreso_ind']:
+    min_fecha = st.sidebar.number_input('Día mínimo:', min_value=min(st.session_state['Progreso_ind']['Dia']), value=min(st.session_state['Progreso_ind']['Dia']))
+    max_fecha = st.sidebar.number_input('Día máximo:', max_value=max(st.session_state['Progreso_ind']['Dia']), value=max(st.session_state['Progreso_ind']['Dia']))
 else:
-    min_fecha = st.sidebar.date_input('Fecha mínima:', None)
-    max_fecha = st.sidebar.date_input('Fecha máxima:', None)
+    min_fecha = st.sidebar.number_input('Día mínimo:', None)
+    max_fecha = st.sidebar.number_input('Día máximo:', None)
 
 # Aplicar filtros
 datos_filtrados = st.session_state['Progreso_ind']
