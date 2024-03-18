@@ -1,11 +1,10 @@
-# Importamos librerias
+# Importar librerias
 import pandas as pd
 import streamlit as st
-from pathlib import Path
 import plotly.express as px
-import plotly.graph_objects as go
+from pathlib import Path
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 
 # Cargar el archivo Progreso.csv si existe
@@ -15,7 +14,7 @@ if 'Progreso_ind' not in st.session_state:
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
-# Definimos las funciones
+# Definir las funciones
 def formulario_desarrollo_fuerza(sets):
     pesos = [st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
@@ -99,9 +98,6 @@ else:
     min_fecha = st.sidebar.date_input('Fecha mínima:', None)
     max_fecha = st.sidebar.date_input('Fecha máxima:', None)
 
-# Convertir los números enteros en la columna 'Dia' a objetos datetime.date
-st.session_state['Progreso_ind']['Dia'] = pd.to_datetime(st.session_state['Progreso_ind']['Dia'], format='%Y%m%d').dt.date
-
 # Aplicar filtros
 datos_filtrados = st.session_state['Progreso_ind']
 if filtro_persona != 'Todos':
@@ -115,75 +111,71 @@ if not datos_filtrados.empty:
 if not datos_filtrados.empty:
     # Gráficos y tablas aquí...
     st.write(datos_filtrados)
+
+    # Gráfico de barras para comparar el rendimiento entre diferentes días
+    if 'Dia' in datos_filtrados.columns:
+        fig_dia = px.bar(datos_filtrados, x='Dia', color='Persona', title='Rendimiento por Día', barmode='group')
+        st.plotly_chart(fig_dia)
+
+    # Gráfico de barras para ver la consistencia en el número de sets realizados
+    if 'Sets' in datos_filtrados.columns:
+        fig_sets = px.bar(datos_filtrados, x='Sets', color='Persona', title='Consistencia en Sets', barmode='group')
+        st.plotly_chart(fig_sets)
+
+    # Gráfico de barras para observar cómo varía el peso levantado en diferentes sesiones
+    if 'Peso' in datos_filtrados.columns:
+        fig_peso = px.bar(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Variación del Peso Levantado', barmode='group')
+        st.plotly_chart(fig_peso)
+
+    # Histograma para ver la distribución de repeticiones por ejercicio
+    if 'Repeticiones' in datos_filtrados.columns:
+        fig_repeticiones = px.histogram(datos_filtrados, x='Repeticiones', color='Persona', title='Distribución de Repeticiones')
+        st.plotly_chart(fig_repeticiones)
+
+    # Histograma para analizar la relación entre el descanso y el rendimiento
+    if 'Descanso' in datos_filtrados.columns:
+        fig_descanso = px.histogram(datos_filtrados, x='Descanso', color='Persona', title='Relación entre Descanso y Rendimiento')
+        st.plotly_chart(fig_descanso)
+
+    # Gráfico de dispersión para correlacionar el peso levantado con el tiempo de descanso
+    if 'Peso' in datos_filtrados.columns and 'Descanso' in datos_filtrados.columns:
+        fig_peso_descanso = px.scatter(datos_filtrados, x='Peso', y='Descanso', color='Persona', title='Peso vs. Descanso')
+        st.plotly_chart(fig_peso_descanso)
+
+    # Gráfico de dispersión para visualizar la relación entre el peso y el número de repeticiones
+    if 'Peso' in datos_filtrados.columns and 'Repeticiones' in datos_filtrados.columns:
+        fig_peso_repeticiones = px.scatter(datos_filtrados, x='Peso', y='Repeticiones', color='Persona', title='Peso vs. Repeticiones')
+        st.plotly_chart(fig_peso_repeticiones)
+
+    # Tabla de progreso para un seguimiento detallado del progreso individual
+    st.subheader('Tabla de Progreso')
+    st.write(datos_filtrados[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']])
+
+    # Aplicar modelo de machine learning
+    st.subheader('Predicción de Progreso')
+    st.write('Utilizaremos un modelo de Random Forest para predecir el progreso en el gimnasio.')
+
+    # Preparar los datos para el modelo
+    datos_ml = datos_filtrados[['Peso', 'Descanso', 'Repeticiones']]
+    X = datos_ml.drop('Peso', axis=1)
+    y = datos_ml['Peso']
+
+    # Dividir los datos en entrenamiento y prueba
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Entrenar el modelo
+    modelo = RandomForestRegressor()
+    modelo.fit(X_train, y_train)
+
+    # Hacer predicciones
+    y_pred = modelo.predict(X_test)
+
+    # Calcular el error
+    error = mean_squared_error(y_test, y_pred)
+    st.write(f'Error cuadrático medio: {error}')
+
+    # Mostrar los resultados
+    st.write('¡El modelo ha sido entrenado y evaluado con éxito!')
+
 else:
     st.write('No hay datos disponibles para los filtros seleccionados.')
-
-# Graficos de Líneas
-
-# Filtro por Persona: Para ver el progreso individual.
-if filtro_persona != 'Todos':
-    datos_filtrados_persona = datos_filtrados[datos_filtrados['Persona'] == filtro_persona]
-    fig_linea_persona = px.line(datos_filtrados_persona, x='Dia', y='Peso', color='Persona', title='Progreso Individual')
-    st.plotly_chart(fig_linea_persona)
-
-# Filtro por Máquina o Ejercicio: Para enfocarse en un tipo de ejercicio específico.
-if filtro_maquina != 'Todos':
-    datos_filtrados_maquina = datos_filtrados[datos_filtrados['Maquina'] == filtro_maquina]
-    fig_linea_maquina = px.line(datos_filtrados_maquina, x='Dia', y='Peso', color='Maquina', title='Progreso por Máquina/Ejercicio')
-    st.plotly_chart(fig_linea_maquina)
-
-# Filtro por Rango de Fechas: Para analizar el progreso durante un período específico.
-if not datos_filtrados.empty:
-    fig_linea_fecha = px.line(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Progreso por Rango de Fechas')
-    st.plotly_chart(fig_linea_fecha)
-
-# Gráficos de Barras
-
-# Filtro por Día: Para comparar el rendimiento entre diferentes días.
-if not datos_filtrados.empty:
-    fig_barras_dia = px.bar(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Comparación de Rendimiento entre Días')
-    st.plotly_chart(fig_barras_dia)
-
-# Filtro por Sets: Para ver la consistencia en el número de sets realizados.
-if not datos_filtrados.empty:
-    fig_barras_sets = px.bar(datos_filtrados, x='Dia', y='Sets', color='Persona', title='Consistencia en el Número de Sets Realizados')
-    st.plotly_chart(fig_barras_sets)
-
-# Filtro por Peso: Para observar cómo varía el peso levantado en diferentes sesiones.
-if not datos_filtrados.empty:
-    fig_barras_peso = px.bar(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Variación del Peso Levantado en Sesiones')
-    st.plotly_chart(fig_barras_peso)
-
-# Histogramas
-
-# Filtro por Repeticiones: Para ver la distribución de repeticiones por ejercicio.
-if not datos_filtrados.empty:
-    fig_histograma_repeticiones = px.histogram(datos_filtrados, x='Repeticiones', color='Persona', title='Distribución de Repeticiones por Ejercicio')
-    st.plotly_chart(fig_histograma_repeticiones)
-
-# Filtro por Descanso: Para analizar la relación entre el descanso y el rendimiento.
-if not datos_filtrados.empty:
-    fig_histograma_descanso = px.histogram(datos_filtrados, x='Descanso', color='Persona', title='Relación entre el Descanso y el Rendimiento')
-    st.plotly_chart(fig_histograma_descanso)
-
-# Gráficos de Dispersión
-
-# Filtro por Peso vs. Descanso: Para correlacionar el peso levantado con el tiempo de descanso.
-if not datos_filtrados.empty:
-    fig_disp_peso_descanso = px.scatter(datos_filtrados, x='Peso', y='Descanso', color='Persona', title='Correlación entre Peso Levantado y Tiempo de Descanso')
-    st.plotly_chart(fig_disp_peso_descanso)
-
-# Filtro por Peso vs. Repeticiones: Para visualizar la relación entre el peso y el número de repeticiones.
-if not datos_filtrados.empty:
-    fig_disp_peso_repeticiones = px.scatter(datos_filtrados, x='Peso', y='Repeticiones', color='Persona', title='Relación entre Peso y Repeticiones')
-    st.plotly_chart(fig_disp_peso_repeticiones)
-
-# Tablas de Progreso
-
-# Filtro por Persona: Para un seguimiento detallado del progreso individual.
-if filtro_persona != 'Todos':
-    st.write(datos_filtrados_persona)
-
-# Filtro por Máquina o Ejercicio: Para concentrarse en la evolución de ejercicios específicos.
-if filtro_maquina != 'Todos':
-    st.write(datos_filtrados_maquina)

@@ -1,7 +1,9 @@
-Streamlit
-Pandas
-WordCloud
-Matplotlib
-Plotly
-Demoji
+streamlit
+pandas
+wordCloud
+matplotlib
+plotly
+demoji
 scikit-learn
+pathlib
+sklearn
