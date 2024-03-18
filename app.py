@@ -1,8 +1,9 @@
 # Importamos librerias
 import pandas as pd
 import streamlit as st
+import plotly.express as px
 import plotly.graph_objects as go
-from streamlit_embedcode import components
+from pathlib import Path
 
 # Cargar el archivo Progreso.csv si existe
 if 'Progreso_ind' not in st.session_state:
@@ -11,7 +12,7 @@ if 'Progreso_ind' not in st.session_state:
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
-#Definimos las funciones
+# Definimos las funciones
 def formulario_desarrollo_fuerza(sets):
     pesos = [st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
@@ -30,6 +31,7 @@ def formulario_hipertrofia_muscular(sets):
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return [peso] * sets, [repeticiones] * sets, [descanso] * sets  # Tanto el peso, las repeticiones y el tiempo de descanso son constantes para la hipertrofia muscular
 
+# Título de la aplicación
 st.title('🏋️‍♂️ Nuestro progreso en el Gimnasio 🏋️‍♀️')
 
 # Botón para abrir el formulario principal
@@ -85,45 +87,28 @@ st.subheader("Comparación de progreso entre personas")
 if 'Progreso_ind' in st.session_state:
     avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
     fig_avg_peso = go.Figure(data=[go.Bar(x=avg_peso['Persona'], y=avg_peso['Peso'], marker_color=['black', 'skyblue'])])
-    fig_avg_peso.update_layout(title='Promedio de peso levantado por persona', xaxis_title='Persona', yaxis_title='Peso', plot_bgcolor='white')
     st.plotly_chart(fig_avg_peso)
 
 # Histograma de repeticiones por máquina y persona
 st.subheader("Histograma de repeticiones por máquina y persona")
 if 'Progreso_ind' in st.session_state:
-    fig_hist_rep = go.Figure()
-    for persona, data in st.session_state['Progreso_ind'].groupby('Persona'):
-        fig_hist_rep.add_trace(go.Histogram(x=data['Repeticiones'], name=persona, marker_color='skyblue' if persona == 'Cinthia' else 'black'))
-    fig_hist_rep.update_layout(title='Distribución de repeticiones por máquina y persona', xaxis_title='Repeticiones', yaxis_title='Frecuencia', plot_bgcolor='white', barmode='overlay')
+    fig_hist_rep = px.histogram(st.session_state['Progreso_ind'], x='Repeticiones', color='Persona', title='Distribución de repeticiones por máquina y persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
     st.plotly_chart(fig_hist_rep)
 
 # Box plot de pesos por día y persona
 st.subheader("Box plot de pesos por día y persona")
 if 'Progreso_ind' in st.session_state:
-    fig_box_peso = go.Figure()
-    for persona, data in st.session_state['Progreso_ind'].groupby('Persona'):
-        fig_box_peso.add_trace(go.Box(x=data['Dia'], y=data['Peso'], name=persona, marker_color='skyblue' if persona == 'Cinthia' else 'black'))
-    fig_box_peso.update_layout(title='Distribución de pesos por día y persona', xaxis_title='Día', yaxis_title='Peso', plot_bgcolor='white')
+    fig_box_peso = px.box(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Distribución de pesos por día y persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
     st.plotly_chart(fig_box_peso)
 
 # Gráfico de línea de series por día
 st.subheader("Gráfico de línea de series por día")
 if 'Progreso_ind' in st.session_state:
-    fig_line_sets = go.Figure()
-    for persona, data in st.session_state['Progreso_ind'].groupby('Persona'):
-        fig_line_sets.add_trace(go.Scatter(x=data['Dia'], y=data['Sets'], mode='lines+markers', name=persona, marker_color='skyblue' if persona == 'Cinthia' else 'black'))
-    fig_line_sets.update_layout(title='Número de series por día', xaxis_title='Día', yaxis_title='Sets', plot_bgcolor='white')
+    fig_line_sets = px.line(st.session_state['Progreso_ind'], x='Dia', y='Sets', color='Persona', markers=True, title='Número de series por día', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
     st.plotly_chart(fig_line_sets)
 
 # Diagrama de dispersión de peso vs repeticiones
 st.subheader("Diagrama de dispersión de peso vs repeticiones")
 if 'Progreso_ind' in st.session_state:
-    fig_scatter_peso_rep = go.Figure()
-    for persona, data in st.session_state['Progreso_ind'].groupby('Persona'):
-        fig_scatter_peso_rep.add_trace(go.Scatter(x=data['Peso'], y=data['Repeticiones'], mode='markers', name=persona, marker_color='skyblue' if persona == 'Cinthia' else 'black'))
-    fig_scatter_peso_rep.update_layout(title='Peso vs Repeticiones', xaxis_title='Peso', yaxis_title='Repeticiones', plot_bgcolor='white')
+    fig_scatter_peso_rep = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
     st.plotly_chart(fig_scatter_peso_rep)
-
-# Dashboard Interactivo de Tableau
-st.subheader("Dashboard Interactivo de Tableau")
-components.iframe("https://your-tableau-dashboard-url", height=600)
