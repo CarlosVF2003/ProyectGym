@@ -95,35 +95,25 @@ st.write(unique_values[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets',
 # Gráfico de comparación entre personas
 st.subheader("Comparación de progreso entre personas")
 avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
-fig, ax = plt.subplots()
-sns.barplot(data=avg_peso, x='Persona', y='Peso', ax=ax , hue='Persona')
-ax.set_title('Promedio de peso levantado por persona')
-st.pyplot(fig)
+fig_avg_peso = px.bar(avg_peso, x='Persona', y='Peso', title='Promedio de peso levantado por persona')
+st.plotly_chart(fig_avg_peso)
 
 # Histograma de repeticiones por máquina y persona
 st.subheader("Histograma de repeticiones por máquina y persona")
-fig, ax = plt.subplots()
-sns.histplot(data=st.session_state['Progreso_ind'], x='Repeticiones', hue='Persona', multiple='stack', bins=10, ax=ax)
-ax.set_title('Distribución de repeticiones por máquina y persona')
-st.pyplot(fig)
+fig_hist_rep = px.histogram(st.session_state['Progreso_ind'], x='Repeticiones', color='Persona', title='Distribución de repeticiones por máquina y persona')
+st.plotly_chart(fig_hist_rep)
 
 # Box plot de pesos por día y persona
 st.subheader("Box plot de pesos por día y persona")
-fig, ax = plt.subplots()
-sns.boxplot(data=st.session_state['Progreso_ind'], x='Dia', y='Peso', hue='Persona', ax=ax)
-ax.set_title('Distribución de pesos por día y persona')
-st.pyplot(fig)
+fig_box_peso = px.box(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Distribución de pesos por día y persona')
+st.plotly_chart(fig_box_peso)
 
 # Gráfico de línea de series por día
 st.subheader("Gráfico de línea de series por día")
-fig, ax = plt.subplots()
-sns.lineplot(data=st.session_state['Progreso_ind'], x='Dia', y='Sets', hue='Persona', markers=True, ax=ax)
-ax.set_title('Número de series por día')
-st.pyplot(fig)
+fig_line_sets = px.line(st.session_state['Progreso_ind'], x='Dia', y='Sets', color='Persona', markers=True, title='Número de series por día')
+st.plotly_chart(fig_line_sets)
 
 # Diagrama de dispersión de peso vs repeticiones
 st.subheader("Diagrama de dispersión de peso vs repeticiones")
-fig, ax = plt.subplots()
-sns.scatterplot(data=st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', hue='Persona', ax=ax)
-ax.set_title('Peso vs Repeticiones')
-st.pyplot(fig)
+fig_scatter_peso_rep = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
+st.plotly_chart(fig_scatter_peso_rep)
