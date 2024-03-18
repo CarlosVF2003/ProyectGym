@@ -1,8 +1,10 @@
+# Importar librerías necesarias
 import pandas as pd
 import streamlit as st
-import plotly.express as px
-import plotly.graph_objects as go
 from pathlib import Path
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
 
 # Cargar el archivo Progreso.csv si existe
 if 'Progreso_ind' not in st.session_state:
@@ -11,12 +13,12 @@ if 'Progreso_ind' not in st.session_state:
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
-# Definimos las funciones
+# Definir funciones de formulario
 def formulario_desarrollo_fuerza(sets):
     pesos = [st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return pesos, [repeticiones] * sets, [descanso] * sets  # Las repeticiones y el tiempo de descanso son constantes para el desarrollo de fuerza
+    return pesos, [repeticiones] * sets, [descanso] * sets
 
 def formulario_mejora_resistencia(sets):
     pesos = [st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
@@ -28,7 +30,7 @@ def formulario_hipertrofia_muscular(sets):
     peso = st.number_input('💪 Peso (kg):', min_value=0, max_value=100, step=1)
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return [peso] * sets, [repeticiones] * sets, [descanso] * sets  # Tanto el peso, las repeticiones y el tiempo de descanso son constantes para la hipertrofia muscular
+    return [peso] * sets, [repeticiones] * sets, [descanso] * sets
 
 # Título de la aplicación
 st.title('🏋️‍♂️ Nuestro progreso en el Gimnasio 🏋️‍♀️')
@@ -41,7 +43,7 @@ if st.button("📝 Abrir Formulario Principal"):
 if st.session_state.get('show_enfoque_form', False):
     with st.form(key='mi_formulario'):
         # Widgets de entrada
-        Dia = st.text_input('Ingresa el Día 📆 (Número):')
+        Dia = st.text_input('Ingresa el Día 📆:')
         Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
         Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores','Press de pecho','Extension de hombro',
                                                                     'Extension tricep en polea','Extension lateral','Extension frontal'))
@@ -63,7 +65,7 @@ if st.session_state.get('show_enfoque_form', False):
                 
             if form_completo:
                 for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                    Progreso_new = {'Dia': int(Dia), 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
+                    Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
                     st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                 # Guardar el DataFrame actualizado en un archivo CSV
                 # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
