@@ -2,6 +2,7 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
+import plotly.graph_objects as go
 from pathlib import Path
 
 # Cargar el archivo Progreso.csv si existe
@@ -70,7 +71,7 @@ st.write(st.session_state['Progreso_ind'][['Dia', 'Persona', 'Maquina', 'Peso', 
 
 # Tabla de Resumen de Cada 7 días
 st.header('Tabla de Resumen de Cada 7 días')
-resumen_semanal = st.session_state['Progreso_ind'].groupby((st.session_state['Progreso_ind'].index / 7).astype(int)).agg({'Peso': 'sum', 'Repeticiones': 'sum'})
+resumen_semanal = st.session_state['Progreso_ind'].groupby((st.session_state['Progreso_ind'].index // 7)).agg({'Peso': 'sum', 'Repeticiones': 'sum'})
 st.write(resumen_semanal)
 
 # Filtros
@@ -96,17 +97,29 @@ datos_filtrados = datos_filtrados[(datos_filtrados['Dia'] >= min_dia) & (datos_f
 
 # Visualización de datos
 if not datos_filtrados.empty:
-    # Gráfico de Línea para Pesos Levantados
+    # Gráfico de Líneas para Pesos Levantados
     fig_pesos = px.line(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Pesos Levantados por Día')
+    fig_pesos.update_traces(line=dict(width=2.5))
     st.plotly_chart(fig_pesos)
 
-    # Gráfico de Barras para Repeticiones o Sets
+    # Gráfico de Barras para Repeticiones
     fig_repeticiones = px.bar(datos_filtrados, x='Dia', y='Repeticiones', color='Persona', title='Repeticiones por Día')
+    fig_repeticiones.update_traces(marker_line_width=1, marker_line_color="black")
     st.plotly_chart(fig_repeticiones)
 
-    # Gráfico de Progresión General
-    fig_progresion = px.line(datos_filtrados.groupby('Dia').sum().reset_index(), x='Dia', y='Peso', title='Progresión General de Peso Levantado')
-    st.plotly_chart(fig_progresion)
+    # Histograma de Peso Levantado
+    fig_histograma = px.histogram(datos_filtrados, x='Peso', color='Persona', marginal='rug', title='Histograma de Peso Levantado')
+    fig_histograma.update_traces(marker_line_width=0.5, marker_line_color="black")
+    st.plotly_chart(fig_histograma)
 
+    # Diagrama de Dispersión entre Peso y Repeticiones
+    fig_dispersion = px.scatter(datos_filtrados, x='Peso', y='Repeticiones', color='Persona', title='Diagrama de Dispersión: Peso vs Repeticiones')
+    fig_dispersion.update_traces(marker=dict(size=8))
+    st.plotly_chart(fig_dispersion)
+
+    # Gráfico de Machine Learning
+    st.subheader('Gráfico de Machine Learning')
+    # Aquí puedes agregar tu gráfico de machine learning
+    
 else:
     st.warning('No hay datos disponibles para los filtros seleccionados.')
