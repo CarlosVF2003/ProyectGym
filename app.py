@@ -1,3 +1,4 @@
+#Importamos librerias
 import pandas as pd
 import re
 
@@ -18,10 +19,11 @@ from pathlib import Path
 # Cargar el archivo Libro1.csv si existe
 if 'Progreso_ind' not in st.session_state:
     if Path("Libro1.csv").is_file():
-        st.session_state['Progreso_ind'] = pd.read_csv("Libro1.csv", sep=';')
+        st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv", sep=';')
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
+#Definimos las funciones
 def formulario_desarrollo_fuerza(sets):
     pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
@@ -79,7 +81,7 @@ if st.session_state.get('show_enfoque_form', False):
                 st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
                 st.session_state['show_enfoque_form'] = False
                 st.success('¡Datos registrados con éxito!')
-                st.session_state['Progreso_ind'].to_csv('Libro1.csv', index= False, sep= ';')
+                st.session_state['Progreso_ind'].to_csv('Progreso.csv', index= False, sep= ';')
                 # Ocultar el formulario
             else:
                 st.warning('Por favor completa todos los campos del formulario.')
