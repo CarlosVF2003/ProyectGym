@@ -109,50 +109,49 @@ if not datos_filtrados.empty:
 
 # Mostrar gráficos y tablas si hay datos filtrados
 if not datos_filtrados.empty:
-    # Gráficos y tablas aquí...
-    st.write(datos_filtrados)
-
-    # Gráfico de barras para comparar el rendimiento entre diferentes días
-    if 'Dia' in datos_filtrados.columns:
-        fig_dia = px.bar(datos_filtrados, x='Dia', color='Persona', title='Rendimiento por Día', barmode='group')
-        st.plotly_chart(fig_dia)
-
-    # Gráfico de barras para ver la consistencia en el número de sets realizados
-    if 'Sets' in datos_filtrados.columns:
-        fig_sets = px.bar(datos_filtrados, x='Sets', color='Persona', title='Consistencia en Sets', barmode='group')
-        st.plotly_chart(fig_sets)
-
-    # Gráfico de barras para observar cómo varía el peso levantado en diferentes sesiones
-    if 'Peso' in datos_filtrados.columns:
-        fig_peso = px.bar(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Variación del Peso Levantado', barmode='group')
-        st.plotly_chart(fig_peso)
-
-    # Histograma para ver la distribución de repeticiones por ejercicio
-    if 'Repeticiones' in datos_filtrados.columns:
-        fig_repeticiones = px.histogram(datos_filtrados, x='Repeticiones', color='Persona', title='Distribución de Repeticiones')
-        st.plotly_chart(fig_repeticiones)
-
-    # Histograma para analizar la relación entre el descanso y el rendimiento
-    if 'Descanso' in datos_filtrados.columns:
-        fig_descanso = px.histogram(datos_filtrados, x='Descanso', color='Persona', title='Relación entre Descanso y Rendimiento')
-        st.plotly_chart(fig_descanso)
-
-    # Gráfico de dispersión para correlacionar el peso levantado con el tiempo de descanso
-    if 'Peso' in datos_filtrados.columns and 'Descanso' in datos_filtrados.columns:
-        fig_peso_descanso = px.scatter(datos_filtrados, x='Peso', y='Descanso', color='Persona', title='Peso vs. Descanso')
-        st.plotly_chart(fig_peso_descanso)
-
-    # Gráfico de dispersión para visualizar la relación entre el peso y el número de repeticiones
-    if 'Peso' in datos_filtrados.columns and 'Repeticiones' in datos_filtrados.columns:
-        fig_peso_repeticiones = px.scatter(datos_filtrados, x='Peso', y='Repeticiones', color='Persona', title='Peso vs. Repeticiones')
-        st.plotly_chart(fig_peso_repeticiones)
-
     # Tabla de progreso para un seguimiento detallado del progreso individual
     st.subheader('Tabla de Progreso')
-    st.write(datos_filtrados[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']])
+    st.write(datos_filtrados[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']], key="tabla_progreso")
+
+    # Gráficos aquí...
+    with st.expander("Ver Gráficos"):
+        # Gráfico de barras para comparar el rendimiento entre diferentes días
+        if 'Dia' in datos_filtrados.columns:
+            fig_dia = px.bar(datos_filtrados, x='Dia', color='Persona', title='Rendimiento por Día', barmode='group', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+            st.plotly_chart(fig_dia)
+
+        # Gráfico de barras para ver la consistencia en el número de sets realizados
+        if 'Sets' in datos_filtrados.columns:
+            fig_sets = px.bar(datos_filtrados, x='Sets', color='Persona', title='Consistencia en Sets', barmode='group', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+            st.plotly_chart(fig_sets)
+
+        # Gráfico de barras para observar cómo varía el peso levantado en diferentes sesiones
+        if 'Peso' in datos_filtrados.columns:
+            fig_peso = px.bar(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Variación del Peso Levantado', barmode='group', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+            st.plotly_chart(fig_peso)
+
+        # Histograma para ver la distribución de repeticiones por ejercicio
+        if 'Repeticiones' in datos_filtrados.columns:
+            fig_repeticiones = px.histogram(datos_filtrados, x='Repeticiones', color='Persona', title='Distribución de Repeticiones', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+            st.plotly_chart(fig_repeticiones)
+
+        # Histograma para analizar la relación entre el descanso y el rendimiento
+        if 'Descanso' in datos_filtrados.columns:
+            fig_descanso = px.histogram(datos_filtrados, x='Descanso', color='Persona', title='Relación entre Descanso y Rendimiento', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+            st.plotly_chart(fig_descanso)
+
+        # Gráfico de dispersión para correlacionar el peso levantado con el tiempo de descanso
+        if 'Peso' in datos_filtrados.columns and 'Descanso' in datos_filtrados.columns:
+            fig_peso_descanso = px.scatter(datos_filtrados, x='Peso', y='Descanso', color='Persona', title='Peso vs. Descanso', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+            st.plotly_chart(fig_peso_descanso)
+
+        # Gráfico de dispersión para visualizar la relación entre el peso y el número de repeticiones
+        if 'Peso' in datos_filtrados.columns and 'Repeticiones' in datos_filtrados.columns:
+            fig_peso_repeticiones = px.scatter(datos_filtrados, x='Peso', y='Repeticiones', color='Persona', title='Peso vs. Repeticiones', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+            st.plotly_chart(fig_peso_repeticiones)
 
     # Aplicar modelo de machine learning
-    st.subheader('Predicción de Progreso')
+    st.title('Predicción de Progreso')
     st.write('Utilizaremos un modelo de Random Forest para predecir el progreso en el gimnasio.')
 
     # Preparar los datos para el modelo
