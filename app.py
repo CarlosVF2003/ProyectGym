@@ -105,7 +105,7 @@ st.plotly_chart(fig_hist_rep)
 
 # Box plot de pesos por día y persona
 st.subheader("📊 Box plot de pesos por día y persona")
-fig_box_peso = px.box(st.session_state['Progreso_ind'], x='Día', y='Peso', color='Persona', title='Distribución de pesos por día y persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
+fig_box_peso = px.box(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Distribución de pesos por día y persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
 st.plotly_chart(fig_box_peso)
 
 # Gráfico de línea de series por día
