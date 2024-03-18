@@ -1,9 +1,8 @@
 streamlit
 pandas
 wordCloud
+pathlib
 matplotlib
 plotly
 demoji
 scikit-learn
-pathlib
-sklearn
