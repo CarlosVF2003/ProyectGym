@@ -112,7 +112,7 @@ if not datos_filtrados.empty:
     st.subheader("Gráficos de Líneas")
     
     # Gráfico de progreso individual por persona
-    fig_progress_persona = px.line(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Progreso Individual por Persona')
+    fig_progress_persona = px.line(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Progreso Individual por Persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
     st.plotly_chart(fig_progress_persona, use_container_width=True)
     
     # Gráfico de progreso por máquina o ejercicio
@@ -122,7 +122,7 @@ if not datos_filtrados.empty:
     st.subheader("Gráficos de Barras")
     
     # Gráfico de rendimiento por día
-    fig_rendimiento_dia = px.bar(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Rendimiento por Día')
+    fig_rendimiento_dia = px.bar(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Rendimiento por Día', color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
     st.plotly_chart(fig_rendimiento_dia, use_container_width=True)
     
     # Gráfico de número de sets
