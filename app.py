@@ -1,9 +1,9 @@
-# Importamos librerias
 import pandas as pd
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 from pathlib import Path
+from datetime import datetime
 
 # Cargar el archivo Progreso.csv si existe
 if 'Progreso_ind' not in st.session_state:
@@ -90,8 +90,10 @@ filtro_maquina = st.sidebar.selectbox('Selecciona máquina o ejercicio:', ['Todo
 
 # Filtro por Rango de Fechas
 if not st.session_state['Progreso_ind'].empty:
-    min_fecha = st.sidebar.date_input('Fecha mínima:', min(st.session_state['Progreso_ind']['Dia']))
-    max_fecha = st.sidebar.date_input('Fecha máxima:', max(st.session_state['Progreso_ind']['Dia']))
+    min_fecha = datetime.strptime(min(st.session_state['Progreso_ind']['Dia']), '%Y-%m-%d')
+    max_fecha = datetime.strptime(max(st.session_state['Progreso_ind']['Dia']), '%Y-%m-%d')
+    min_fecha = st.sidebar.date_input('Fecha mínima:', min_value=min_fecha, max_value=max_fecha, value=min_fecha)
+    max_fecha = st.sidebar.date_input('Fecha máxima:', min_value=min_fecha, max_value=max_fecha, value=max_fecha)
 else:
     min_fecha = st.sidebar.date_input('Fecha mínima:', None)
     max_fecha = st.sidebar.date_input('Fecha máxima:', None)
