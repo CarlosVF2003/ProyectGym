@@ -89,13 +89,11 @@ filtro_maquina = st.sidebar.selectbox('Selecciona máquina o ejercicio:', ['Todo
 
 # Filtro por Rango de Fechas
 if not st.session_state['Progreso_ind'].empty:
-    min_fecha = min(st.session_state['Progreso_ind']['Dia'])
-    max_fecha = max(st.session_state['Progreso_ind']['Dia'])
-    min_fecha = st.sidebar.number_input('Día mínimo:', min_value=min_fecha, max_value=max_fecha, value=min_fecha)
-    max_fecha = st.sidebar.number_input('Día máximo:', min_value=min_fecha, max_value=max_fecha, value=max_fecha)
+    min_fecha = st.sidebar.date_input('Fecha mínima:', min(st.session_state['Progreso_ind']['Dia']))
+    max_fecha = st.sidebar.date_input('Fecha máxima:', max(st.session_state['Progreso_ind']['Dia']))
 else:
-    min_fecha = st.sidebar.number_input('Día mínimo:', None)
-    max_fecha = st.sidebar.number_input('Día máximo:', None)
+    min_fecha = st.sidebar.date_input('Fecha mínima:', None)
+    max_fecha = st.sidebar.date_input('Fecha máxima:', None)
 
 # Aplicar filtros
 datos_filtrados = st.session_state['Progreso_ind']
@@ -108,60 +106,23 @@ if not datos_filtrados.empty:
 
 # Mostrar gráficos y tablas si hay datos filtrados
 if not datos_filtrados.empty:
-    # Gráficos y tablas aquí...
-    st.subheader("Gráficos de Líneas")
-    
-    # Gráfico de progreso individual por persona
-    fig_progress_persona = px.line(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Progreso Individual por Persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
-    st.plotly_chart(fig_progress_persona, use_container_width=True)
-    
-    # Gráfico de progreso por máquina o ejercicio
-    fig_progress_maquina = px.line(datos_filtrados, x='Dia', y='Peso', color='Maquina', title='Progreso por Máquina o Ejercicio')
-    st.plotly_chart(fig_progress_maquina, use_container_width=True)
-    
-    st.subheader("Gráficos de Barras")
-    
-    # Gráfico de rendimiento por día
-    fig_rendimiento_dia = px.bar(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Rendimiento por Día', color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
-    st.plotly_chart(fig_rendimiento_dia, use_container_width=True)
-    
-    # Gráfico de número de sets
-    fig_sets = px.bar(datos_filtrados, x='Persona', y='Sets', title='Número de Sets por Persona', color='Persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
-    st.plotly_chart(fig_sets, use_container_width=True)
-    
-    # Gráfico de peso levantado
-    fig_peso = px.bar(datos_filtrados, x='Dia', y='Peso', title='Peso Levantado por Día', color='Persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
-    st.plotly_chart(fig_peso, use_container_width=True)
-    
-    st.subheader("Histogramas")
-    
-    # Histograma de repeticiones por ejercicio
-    fig_repeticiones = px.histogram(datos_filtrados, x='Repeticiones', title='Distribución de Repeticiones por Ejercicio', color='Persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
-    st.plotly_chart(fig_repeticiones, use_container_width=True)
-    
-    # Histograma de descanso
-    fig_descanso = px.histogram(datos_filtrados, x='Descanso', title='Distribución de Tiempo de Descanso', color='Persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
-    st.plotly_chart(fig_descanso, use_container_width=True)
-    
-    st.subheader("Gráficos de Dispersión")
-    
-    # Gráfico de peso vs. descanso
-    fig_peso_vs_descanso = px.scatter(datos_filtrados, x='Peso', y='Descanso', title='Peso vs. Descanso', color='Persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
-    st.plotly_chart(fig_peso_vs_descanso, use_container_width=True)
-    
-    # Gráfico de peso vs. repeticiones
-    fig_peso_vs_repeticiones = px.scatter(datos_filtrados, x='Peso', y='Repeticiones', title='Peso vs. Repeticiones', color='Persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
-    st.plotly_chart(fig_peso_vs_repeticiones, use_container_width=True)
-    
-    st.subheader("Tablas de Progreso")
-    
-    # Tabla de progreso por persona
-    st.write("Tabla de Progreso por Persona")
-    st.write(datos_filtrados.groupby(['Persona', 'Dia']).agg({'Peso': 'mean', 'Repeticiones': 'mean', 'Sets': 'sum'}).reset_index())
-    
-    # Tabla de progreso por máquina o ejercicio
-    st.write("Tabla de Progreso por Máquina o Ejercicio")
-    st.write(datos_filtrados.groupby(['Maquina', 'Dia']).agg({'Peso': 'mean', 'Repeticiones': 'mean', 'Sets': 'sum'}).reset_index())
-    
+    # Gráfico de Líneas: Peso vs. Repeticiones
+    fig_linea = px.line(datos_filtrados, x='Repeticiones', y='Peso', color='Persona', title='Peso vs. Repeticiones')
+    st.plotly_chart(fig_linea)
+
+    # Gráfico de Barras: Peso por Día
+    fig_barras = px.bar(datos_filtrados, x='Dia', y='Peso', color='Persona', barmode='group', title='Peso por Día')
+    st.plotly_chart(fig_barras)
+
+    # Histograma de Repeticiones
+    fig_hist_rep = px.histogram(datos_filtrados, x='Repeticiones', color='Persona', title='Distribución de Repeticiones')
+    st.plotly_chart(fig_hist_rep)
+
+    # Gráfico de Dispersión: Peso vs. Descanso
+    fig_disp = px.scatter(datos_filtrados, x='Descanso', y='Peso', color='Persona', title='Peso vs. Descanso')
+    st.plotly_chart(fig_disp)
+
+    # Tabla de Progreso
+    st.write(datos_filtrados)
 else:
     st.write('No hay datos disponibles para los filtros seleccionados.')
