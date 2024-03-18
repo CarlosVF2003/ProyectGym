@@ -76,39 +76,34 @@ if st.session_state.get('show_enfoque_form', False):
             else:
                 st.warning('Por favor completa todos los campos del formulario.')
 
-# Visualización de datos
-st.subheader("Visualización de datos registrados")
-# Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
-unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
-st.write(unique_values[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']], index=False)
+# Sección del dashboard
+st.title('Dashboard de Progreso en el Gimnasio')
 
-# Gráfico de comparación entre personas
-st.subheader("Comparación de progreso entre personas")
-if 'Progreso_ind' in st.session_state:
-    avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
-    fig_avg_peso = go.Figure(data=[go.Bar(x=avg_peso['Persona'], y=avg_peso['Peso'], marker_color=['black', 'skyblue'])])
+# Filtros
+st.sidebar.header('Filtros')
+filtro_persona = st.sidebar.multiselect('Selecciona persona(s):', st.session_state['Progreso_ind']['Persona'].unique())
+filtro_maquina = st.sidebar.multiselect('Selecciona máquina(s):', st.session_state['Progreso_ind']['Maquina'].unique())
+
+# Aplicar filtros
+datos_filtrados = st.session_state['Progreso_ind']
+if filtro_persona:
+    datos_filtrados = datos_filtrados[datos_filtrados['Persona'].isin(filtro_persona)]
+if filtro_maquina:
+    datos_filtrados = datos_filtrados[datos_filtrados['Maquina'].isin(filtro_maquina)]
+
+# Mostrar tabla con datos filtrados
+st.subheader('Datos Filtrados')
+st.write(datos_filtrados)
+
+# Gráfico de barras de promedio de peso por persona
+st.subheader('Promedio de Peso por Persona')
+if not datos_filtrados.empty:
+    avg_peso = datos_filtrados.groupby('Persona')['Peso'].mean().reset_index()
+    fig_avg_peso = px.bar(avg_peso, x='Persona', y='Peso', title='Promedio de peso levantado por persona')
     st.plotly_chart(fig_avg_peso)
 
-# Histograma de repeticiones por máquina y persona
-st.subheader("Histograma de repeticiones por máquina y persona")
-if 'Progreso_ind' in st.session_state:
-    fig_hist_rep = px.histogram(st.session_state['Progreso_ind'], x='Repeticiones', color='Persona', title='Distribución de repeticiones por máquina y persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
+# Histograma de repeticiones por máquina
+st.subheader('Histograma de Repeticiones por Máquina')
+if not datos_filtrados.empty:
+    fig_hist_rep = px.histogram(datos_filtrados, x='Repeticiones', color='Maquina', title='Distribución de repeticiones por máquina', color_discrete_sequence=px.colors.qualitative.Set3)
     st.plotly_chart(fig_hist_rep)
-
-# Box plot de pesos por día y persona
-st.subheader("Box plot de pesos por día y persona")
-if 'Progreso_ind' in st.session_state:
-    fig_box_peso = px.box(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Distribución de pesos por día y persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
-    st.plotly_chart(fig_box_peso)
-
-# Gráfico de línea de series por día
-st.subheader("Gráfico de línea de series por día")
-if 'Progreso_ind' in st.session_state:
-    fig_line_sets = px.line(st.session_state['Progreso_ind'], x='Dia', y='Sets', color='Persona', markers=True, title='Número de series por día', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
-    st.plotly_chart(fig_line_sets)
-
-# Diagrama de dispersión de peso vs repeticiones
-st.subheader("Diagrama de dispersión de peso vs repeticiones")
-if 'Progreso_ind' in st.session_state:
-    fig_scatter_peso_rep = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
-    st.plotly_chart(fig_scatter_peso_rep)
