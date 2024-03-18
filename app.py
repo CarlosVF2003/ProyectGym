@@ -18,7 +18,7 @@ from pathlib import Path
 
 # Cargar el archivo Libro1.csv si existe
 if 'Progreso_ind' not in st.session_state:
-    if Path("Libro1.csv").is_file():
+    if Path("Progreso.csv").is_file():
         st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv", sep=';')
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
