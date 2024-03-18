@@ -14,7 +14,7 @@ if 'Progreso_ind' not in st.session_state:
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
-# Definir las funciones
+# Definir las funciones de los formularios
 def formulario_desarrollo_fuerza(sets):
     pesos = [st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
@@ -44,7 +44,7 @@ if st.button("📝 Abrir Formulario Principal"):
 if st.session_state.get('show_enfoque_form', False):
     with st.form(key='mi_formulario'):
         # Widgets de entrada
-        Dia = st.text_input('Ingresa el Día 📆:')
+        Dia = st.number_input('Ingresa el Día 📆:', min_value=1)
         Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
         Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores','Press de pecho','Extension de hombro',
                                                                     'Extension tricep en polea','Extension lateral','Extension frontal'))
@@ -91,12 +91,11 @@ filtro_persona = st.sidebar.selectbox('Selecciona persona:', ['Todos'] + list(st
 filtro_maquina = st.sidebar.selectbox('Selecciona máquina o ejercicio:', ['Todos'] + list(st.session_state['Progreso_ind']['Maquina'].unique()))
 
 # Filtro por Rango de Fechas
-if not st.session_state['Progreso_ind'].empty and 'Dia' in st.session_state['Progreso_ind']:
-    min_fecha = st.sidebar.number_input('Día mínimo:', min_value=min(st.session_state['Progreso_ind']['Dia']), value=min(st.session_state['Progreso_ind']['Dia']))
-    max_fecha = st.sidebar.number_input('Día máximo:', max_value=max(st.session_state['Progreso_ind']['Dia']), value=max(st.session_state['Progreso_ind']['Dia']))
+if not st.session_state['Progreso_ind'].empty:
+    min_fecha = st.sidebar.slider('Fecha mínima:', min_value=1, max_value=max(st.session_state['Progreso_ind']['Dia']))
+    max_fecha = st.sidebar.slider('Fecha máxima:', min_value=min(st.session_state['Progreso_ind']['Dia']), max_value=max(st.session_state['Progreso_ind']['Dia']))
 else:
-    min_fecha = st.sidebar.number_input('Día mínimo:', None)
-    max_fecha = st.sidebar.number_input('Día máximo:', None)
+    min_fecha, max_fecha = 1, 31
 
 # Aplicar filtros
 datos_filtrados = st.session_state['Progreso_ind']
@@ -109,72 +108,54 @@ if not datos_filtrados.empty:
 
 # Mostrar gráficos y tablas si hay datos filtrados
 if not datos_filtrados.empty:
-    # Tabla de progreso para un seguimiento detallado del progreso individual
-    st.subheader('Tabla de Progreso')
-    st.write(datos_filtrados[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']], key="tabla_progreso")
+    # Gráficos y tablas aquí...
+    st.write("Gráficos para Visualizar el Progreso:")
+    
+    # Gráfico de Línea para Pesos Levantados
+    if 'Peso' in datos_filtrados.columns:
+        fig_peso_linea = px.line(datos_filtrados, x='Dia', y='Peso', color='Maquina', title='Pesos Levantados por Día', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+        st.plotly_chart(fig_peso_linea)
 
-    # Gráficos aquí...
-    with st.expander("Ver Gráficos"):
-        # Gráfico de barras para comparar el rendimiento entre diferentes días
-        if 'Dia' in datos_filtrados.columns:
-            fig_dia = px.bar(datos_filtrados, x='Dia', color='Persona', title='Rendimiento por Día', barmode='group', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
-            st.plotly_chart(fig_dia)
+    # Gráfico de Barras para Repeticiones
+    if 'Repeticiones' in datos_filtrados.columns:
+        fig_repeticiones_barra = px.bar(datos_filtrados, x='Dia', y='Repeticiones', color='Maquina', title='Repeticiones por Día', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+        st.plotly_chart(fig_repeticiones_barra)
 
-        # Gráfico de barras para ver la consistencia en el número de sets realizados
-        if 'Sets' in datos_filtrados.columns:
-            fig_sets = px.bar(datos_filtrados, x='Sets', color='Persona', title='Consistencia en Sets', barmode='group', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
-            st.plotly_chart(fig_sets)
+    # Gráfico de Progresión General
+    if 'Peso' in datos_filtrados.columns:
+        fig_progresion = px.line(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Progresión de Peso Levantado', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+        st.plotly_chart(fig_progresion)
 
-        # Gráfico de barras para observar cómo varía el peso levantado en diferentes sesiones
-        if 'Peso' in datos_filtrados.columns:
-            fig_peso = px.bar(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Variación del Peso Levantado', barmode='group', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
-            st.plotly_chart(fig_peso)
+    # Gráfico de Progresión de Sets y Repeticiones
+    if 'Sets' in datos_filtrados.columns and 'Repeticiones' in datos_filtrados.columns:
+        fig_sets_repeticiones = px.bar(datos_filtrados, x='Dia', y=['Sets', 'Repeticiones'], color_discrete_map={"Sets": "blue", "Repeticiones": "orange"})
+        st.plotly_chart(fig_sets_repeticiones)
 
-        # Histograma para ver la distribución de repeticiones por ejercicio
-        if 'Repeticiones' in datos_filtrados.columns:
-            fig_repeticiones = px.histogram(datos_filtrados, x='Repeticiones', color='Persona', title='Distribución de Repeticiones', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
-            st.plotly_chart(fig_repeticiones)
+    # Gráfico de Intensidad
+    if 'Peso' in datos_filtrados.columns and 'Repeticiones' in datos_filtrados.columns and 'Sets' in datos_filtrados.columns:
+        datos_filtrados['Intensidad'] = datos_filtrados['Peso'] * datos_filtrados['Repeticiones'] * datos_filtrados['Sets']
+        fig_intensidad = px.area(datos_filtrados, x='Dia', y='Intensidad', color='Persona', title='Intensidad de Entrenamiento', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+        st.plotly_chart(fig_intensidad)
 
-        # Histograma para analizar la relación entre el descanso y el rendimiento
-        if 'Descanso' in datos_filtrados.columns:
-            fig_descanso = px.histogram(datos_filtrados, x='Descanso', color='Persona', title='Relación entre Descanso y Rendimiento', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
-            st.plotly_chart(fig_descanso)
+    # Gráfico de Descanso
+    if 'Descanso' in datos_filtrados.columns:
+        fig_descanso = px.bar(datos_filtrados, x='Dia', y='Descanso', color='Persona', title='Duración de Descanso por Día', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+        st.plotly_chart(fig_descanso)
 
-        # Gráfico de dispersión para correlacionar el peso levantado con el tiempo de descanso
-        if 'Peso' in datos_filtrados.columns and 'Descanso' in datos_filtrados.columns:
-            fig_peso_descanso = px.scatter(datos_filtrados, x='Peso', y='Descanso', color='Persona', title='Peso vs. Descanso', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
-            st.plotly_chart(fig_peso_descanso)
+    # Gráfico de Variación de Peso Corporal
+    # Añade tu gráfico de variación de peso aquí si tienes los datos correspondientes
+    
+    # Tablas de Datos
+    st.write("Tablas de Datos:")
+    
+    # Tabla de Sesiones de Entrenamiento
+    st.write("**Tabla de Sesiones de Entrenamiento**")
+    st.write(datos_filtrados[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']].sort_values(by='Dia'))
 
-        # Gráfico de dispersión para visualizar la relación entre el peso y el número de repeticiones
-        if 'Peso' in datos_filtrados.columns and 'Repeticiones' in datos_filtrados.columns:
-            fig_peso_repeticiones = px.scatter(datos_filtrados, x='Peso', y='Repeticiones', color='Persona', title='Peso vs. Repeticiones', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
-            st.plotly_chart(fig_peso_repeticiones)
-
-    # Aplicar modelo de machine learning
-    st.title('Predicción de Progreso')
-    st.write('Utilizaremos un modelo de Random Forest para predecir el progreso en el gimnasio.')
-
-    # Preparar los datos para el modelo
-    datos_ml = datos_filtrados[['Peso', 'Descanso', 'Repeticiones']]
-    X = datos_ml.drop('Peso', axis=1)
-    y = datos_ml['Peso']
-
-    # Dividir los datos en entrenamiento y prueba
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-    # Entrenar el modelo
-    modelo = RandomForestRegressor()
-    modelo.fit(X_train, y_train)
-
-    # Hacer predicciones
-    y_pred = modelo.predict(X_test)
-
-    # Calcular el error
-    error = mean_squared_error(y_test, y_pred)
-    st.write(f'Error cuadrático medio: {error}')
-
-    # Mostrar los resultados
-    st.write('¡El modelo ha sido entrenado y evaluado con éxito!')
+    # Tabla de Resumen Semanal
+    st.write("**Tabla de Resumen Semanal**")
+    datos_semanales = datos_filtrados.groupby('Semana').agg({'Peso': 'sum', 'Repeticiones': 'sum'}).reset_index()
+    st.write(datos_semanales)
 
 else:
     st.write('No hay datos disponibles para los filtros seleccionados.')
