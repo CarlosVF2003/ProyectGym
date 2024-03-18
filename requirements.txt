@@ -5,3 +5,5 @@ plotly
 wordcloud
 seaborn
 path
+pandas 
+Image
