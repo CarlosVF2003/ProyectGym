@@ -96,7 +96,7 @@ st.write(unique_values[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets',
 st.subheader("Comparación de progreso entre personas")
 avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
 fig, ax = plt.subplots()
-sns.barplot(data=avg_peso, x='Persona', y='Peso', ax=ax)    
+sns.barplot(data=avg_peso, x='Persona', y='Peso', ax=ax , hue='Persona')
 ax.set_title('Promedio de peso levantado por persona')
 st.pyplot(fig)
 
