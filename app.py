@@ -78,7 +78,7 @@ with pestaña1:
                 
                 if form_completo:
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
+                        Progreso_new = {'Dia': Dia,'Maquina': Maquina,'Repeticiones': repeticion,'Descanso': descanso, 'Persona': Persona, 'Peso': peso, 'Sets': sets, }
                         st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                     # Guardar el DataFrame actualizado en un archivo CSV
                     # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
@@ -95,7 +95,7 @@ with pestaña1:
     # Mostrar datos sin índice
     st.dataframe(st.session_state['Progreso_ind'], index=False)
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
-    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
+    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia','Maquina','Repeticiones','Descanso','Persona','Peso'])
     st.write(unique_values)
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
