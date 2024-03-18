@@ -1,17 +1,17 @@
-﻿Dia,Maquina,Sets,Repeticiones,Descanso,Peso,Persona
-1,Press de pecho,1,15,2-3 min,26,Carlos
-1,Press de pecho,1,15,2-3 min,33,Carlos
-1,Press de pecho,1,15,2-3 min,38,Carlos
-1,Press de pecho,1,15,2-3 min,5,Cinthia
-1,Press de pecho,3,15,2-3 min,12,Cinthia
-1,Extension de hombro,3,15,2-3 min,15,Carlos
-1,Extension de hombro,3,15,2-3 min,5,Cinthia
-1,Extension tricep en polea,1,15,2-3 min,13,Carlos
-1,Extension tricep en polea,2,15,2-3 min,16,Carlos
-1,Extension tricep en polea,1,15,2-3 min,16,Carlos
-1,Extension tricep en polea,4,15,2-3 min,6,Cinthia
-1,Extension lateral,4,15,2-3 min,6,Carlos
-1,Extension lateral,3,10,2-3 min,6,Carlos
-1,Extension lateral,3,10,2-3 min,1,Cinthia
-1,Extension frontal,3,10,2-3 min,3,Carlos
-1,Extension frontal,3,10,2-3 min,1,Cinthia
+﻿Dia;Persona;Maquina;Peso;Descanso;Sets;Repeticiones
+1;Carlos;Press de pecho;26;2-3 min;1;15
+1;Carlos;Press de pecho;33;2-3 min;1;15
+1;Carlos;Press de pecho;38;2-3 min;1;15
+1;Cinthia;Press de pecho;5;2-3 min;1;15
+1;Cinthia;Press de pecho;12;2-3 min;3;15
+1;Carlos;Extension de hombro;15;2-3 min;3;15
+1;Cinthia;Extension de hombro;5;2-3 min;3;15
+1;Carlos;Extension Tricep en polea;13;2-3 min;1;15
+1;Carlos;Extension Tricep en polea;16;2-3 min;2;15
+1;Carlos;Extension Tricep en polea;16;2-3 min;1;16
+1;Cinthia;Extension Tricep en polea;6;2-3 min;4;15
+1;Carlos;Extension lateral;6;2-3 min;4;15
+1;Carlos;Extension lateral;6;2-3 min;3;10
+1;Cinthia;Extension lateral;1;2-3 min;3;10
+1;Carlos;Extension frontal;3;2-3 min;3;10
+1;Cinthia;Extension frontal;1;2-3 min;3;10

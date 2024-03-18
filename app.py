@@ -78,11 +78,11 @@ with pestaña1:
                 
                 if form_completo:
                     for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                        Progreso_new = {'Dia': Dia,'Maquina': Maquina,'Repeticiones': repeticion,'Descanso': descanso, 'Persona': Persona, 'Peso': peso, 'Sets': sets, }
+                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
                         st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                     # Guardar el DataFrame actualizado en un archivo CSV
                     # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
-                    st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia','Maquina','Repeticiones','Descanso','Persona'])['Peso'].transform('size')
+                    st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
                     st.session_state['show_enfoque_form'] = False
                     st.success('¡Datos registrados con éxito!')
                     st.session_state['Progreso_ind'].to_csv('Libro1.csv', index= False, sep= ';')
@@ -95,7 +95,7 @@ with pestaña1:
     # Mostrar datos sin índice
     st.dataframe(st.session_state['Progreso_ind'], index=False)
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
-    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia','Maquina','Repeticiones','Descanso','Persona','Peso'])
+    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     st.write(unique_values)
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
