@@ -90,30 +90,30 @@ if st.session_state.get('show_enfoque_form', False):
 st.subheader("Visualización de datos registrados")
 # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
 unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
-st.write(unique_values[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']], index= False)
+st.write(unique_values[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']], index=False)
 
 # Gráfico de comparación entre personas
 st.subheader("Comparación de progreso entre personas")
 avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
-fig_avg_peso = px.bar(avg_peso, x='Persona', y='Peso', title='Promedio de peso levantado por persona')
+fig_avg_peso = px.bar(avg_peso, x='Persona', y='Peso', title='Promedio de peso levantado por persona', color='Persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
 st.plotly_chart(fig_avg_peso)
 
 # Histograma de repeticiones por máquina y persona
 st.subheader("Histograma de repeticiones por máquina y persona")
-fig_hist_rep = px.histogram(st.session_state['Progreso_ind'], x='Repeticiones', color='Persona', title='Distribución de repeticiones por máquina y persona')
+fig_hist_rep = px.histogram(st.session_state['Progreso_ind'], x='Repeticiones', color='Persona', title='Distribución de repeticiones por máquina y persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
 st.plotly_chart(fig_hist_rep)
 
 # Box plot de pesos por día y persona
 st.subheader("Box plot de pesos por día y persona")
-fig_box_peso = px.box(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Distribución de pesos por día y persona')
+fig_box_peso = px.box(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Distribución de pesos por día y persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
 st.plotly_chart(fig_box_peso)
 
 # Gráfico de línea de series por día
 st.subheader("Gráfico de línea de series por día")
-fig_line_sets = px.line(st.session_state['Progreso_ind'], x='Dia', y='Sets', color='Persona', markers=True, title='Número de series por día')
+fig_line_sets = px.line(st.session_state['Progreso_ind'], x='Dia', y='Sets', color='Persona', markers=True, title='Número de series por día', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
 st.plotly_chart(fig_line_sets)
 
 # Diagrama de dispersión de peso vs repeticiones
 st.subheader("Diagrama de dispersión de peso vs repeticiones")
-fig_scatter_peso_rep = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
+fig_scatter_peso_rep = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones', color_discrete_map={'Carlos': 'black', 'Cinthia': 'skyblue'})
 st.plotly_chart(fig_scatter_peso_rep)
