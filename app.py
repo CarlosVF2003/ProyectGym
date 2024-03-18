@@ -23,9 +23,6 @@ pestaña1, pestaña2 = st.tabs(titulos_pestanas)
 with pestaña1:
     # Inicializar Progreso_ind si no existe en la sesión
     if 'Progreso_ind' not in st.session_state:
-        if Path("Libro1.csv").is_file():
-            st.session_state['Progreso_ind'] = pd.read_csv("Libro1.csv", sep=';')
-    else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
     def formulario_desarrollo_fuerza(sets):
@@ -82,10 +79,10 @@ with pestaña1:
                     # Guardar el DataFrame actualizado en un archivo CSV
                     # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
                     st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
-                    st.success('¡Datos registrados con éxito!')
-                    
-                    # Ocultar el formulario
                     st.session_state['show_enfoque_form'] = False
+                    st.success('¡Datos registrados con éxito!')
+                    st.session_state['Progreso_ind'].to_csv('Libro1.csv', index= False, sep= ';')
+                    # Ocultar el formulario
                 else:
                     st.warning('Por favor completa todos los campos del formulario.')
             
@@ -95,7 +92,6 @@ with pestaña1:
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
     unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     st.write(unique_values)
-    unique_values.to_csv('Libro1.csv', index= False, sep= ';')
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
     avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
