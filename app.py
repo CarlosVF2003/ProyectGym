@@ -4,6 +4,7 @@ import streamlit as st
 import plotly.express as px
 from sklearn.linear_model import LinearRegression
 import numpy as np
+from pathlib import Path
 
 # Cargar el archivo Progreso.csv si existe
 if 'Progreso_ind' not in st.session_state:
