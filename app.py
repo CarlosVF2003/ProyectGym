@@ -93,7 +93,7 @@ with pestaña1:
     # Visualización de datos
     st.subheader("Visualización de datos registrados")
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
-    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'], index= False)
+    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     st.write(unique_values, index= False)
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
