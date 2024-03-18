@@ -1,10 +1,4 @@
-streamlit
-regex
-demoji
-plotly
-wordcloud
-seaborn
-path
+streamlit 
 pandas 
-Image
+plotly 
 scikit-learn
