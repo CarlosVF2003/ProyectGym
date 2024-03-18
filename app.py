@@ -66,85 +66,46 @@ with st.expander("Registrar Sesión de Entrenamiento", expanded=True):
 # Sección del dashboard
 st.title('Dashboard de Progreso en el Gimnasio')
 
-# Tabla de Sesiones de Entrenamiento
-st.header('Tabla de Sesiones de Entrenamiento')
-st.write(st.session_state['Progreso_ind'][['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']])
+# Definir los colores para Carlos y Cinthia
+colors = {'Carlos': 'black', 'Cinthia': 'lightblue'}
 
-# Tabla de Resumen de Cada 7 días
-st.header('Tabla de Resumen de Cada 7 días')
-resumen_semanal = st.session_state['Progreso_ind'].groupby((st.session_state['Progreso_ind'].index // 7)).agg({'Peso': 'sum', 'Repeticiones': 'sum'})
-st.write(resumen_semanal)
+# Mostrar las tablas de Carlos y Cinthia
+st.header('Datos de Carlos')
+st.dataframe(st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Carlos'].style.set_caption("Tabla de Carlos").applymap(lambda _: f'color: {colors["Carlos"]}'))
 
-# Filtros
-st.sidebar.header('Filtros')
+st.header('Datos de Cinthia')
+st.dataframe(st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Cinthia'].style.set_caption("Tabla de Cinthia").applymap(lambda _: f'color: {colors["Cinthia"]}'))
 
-# Filtro por Persona
-filtro_persona = st.sidebar.selectbox('Selecciona persona:', ['Todos'] + list(st.session_state['Progreso_ind']['Persona'].unique()))
+# Gráfico de Líneas para Pesos Levantados
+st.header('Gráfico de Líneas para Pesos Levantados')
+fig_line = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados a lo largo del tiempo', color_discrete_map=colors)
+st.plotly_chart(fig_line)
 
-# Filtro por Máquina o Ejercicio
-filtro_maquina = st.sidebar.selectbox('Selecciona máquina o ejercicio:', ['Todos'] + list(st.session_state['Progreso_ind']['Maquina'].unique()))
+# Gráfico de Barras para Repeticiones o Sets
+st.header('Gráfico de Barras para Repeticiones o Sets')
+fig_bar = px.bar(st.session_state['Progreso_ind'], x='Dia', y='Sets', color='Persona', title='Número de Sets Realizados', color_discrete_map=colors)
+st.plotly_chart(fig_bar)
 
-# Filtro por Rango de Días
-min_dia = st.sidebar.number_input('Día mínimo:', min_value=1, max_value=31)
-max_dia = st.sidebar.number_input('Día máximo:', min_value=min_dia, max_value=31)
+# Histograma para analizar la distribución de las repeticiones
+st.header('Histograma para Repeticiones')
+fig_hist = px.histogram(st.session_state['Progreso_ind'], x='Repeticiones', color='Persona', title='Distribución de Repeticiones', color_discrete_map=colors)
+st.plotly_chart(fig_hist)
 
-# Aplicar filtros
-datos_filtrados = st.session_state['Progreso_ind'].copy()
-if filtro_persona != 'Todos':
-    datos_filtrados = datos_filtrados[datos_filtrados['Persona'] == filtro_persona]
-if filtro_maquina != 'Todos':
-    datos_filtrados = datos_filtrados[datos_filtrados['Maquina'] == filtro_maquina]
-datos_filtrados = datos_filtrados[(datos_filtrados['Dia'] >= min_dia) & (datos_filtrados['Dia'] <= max_dia)]
+# Diagrama de Dispersión para correlacionar peso y repeticiones
+st.header('Diagrama de Dispersión para Peso y Repeticiones')
+fig_scatter = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Correlación entre Peso y Repeticiones', color_discrete_map=colors)
+st.plotly_chart(fig_scatter)
 
-# Visualización de datos
-if not datos_filtrados.empty:
-    # Gráfico de Líneas para Pesos Levantados
-    fig_pesos = px.line(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Pesos Levantados por Día')
-    fig_pesos.update_traces(line=dict(width=2.5))
-    fig_pesos.for_each_trace(lambda t: t.update(name='Carlos' if t.name == 'Carlos' else 'Cinthia'))
-    st.plotly_chart(fig_pesos)
+# Algoritmo de Machine Learning (Linear Regression)
+st.header('Algoritmo de Machine Learning: Regresión Lineal')
+X = st.session_state['Progreso_ind'][['Repeticiones', 'Sets']]
+y = st.session_state['Progreso_ind']['Peso']
 
-    # Gráfico de Barras para Repeticiones
-    fig_repeticiones = px.bar(datos_filtrados, x='Dia', y='Repeticiones', color='Persona', title='Repeticiones por Día')
-    fig_repeticiones.update_traces(marker_line_width=1, marker_line_color="black")
-    fig_repeticiones.for_each_trace(lambda t: t.update(name='Carlos' if t.name == 'Carlos' else 'Cinthia'))
-    st.plotly_chart(fig_repeticiones)
+# Entrenar el modelo
+model = LinearRegression()
+model.fit(X, y)
 
-    # Histograma de Peso Levantado
-    fig_histograma = px.histogram(datos_filtrados, x='Peso', color='Persona', marginal='rug', title='Histograma de Peso Levantado')
-    fig_histograma.update_traces(marker_line_width=0.5, marker_line_color="black")
-    fig_histograma.for_each_trace(lambda t: t.update(name='Carlos' if t.name == 'Carlos' else 'Cinthia'))
-    st.plotly_chart(fig_histograma)
-
-    # Diagrama de Dispersión entre Peso y Repeticiones
-    fig_dispersion = px.scatter(datos_filtrados, x='Peso', y='Repeticiones', color='Persona', title='Diagrama de Dispersión: Peso vs Repeticiones')
-    fig_dispersion.update_traces(marker=dict(size=8))
-    fig_dispersion.for_each_trace(lambda t: t.update(name='Carlos' if t.name == 'Carlos' else 'Cinthia'))
-    st.plotly_chart(fig_dispersion)
-
-    # Gráfico de Machine Learning
-    st.subheader('Gráfico de Machine Learning')
-    
-    # Preparar los datos para el modelo de Machine Learning
-    X = datos_filtrados[['Peso', 'Repeticiones']]
-    y = datos_filtrados['Dia']
-    
-    # Entrenar el modelo de regresión lineal
-    model = LinearRegression()
-    model.fit(X, y)
-    
-    # Predicción de los días
-    dias_prediccion = np.arange(X['Peso'].min(), X['Peso'].max()).reshape(-1, 1)
-    repeticiones_prediccion = np.arange(X['Repeticiones'].min(), X['Repeticiones'].max()).reshape(-1, 1)
-    X_prediccion = np.column_stack((dias_prediccion, repeticiones_prediccion))
-    dias_predichos = model.predict(X_prediccion)
-    
-    # Crear el gráfico
-    fig_ml = px.scatter_3d(datos_filtrados, x='Peso', y='Repeticiones', z='Dia', color='Persona', title='Predicción de Días utilizando Machine Learning')
-    fig_ml.update_traces(marker=dict(size=4), selector=dict(mode='markers'))
-    fig_ml.add_scatter3d(x=dias_prediccion.flatten(), y=repeticiones_prediccion.flatten(), z=dias_predichos, mode='lines', line=dict(color='black', width=2), name='Predicción')
-    fig_ml.for_each_trace(lambda t: t.update(name='Carlos' if t.name == 'Carlos' else 'Cinthia'))
-    st.plotly_chart(fig_ml)
-
-else:
-    st.warning('No hay datos disponibles para los filtros seleccionados.')
+# Mostrar los coeficientes
+st.write(f'Coeficiente de Repeticiones: {model.coef_[0]}')
+st.write(f'Coeficiente de Sets: {model.coef_[1]}')
+st.write(f'Intercepto: {model.intercept_}')
