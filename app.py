@@ -36,43 +36,41 @@ def formulario_hipertrofia_muscular(sets):
 # Título de la aplicación
 st.title('🏋️‍♂️ Nuestro progreso en el Gimnasio 🏋️‍♀️')
 
-# Desplegable para abrir/cerrar formulario principal
-if st.checkbox("📝 Abrir/Cerrar Formulario Principal", key='show_enfoque_form'):
-    with st.expander("Formulario Principal"):
-        with st.form(key='mi_formulario'):
-            # Widgets de entrada
-            Dia = st.text_input('Ingresa el Día 📆:')
-            Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
-            Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores','Press de pecho','Extension de hombro',
-                                                                        'Extension tricep en polea','Extension lateral','Extension frontal'))
-            Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
-            sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
+# Registro de datos.
+with st.form(key='mi_formulario'):
+    # Widgets de entrada
+    Dia = st.text_input('Ingresa el Día 📆:')
+    Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
+    Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores','Press de pecho','Extension de hombro',
+                                                                'Extension tricep en polea','Extension lateral','Extension frontal'))
+    Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
+    sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
 
-            # Botón de envío del formulario
-            guardar_button = st.form_submit_button(label='Guardar 💾')
-            if guardar_button:
-                if Enfoque == 'Desarrollo de Fuerza':
-                    pesos, repeticiones, descansos = formulario_desarrollo_fuerza(sets)
-                elif Enfoque == 'Mejora de la Resistencia':
-                    pesos, repeticiones, descansos = formulario_mejora_resistencia(sets)
-                else:  # Hipertrofia Muscular
-                    pesos, repeticiones, descansos = formulario_hipertrofia_muscular(sets)
+    # Botón de envío del formulario
+    guardar_button = st.form_submit_button(label='Guardar 💾')
+    if guardar_button:
+        if Enfoque == 'Desarrollo de Fuerza':
+            pesos, repeticiones, descansos = formulario_desarrollo_fuerza(sets)
+        elif Enfoque == 'Mejora de la Resistencia':
+            pesos, repeticiones, descansos = formulario_mejora_resistencia(sets)
+        else:  # Hipertrofia Muscular
+            pesos, repeticiones, descansos = formulario_hipertrofia_muscular(sets)
 
-                # Verificar que ambos formularios estén completos
-                form_completo = all(pesos) and all(repeticiones) and all(descansos)
+        # Verificar que ambos formularios estén completos
+        form_completo = all(pesos) and all(repeticiones) and all(descansos)
 
-                if form_completo:
-                    for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
-                        st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
-                    # Guardar el DataFrame actualizado en un archivo CSV
-                    # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
-                    st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
-                    st.success('¡Datos registrados con éxito!')
-                    st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
-                    # Ocultar el formulario
-                else:
-                    st.warning('Por favor completa todos los campos del formulario.')
+        if form_completo:
+            for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
+                Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
+                st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+            # Guardar el DataFrame actualizado en un archivo CSV
+            # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
+            st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
+            st.success('¡Datos registrados con éxito!')
+            st.session_state['Progreso_ind'].to_csv('Progreso.csv', index= False, sep= ';')
+            # Ocultar el formulario
+        else:
+            st.warning('Por favor completa todos los campos del formulario.')
 
 # Sección del dashboard
 st.title('Dashboard de Progreso en el Gimnasio')
@@ -106,26 +104,26 @@ if not datos_filtrados.empty:
 # Mostrar gráficos y tablas si hay datos filtrados
 if not datos_filtrados.empty:
     # Gráficos para Visualizar el Progreso
-    st.write("Gráficos para Visualizar el Progreso:")
-    
+    st.subheader('Gráficos para Visualizar el Progreso:')
+
     # Gráfico de Línea para Pesos Levantados
     if 'Peso' in datos_filtrados.columns:
-        fig_peso_linea = px.line(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Pesos Levantados a lo largo del tiempo', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+        fig_peso_linea = px.line(datos_filtrados, x='Dia', y='Peso', color='Persona', title='Pesos Levantados a lo largo del Tiempo', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
         st.plotly_chart(fig_peso_linea)
 
     # Gráfico de Barras para Repeticiones o Sets
     if 'Repeticiones' in datos_filtrados.columns:
-        fig_repeticiones_barras = px.bar(datos_filtrados, x='Dia', y='Repeticiones', color='Persona', title='Repeticiones por Sesión', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+        fig_repeticiones_barras = px.bar(datos_filtrados, x='Dia', y='Repeticiones', color='Persona', title='Repeticiones Realizadas por Sesión', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
         st.plotly_chart(fig_repeticiones_barras)
 
     # Gráfico de Progresión General
-    if 'Peso' in datos_filtrados.columns:
+    if 'Dia' in datos_filtrados.columns:
         fig_progresion_general = px.line(datos_filtrados.groupby('Dia')['Peso'].sum().reset_index(), x='Dia', y='Peso', title='Progresión General de Pesos Levantados', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
         st.plotly_chart(fig_progresion_general)
 
     # Gráfico de Progresión de Sets y Repeticiones
     if 'Sets' in datos_filtrados.columns and 'Repeticiones' in datos_filtrados.columns:
-        fig_sets_repeticiones = px.bar(datos_filtrados, x='Dia', y='Sets', color='Persona', title='Progresión de Sets y Repeticiones', barmode='stack', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+        fig_sets_repeticiones = px.bar(datos_filtrados, x='Dia', y='Sets', color='Persona', title='Progresión de Sets y Repeticiones por Sesión', barmode='stack', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
         st.plotly_chart(fig_sets_repeticiones)
 
     # Gráfico de Intensidad
@@ -136,28 +134,23 @@ if not datos_filtrados.empty:
 
     # Gráfico de Descanso
     if 'Descanso' in datos_filtrados.columns:
-        descanso_dict = {'1-2 min': 1.5, '2-3 min': 2.5, '3-4 min': 3.5}  # Convertir el texto en valores numéricos para el gráfico
-        datos_filtrados['Descanso (min)'] = datos_filtrados['Descanso'].map(descanso_dict)
-        fig_descanso = px.bar(datos_filtrados.groupby('Dia')['Descanso (min)'].mean().reset_index(), x='Dia', y='Descanso (min)', title='Tiempo Promedio de Descanso', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
+        fig_descanso = px.bar(datos_filtrados.groupby('Dia')['Descanso'].count().reset_index(), x='Dia', y='Descanso', title='Promedio de Duración de Descanso por Sesión', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
         st.plotly_chart(fig_descanso)
 
     # Gráfico de Variación de Peso
-    if 'Peso' in datos_filtrados.columns:
-        fig_variacion_peso = px.line(datos_filtrados.groupby('Dia')['Peso'].mean().reset_index(), x='Dia', y='Peso', title='Variación de Peso Corporal', color_discrete_map={"Carlos": "black", "Cinthia": "lightblue"})
-        st.plotly_chart(fig_variacion_peso)
+    # Agrega aquí el gráfico de variación de peso si lo deseas
 
     # Tablas de Datos
-    st.write("Tablas de Datos:")
-    
+    st.subheader('Tablas de Datos:')
+
     # Tabla de Sesiones de Entrenamiento
-    st.subheader('Tabla de Sesiones de Entrenamiento')
-    st.write(datos_filtrados[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']])
+    st.write('Tabla de Sesiones de Entrenamiento:')
+    st.write(datos_filtrados[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']].style.set_caption("Tabla de Sesiones de Entrenamiento"))
 
     # Tabla de Resumen Semanal
-    datos_filtrados['Semana'] = datos_filtrados['Dia'].dt.isocalendar().week  # Obtener el número de semana
-    tabla_resumen_semanal = datos_filtrados.groupby(['Semana', 'Persona']).agg({'Peso': 'sum', 'Repeticiones': 'sum'}).reset_index()
-    st.subheader('Tabla de Resumen Semanal')
-    st.write(tabla_resumen_semanal)
+    st.write('Tabla de Resumen Semanal:')
+    resumen_semanal = datos_filtrados.groupby(pd.Grouper(key='Dia', freq='W'))[['Peso', 'Repeticiones']].sum().reset_index()
+    st.write(resumen_semanal.style.set_caption("Tabla de Resumen Semanal"))
 
 else:
     st.write('No hay datos disponibles para los filtros seleccionados.')
