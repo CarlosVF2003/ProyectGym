@@ -126,7 +126,7 @@ if not datos_filtrados.empty:
     st.plotly_chart(fig_rendimiento_dia, use_container_width=True)
     
     # Gráfico de número de sets
-    fig_sets = px.bar(datos_filtrados, x='Persona', y='Sets', title='Número de Sets por Persona')
+    fig_sets = px.bar(datos_filtrados, x='Persona', y='Sets', title='Número de Sets por Persona', color='Persona', color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
     st.plotly_chart(fig_sets, use_container_width=True)
     
     # Gráfico de peso levantado
