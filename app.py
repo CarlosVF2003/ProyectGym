@@ -74,11 +74,11 @@ if st.session_state.get('show_enfoque_form', False):
                 
             if form_completo:
                 for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                    Progreso_new = {'Día': Dia, 'Persona': Persona, 'Máquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
+                    Progreso_new = {'Día': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Descanso': descanso, 'Sets': sets, 'Repeticiones': repeticion}
                     st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                 # Guardar el DataFrame actualizado en un archivo CSV
                 # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
-                st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Día', 'Persona', 'Máquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
+                st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Día', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
                 st.session_state['show_enfoque_form'] = False
                 st.success('¡Datos registrados con éxito!')
                 st.session_state['Progreso_ind'].to_csv('Progreso.csv', index= False, sep= ';')
@@ -89,8 +89,8 @@ if st.session_state.get('show_enfoque_form', False):
 # Visualización de datos
 st.subheader("📊 Visualización de datos registrados")
 # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
-unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
-st.write(unique_values[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']], index=False)
+unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Día', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
+st.write(unique_values[['Día', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']], index=False)
 
 # Gráfico de comparación entre personas
 st.subheader("📈 Comparación de progreso entre personas")
