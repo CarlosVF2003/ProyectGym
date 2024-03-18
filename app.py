@@ -1,22 +1,10 @@
 # Importamos librerias
 import pandas as pd
-import re
-
-import regex
-import demoji
-
-import numpy as np
-from collections import Counter
-
-import plotly.express as px
-import matplotlib.pyplot as plt
-from PIL import Image
-from wordcloud import WordCloud, STOPWORDS
-import seaborn as sns
 import streamlit as st
-from pathlib import Path
+import plotly.graph_objects as go
+from streamlit_embedcode import components
 
-# Cargar el archivo Libro1.csv si existe
+# Cargar el archivo Progreso.csv si existe
 if 'Progreso_ind' not in st.session_state:
     if Path("Progreso.csv").is_file():
         st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv", sep=';')
@@ -135,3 +123,7 @@ if 'Progreso_ind' in st.session_state:
         fig_scatter_peso_rep.add_trace(go.Scatter(x=data['Peso'], y=data['Repeticiones'], mode='markers', name=persona, marker_color='skyblue' if persona == 'Cinthia' else 'black'))
     fig_scatter_peso_rep.update_layout(title='Peso vs Repeticiones', xaxis_title='Peso', yaxis_title='Repeticiones', plot_bgcolor='white')
     st.plotly_chart(fig_scatter_peso_rep)
+
+# Dashboard Interactivo de Tableau
+st.subheader("Dashboard Interactivo de Tableau")
+components.iframe("https://your-tableau-dashboard-url", height=600)
