@@ -92,11 +92,9 @@ with pestaña1:
 
     # Visualización de datos
     st.subheader("Visualización de datos registrados")
-    # Mostrar datos sin índice
-    st.table(st.session_state['Progreso_ind'])
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
-    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
-    st.write(unique_values)
+    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'], index= False)
+    st.write(unique_values, index= False)
     # Gráfico de comparación entre personas
     st.subheader("Comparación de progreso entre personas")
     avg_peso = st.session_state['Progreso_ind'].groupby('Persona')['Peso'].mean().reset_index()
