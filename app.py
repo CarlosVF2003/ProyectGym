@@ -1,4 +1,4 @@
-#Importamos librerias
+# Importamos librerias
 import pandas as pd
 import re
 
@@ -25,27 +25,27 @@ if 'Progreso_ind' not in st.session_state:
 
 #Definimos las funciones
 def formulario_desarrollo_fuerza(sets):
-    pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
+    pesos = [st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return pesos, [repeticiones] * sets, [descanso] * sets  # Las repeticiones y el tiempo de descanso son constantes para el desarrollo de fuerza
 
 def formulario_mejora_resistencia(sets):
-    pesos = [st.number_input(f'Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
-    repeticiones = [st.number_input(f'Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
+    pesos = [st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, max_value=100, step=1) for i in range(sets)]
+    repeticiones = [st.number_input(f'🏃 Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return pesos, repeticiones, [descanso] * sets
 
 def formulario_hipertrofia_muscular(sets):
-    peso = st.number_input('Peso (kg):', min_value=0, max_value=100, step=1)
+    peso = st.number_input('💪 Peso (kg):', min_value=0, max_value=100, step=1)
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return [peso] * sets, [repeticiones] * sets, [descanso] * sets  # Tanto el peso, las repeticiones y el tiempo de descanso son constantes para la hipertrofia muscular
 
-st.title('Nuestro progreso en el Gimnasio 💪')
+st.title('🏋️‍♂️ Nuestro progreso en el Gimnasio 🏋️‍♀️')
 
 # Botón para abrir el formulario principal
-if st.button("Abrir Formulario Principal"):
+if st.button("📝 Abrir Formulario Principal"):
     st.session_state['show_enfoque_form'] = True
 
 # Registro de datos.
