@@ -1,4 +1,7 @@
-streamlit 
-pandas 
-plotly 
+Streamlit
+Pandas
+WordCloud
+Matplotlib
+Plotly
+Demoji
 scikit-learn
