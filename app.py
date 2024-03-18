@@ -34,7 +34,7 @@ def formulario_hipertrofia_muscular(sets):
 st.title('🏋️‍♂️ Nuestro progreso en el Gimnasio 🏋️‍♀️')
 
 # Registro de datos.
-with st.expander("Registrar Sesión de Entrenamiento"):
+with st.expander("Registrar Sesión de Entrenamiento", expanded=True):
     # Widgets de entrada
     Dia = st.number_input('Día:', min_value=1, max_value=31)
     Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
@@ -67,6 +67,11 @@ st.title('Dashboard de Progreso en el Gimnasio')
 # Tabla de Sesiones de Entrenamiento
 st.header('Tabla de Sesiones de Entrenamiento')
 st.write(st.session_state['Progreso_ind'][['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']])
+
+# Tabla de Resumen de Cada 7 días
+st.header('Tabla de Resumen de Cada 7 días')
+resumen_semanal = st.session_state['Progreso_ind'].groupby((st.session_state['Progreso_ind'].index / 7).astype(int)).agg({'Peso': 'sum', 'Repeticiones': 'sum'})
+st.write(resumen_semanal)
 
 # Filtros
 st.sidebar.header('Filtros')
