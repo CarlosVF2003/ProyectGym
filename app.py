@@ -89,7 +89,7 @@ if st.session_state.get('show_enfoque_form', False):
 # Visualización de datos
 st.subheader("📊 Visualización de datos registrados")
 # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
-unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Día', 'Persona', 'Máquina', 'Peso', 'Descanso', 'Repeticiones'])
+unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
 st.write(unique_values[['Día', 'Persona', 'Máquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']], index=False)
 
 # Gráfico de comparación entre personas
