@@ -82,7 +82,7 @@ with pestaña1:
                         st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
                     # Guardar el DataFrame actualizado en un archivo CSV
                     # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
-                    st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
+                    st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia','Maquina','Repeticiones','Descanso','Persona'])['Peso'].transform('size')
                     st.session_state['show_enfoque_form'] = False
                     st.success('¡Datos registrados con éxito!')
                     st.session_state['Progreso_ind'].to_csv('Libro1.csv', index= False, sep= ';')
