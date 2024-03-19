@@ -44,37 +44,32 @@ st.header('Datos de Cinthia')
 st.dataframe(st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Cinthia'].style.set_caption("Tabla de Cinthia").applymap(lambda _: 'color: black'))
 
 # Botón desplegable para abrir el formulario principal
-with st.expander("📝 Abrir Formulario Principal"):
-    # Registro de datos
-    with st.form(key='mi_formulario'):
-        # Widgets de entrada
-        Dia = st.text_input('Ingresa el Día 📆:')
-        Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
-        Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores','Press de pecho','Extension de hombro',
-                                                                    'Extension tricep en polea','Extension lateral','Extension frontal'))
-        Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
-        sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
+with st.expander("Registrar Sesión de Entrenamiento", expanded=True):
+    # Widgets de entrada
+    Dia = st.number_input('Día:', min_value=1, max_value=31)
+    Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
+    Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores','Press de pecho','Extension de hombro',
+                                                                'Extension tricep en polea','Extension lateral','Extension frontal'))
+    Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
+    sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
+
+    if Enfoque == 'Desarrollo de Fuerza':
+        pesos, repeticiones, descansos = formulario_desarrollo_fuerza(sets)
+    elif Enfoque == 'Mejora de la Resistencia':
+        pesos, repeticiones, descansos = formulario_mejora_resistencia(sets)
+    else:  # Hipertrofia Muscular
+        pesos, repeticiones, descansos = formulario_hipertrofia_muscular(sets)
+        
+    # Verificar que ambos formularios estén completos
+    form_completo = all(pesos) and all(repeticiones) and all(descansos)
             
-        # Botón de envío del formulario
-        guardar_button = st.form_submit_button(label='Guardar 💾')
-        if guardar_button:
-            if Enfoque == 'Desarrollo de Fuerza':
-                pesos, repeticiones, descansos = formulario_desarrollo_fuerza(sets)
-            elif Enfoque == 'Mejora de la Resistencia':
-                pesos, repeticiones, descansos = formulario_mejora_resistencia(sets)
-            else:  # Hipertrofia Muscular
-                pesos, repeticiones, descansos = formulario_hipertrofia_muscular(sets)
-                    
-            # Verificar que ambos formularios estén completos
-            form_completo = all(pesos) and all(repeticiones) and all(descansos)
-                
-            if form_completo:
-                for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                    Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Repeticiones': repeticion, 'Descanso': descanso, 'Sets': sets}
-                    st.session_state['Progreso_ind'] = st.session_state['Progreso_ind'].append(Progreso_new, ignore_index=True)
-                    st.success('Datos guardados exitosamente!')
-            else:
-                st.warning('Por favor completa todos los campos antes de guardar.')
+    if form_completo:
+        Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': pesos, 'Descanso': descansos, 'Sets': sets, 'Repeticiones': repeticiones}
+        st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+        st.success('¡Datos registrados con éxito!')
+        st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
+    else:
+        st.warning('Por favor completa todos los campos del formulario.')
 
 # Gráfico de Líneas para Pesos Levantados
 st.header('Gráfico de Líneas para Pesos Levantados')
