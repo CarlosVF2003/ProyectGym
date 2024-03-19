@@ -41,6 +41,12 @@ def formulario_hipertrofia_muscular(sets):
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return [peso] * sets, [repeticiones] * sets, [descanso] * sets
 
+# Función para descargar DataFrame como CSV
+def download_csv(df, filename):
+    csv = df.to_csv(index=False).encode()
+    href = f'<a href="data:file/csv;base64,{b64encode(csv).decode()}" download="{filename}.csv">Descargar CSV</a>'
+    return href
+    
 # Título de la aplicación
 st.title('🏋️‍♂️ Nuestro Progreso en el Gym 🏋️‍♀️')
 
@@ -102,6 +108,8 @@ with st.expander('📓 Datos Registrados'):
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
     unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     st.dataframe(unique_values.reset_index(drop=True))
+    st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
+
          
 # Mostrar tablas de datos de Carlos y Cinthia
 with st.expander('🤵‍♂️ Tabla de datos de Carlos'):
