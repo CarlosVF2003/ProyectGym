@@ -75,6 +75,12 @@ with st.expander('📝 Registro de Datos'):
             st.success('¡Datos registrados con éxito!')
             st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
 
+
+st.subheader("Visualización de datos registrados")
+# Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
+unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
+st.write(unique_values[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']], index=False)
+
 # Mostrar tablas de datos de Carlos y Cinthia
 if 'Progreso_ind' in st.session_state:
     st.header('Datos de Carlos')
