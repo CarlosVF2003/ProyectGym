@@ -76,6 +76,28 @@ with st.expander('📝 Registro de Datos'):
             st.session_state['show_enfoque_form'] = False 
             st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
 
+
+# Filtros
+st.sidebar.title('Filtros')
+if 'Progreso_ind' in st.session_state:
+    with st.sidebar.expander('Filtros Avanzados'):
+        # Filtro de Fecha
+        fecha_inicio = st.date_input('Fecha de inicio:', min_value=st.session_state['Progreso_ind']['Dia'].min(), max_value=st.session_state['Progreso_ind']['Dia'].max())
+        fecha_fin = st.date_input('Fecha de fin:', min_value=st.session_state['Progreso_ind']['Dia'].min(), max_value=st.session_state['Progreso_ind']['Dia'].max())
+        
+        # Filtro de Persona
+        personas = st.multiselect('Seleccionar Persona:', st.session_state['Progreso_ind']['Persona'].unique())
+        
+        # Filtro de Máquina
+        maquinas = st.multiselect('Seleccionar Máquinas:', st.session_state['Progreso_ind']['Maquina'].unique())
+        
+        # Filtro de Enfoque de Entrenamiento
+        enfoques = st.multiselect('Seleccionar Enfoque de Entrenamiento:', st.session_state['Progreso_ind']['Enfoque'].unique())
+        
+        # Filtro de Número de Sets
+        num_sets = st.slider('Número de Sets:', min_value=st.session_state['Progreso_ind']['Sets'].min(), max_value=st.session_state['Progreso_ind']['Sets'].max())
+
+
 with st.expander('📓 Datos Registrados'):
     st.subheader("Visualización de datos registrados")
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
