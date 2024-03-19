@@ -73,7 +73,7 @@ if 'Progreso_ind' in st.session_state:
     st.dataframe(df_carlos)
 
     st.header('Datos de Cinthia')
-    df_cinthia = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Cinthia'].style.set_caption("Tabla de Cinthia").applymap(lambda _: 'color: lightblue')
+    df_cinthia = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Cinthia'].style.set_caption("Tabla de Cinthia").applymap(lambda _: 'color: black')
     st.dataframe(df_cinthia)
 
 # Gráficos
@@ -82,7 +82,7 @@ if 'Progreso_ind' in st.session_state:
 
     # Gráfico de Línea para Pesos Levantados
     fig_linea = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
-    fig_linea.update_traces(line=dict(color=['black', 'lightblue']), selector=dict(type='scatter'))
+    fig_linea.update_traces(selector=dict(type='scatter'), line=dict(color=['black', 'lightblue']))
     st.plotly_chart(fig_linea)
 
     # Gráfico de Barras para Repeticiones o Sets
