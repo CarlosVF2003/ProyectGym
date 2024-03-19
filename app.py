@@ -89,12 +89,11 @@ if 'Progreso_ind' in st.session_state:
 
     # Gráfico de Línea para Pesos Levantados
     fig_linea = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
-    # Definir el mapeo de colores para cada categoría
-    color_map = {'Carlos': 'rgb(0,0,0)', 'Cinthia': 'rgb(173,216,230)'}
-    # Actualizar el mapa de colores
-    fig_linea.update_traces(color_discrete_map=color_map)
+    # Actualizar el color de Carlos a negro
+    fig_linea.update_traces(line=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
+    # Actualizar el color de Cinthia a celeste claro
+    fig_linea.update_traces(line=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
     st.plotly_chart(fig_linea)
-
 
     # Gráfico de Barras para Repeticiones o Sets
     fig_barras = px.bar(st.session_state['Progreso_ind'], x='Dia', y='Repeticiones', color='Persona', title='Repeticiones')
