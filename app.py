@@ -36,13 +36,6 @@ def formulario_hipertrofia_muscular(sets):
 # Título de la aplicación
 st.title('🏋️‍♂️ Nuestro progreso en el Gimnasio 🏋️‍♀️')
 
-# Mostrar tablas de datos de Carlos y Cinthia
-st.header('Datos de Carlos')
-st.dataframe(st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Carlos'].style.set_caption("Tabla de Carlos").applymap(lambda _: 'color: black'))
-
-st.header('Datos de Cinthia')
-st.dataframe(st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Cinthia'].style.set_caption("Tabla de Cinthia").applymap(lambda _: 'color: black'))
-
 # Botón desplegable para abrir el formulario principal
 with st.expander("Registrar Sesión de Entrenamiento", expanded=True):
     # Widgets de entrada
@@ -70,6 +63,13 @@ with st.expander("Registrar Sesión de Entrenamiento", expanded=True):
         st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
     else:
         st.warning('Por favor completa todos los campos del formulario.')
+
+# Mostrar tablas de datos de Carlos y Cinthia
+st.header('Datos de Carlos')
+st.dataframe(st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Carlos'].style.set_caption("Tabla de Carlos").applymap(lambda _: 'color: black'))
+
+st.header('Datos de Cinthia')
+st.dataframe(st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Cinthia'].style.set_caption("Tabla de Cinthia").applymap(lambda _: 'color: black'))
 
 # Gráfico de Líneas para Pesos Levantados
 st.header('Gráfico de Líneas para Pesos Levantados')
