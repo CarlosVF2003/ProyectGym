@@ -37,7 +37,7 @@ def formulario_hipertrofia_muscular(sets):
 st.title('🏋️‍♂️ Nuestro Progreso en el Gimnasio 🏋️‍♀️')
 
 # Formulario desplegable y botón de guardar
-with st.expander('📝 Registro de Datos'):
+with st.sidebar('📝 Registro de Datos'):
     Dia = st.text_input('Ingresa el Día 📆:')
     Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
     Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Press de pecho','Extension de hombro','Extension tricep en polea','Extension lateral','Extension frontal','Peso muerto','Curl femoral','Abducción','Glúteo en maquina'))
