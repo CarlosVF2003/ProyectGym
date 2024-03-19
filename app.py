@@ -15,36 +15,24 @@ if 'Progreso_ind' not in st.session_state:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
 # Definir las funciones
+# Definir las funciones
 def formulario_desarrollo_fuerza(sets):
-    pesos = []
-    for i in range(sets):
-        peso = st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, step=0.1, format="%.1f")
-        pesos.append(peso)
+    pesos = [st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, step=0.1, format="%.1f") for i in range(sets)]
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return pesos, [repeticiones] * sets, [descanso] * sets
 
 def formulario_mejora_resistencia(sets):
-    pesos = []
-    repeticiones = []
-    for i in range(sets):
-        peso = st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, step=0.1, format="%.1f")
-        repeticion = st.number_input(f'🏃 Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1)
-        pesos.append(peso)
-        repeticiones.append(repeticion)
+    pesos = [st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, step=0.1, format="%.1f") for i in range(sets)]
+    repeticiones = [st.number_input(f'🏃 Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return pesos, repeticiones, [descanso] * sets
 
 def formulario_hipertrofia_muscular(sets):
-    pesos = []
-    repeticiones = []
-    for i in range(sets):
-        peso = st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, step=0.1, format="%.1f")
-        repeticion = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
-        pesos.append(peso)
-        repeticiones.append(repeticion)
+    peso = st.number_input('💪 Peso (kg):', min_value=0, step=0.1, format="%.1f")
+    repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return pesos, repeticiones, [descanso] * sets
+    return [peso] * sets, [repeticiones] * sets, [descanso] * sets
 
 
 # Título de la aplicación
