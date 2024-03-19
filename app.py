@@ -19,28 +19,28 @@ def formulario_desarrollo_fuerza(sets):
     if sets <= 0:
         st.error('El número de sets debe ser mayor que 0.')
         return [], [], []
-    
-    pesos = [st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, step=0.1, format="%.1f") for i in range(sets)]
+
+    pesos = []
+    for i in range(sets):
+        peso = st.number_input(f'💪 Peso para el set {i+1}:', min_value=0.0, step=0.1)
+        pesos.append(peso)
+
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return pesos, [repeticiones] * sets, [descanso] * sets
 
 def formulario_mejora_resistencia(sets):
-    if sets <= 0:
-        st.error('El número de sets debe ser mayor que 0.')
-        return [], [], []
-    
-    pesos = [st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, step=0.1, format="%.1f") for i in range(sets)]
+    pesos = []
+    for i in range(sets):
+        peso = st.number_input(f'💪 Peso para el set {i+1}:', min_value=0.0, step=0.1)
+        pesos.append(peso)
+        
     repeticiones = [st.number_input(f'🏃 Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(sets)]
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return pesos, repeticiones, [descanso] * sets
 
 def formulario_hipertrofia_muscular(sets):
-    if sets <= 0:
-        st.error('El número de sets debe ser mayor que 0.')
-        return [], [], []
-    
-    peso = st.number_input('💪 Peso (kg):', min_value=0, step=0.1, format="%.1f")
+    peso = st.number_input('💪 Peso (kg):', min_value=0.0, step=0.1)
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return [peso] * sets, [repeticiones] * sets, [descanso] * sets
