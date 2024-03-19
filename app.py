@@ -78,22 +78,22 @@ cinthia_df_styled = cinthia_df.style.set_caption("Tabla de Cinthia").format("{:.
 st.dataframe(cinthia_df_styled)
 
 # Gráfico de Línea para Pesos Levantados
-fig_linea = px.line(df, x='Dia', y='Peso', color='Persona', title='Pesos Levantados por Sesión de Entrenamiento')
+fig_linea = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados por Sesión de Entrenamiento')
 fig_linea.update_traces(line=dict(color=['black', 'lightblue']))
 st.plotly_chart(fig_linea)
 
 # Gráfico de Barras para Repeticiones o Sets
-fig_barras = px.bar(df, x='Dia', y='Repeticiones', color='Persona', title='Repeticiones por Sesión de Entrenamiento')
+fig_barras = px.bar(st.session_state['Progreso_ind'], x='Dia', y='Repeticiones', color='Persona', title='Repeticiones por Sesión de Entrenamiento')
 fig_barras.update_traces(marker_color=['black', 'lightblue'])
 st.plotly_chart(fig_barras)
 
 # Histograma para Distribución de Repeticiones
-fig_histograma = px.histogram(df, x='Repeticiones', color='Persona', title='Distribución de Repeticiones')
+fig_histograma = px.histogram(st.session_state['Progreso_ind'], x='Repeticiones', color='Persona', title='Distribución de Repeticiones')
 fig_histograma.update_traces(marker_color=['black', 'lightblue'])
 st.plotly_chart(fig_histograma)
 
 # Diagrama de Dispersión para Peso vs Repeticiones
-fig_dispersion = px.scatter(df, x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
+fig_dispersion = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
 fig_dispersion.update_traces(marker_color=['black', 'lightblue'])
 st.plotly_chart(fig_dispersion)
 
