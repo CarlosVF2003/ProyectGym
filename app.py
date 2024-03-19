@@ -61,9 +61,10 @@ with st.expander('📝 Registro de Datos'):
             for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
                 Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Repeticiones': repeticion, 'Descanso': descanso, 'Sets': sets}
                 st.session_state['Progreso_ind'] = st.session_state['Progreso_ind'].append(Progreso_new, ignore_index=True)
-                st.success('Datos guardados exitosamente!')
+            st.success('Datos guardados exitosamente!')
     else:
         st.warning('Por favor completa todos los campos antes de guardar.')
+
         
 # Mostrar tablas de datos de Carlos y Cinthia
 if 'Progreso_ind' in st.session_state:
