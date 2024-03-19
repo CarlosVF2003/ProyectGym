@@ -41,7 +41,6 @@ def formulario_hipertrofia_muscular(sets):
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return [peso] * sets, [repeticiones] * sets, [descanso] * sets
 
-
 # Título de la aplicación
 st.title('🏋️‍♂️ Nuestro Progreso en el Gimnasio 🏋️‍♀️')
 
