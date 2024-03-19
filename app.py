@@ -68,7 +68,7 @@ with st.expander('📝 Registro de Datos'):
                     'Repeticiones': repeticion,
                     'Descanso': descanso
                 })
-                st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], pd.DataFrame([Progreso_new])], ignore_index=True)
+                st.session_state['Progreso_ind'] = st.session_state['Progreso_ind'].append(Progreso_new, ignore_index=True)
             # Guardar el DataFrame actualizado en un archivo CSV
             # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
             st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
