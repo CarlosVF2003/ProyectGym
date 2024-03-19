@@ -76,9 +76,8 @@ with st.expander('📝 Registro de Datos'):
             st.session_state['show_enfoque_form'] = False 
             st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
 
-with st.expander('📝 Datos Registrados'):
+with st.expander('📓 Datos Registrados'):
     st.subheader("Visualización de datos registrados")
-    # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
     unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     st.dataframe(unique_values.reset_index(drop=True))
