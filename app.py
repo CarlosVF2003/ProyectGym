@@ -84,7 +84,7 @@ st.write(unique_values[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets',
 # Mostrar tablas de datos de Carlos y Cinthia
 if 'Progreso_ind' in st.session_state:
     st.header('Datos de Carlos')
-    df_carlos = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Carlos'].style.set_caption("Tabla de Carlos").applymap(lambda _: 'color: black')
+    df_carlos = unique_values[st.unique_values['Persona'] == 'Carlos'].style.set_caption("Tabla de Carlos").applymap(lambda _: 'color: black')
     st.dataframe(df_carlos)
 
     st.header('Datos de Cinthia')
