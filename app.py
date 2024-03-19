@@ -37,7 +37,7 @@ def formulario_hipertrofia_muscular(sets):
 st.title('🏋️‍♂️ Nuestro Progreso en el Gimnasio 🏋️‍♀️')
 
 # Formulario desplegable y botón de guardar
-with st.sidebar('📝 Registro de Datos'):
+with st.expander('📝 Registro de Datos'):
     Dia = st.text_input('Ingresa el Día 📆:')
     Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
     Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Press de pecho','Extension de hombro','Extension tricep en polea','Extension lateral','Extension frontal','Peso muerto','Curl femoral','Abducción','Glúteo en maquina'))
@@ -77,7 +77,7 @@ with st.sidebar('📝 Registro de Datos'):
             st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
 
 # Agregar filtros
-with st.expander('🎛️ Filtros'):
+with st.sidebar('🎛️ Filtros'):
     fecha_inicio = st.number_input('Selecciona el día de inicio:', min_value=1, max_value=31, step=1, value=1)
     fecha_fin = st.number_input('Selecciona el día de fin:', min_value=fecha_inicio, max_value=31, step=1, value=31)
     persona_filtro = st.multiselect('Selecciona las personas:', st.session_state['Progreso_ind']['Persona'].unique())
