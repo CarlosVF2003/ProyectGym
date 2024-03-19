@@ -43,12 +43,9 @@ st.dataframe(st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['
 st.header('Datos de Cinthia')
 st.dataframe(st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Cinthia'].style.set_caption("Tabla de Cinthia").applymap(lambda _: 'color: black'))
 
-# Botón para abrir el formulario principal
-if st.checkbox("📝 Abrir Formulario Principal"):
-    st.session_state['show_enfoque_form'] = True
-
-# Registro de datos
-if st.session_state.get('show_enfoque_form', False):
+# Botón desplegable para abrir el formulario principal
+with st.expander("📝 Abrir Formulario Principal"):
+    # Registro de datos
     with st.form(key='mi_formulario'):
         # Widgets de entrada
         Dia = st.text_input('Ingresa el Día 📆:')
@@ -82,21 +79,25 @@ if st.session_state.get('show_enfoque_form', False):
 # Gráfico de Líneas para Pesos Levantados
 st.header('Gráfico de Líneas para Pesos Levantados')
 fig_line = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados a lo largo del tiempo')
+fig_line.update_traces(marker=dict(color=['black', 'lightblue']))
 st.plotly_chart(fig_line)
 
 # Gráfico de Barras para Repeticiones o Sets
 st.header('Gráfico de Barras para Repeticiones o Sets')
 fig_bar = px.bar(st.session_state['Progreso_ind'], x='Dia', y='Sets', color='Persona', title='Número de Sets Realizados')
+fig_bar.update_traces(marker=dict(color=['black', 'lightblue']))
 st.plotly_chart(fig_bar)
 
 # Histograma para analizar la distribución de las repeticiones
 st.header('Histograma para Repeticiones')
 fig_hist = px.histogram(st.session_state['Progreso_ind'], x='Repeticiones', color='Persona', title='Distribución de Repeticiones')
+fig_hist.update_traces(marker=dict(color=['black', 'lightblue']))
 st.plotly_chart(fig_hist)
 
 # Diagrama de Dispersión para correlacionar peso y repeticiones
 st.header('Diagrama de Dispersión para Peso y Repeticiones')
 fig_scatter = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Correlación entre Peso y Repeticiones')
+fig_scatter.update_traces(marker=dict(color=['black', 'lightblue']))
 st.plotly_chart(fig_scatter)
 
 # Algoritmo de Machine Learning (Random Forest Regression)
