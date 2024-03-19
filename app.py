@@ -62,6 +62,7 @@ with st.expander('📝 Registro de Datos'):
                 'Dia': [Dia] * sets,
                 'Persona': [Persona] * sets,
                 'Maquina': [Maquina] * sets,
+                'Sets' : sets,
                 'Peso': pesos,
                 'Repeticiones': repeticiones,
                 'Descanso': descansos
