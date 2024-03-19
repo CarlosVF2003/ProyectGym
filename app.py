@@ -42,7 +42,7 @@ def formulario_hipertrofia_muscular(sets):
     return [peso] * sets, [repeticiones] * sets, [descanso] * sets
 
 # Título de la aplicación
-st.title('🏋️‍♂️ Nuestro Progreso en el Gimnasio 🏋️‍♀️')
+st.title('🏋️‍♂️ Nuestro Progreso en el Gym 🏋️‍♀️')
 
 # Formulario desplegable y botón de guardar
 with st.expander('📝 Registro de Datos'):
