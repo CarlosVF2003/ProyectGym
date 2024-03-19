@@ -73,32 +73,34 @@ with st.expander('📝 Registro de Datos'):
                 st.session_state['Progreso_ind'].to_csv("Progreso.csv", index=False, sep=';')
                 st.success('¡Datos guardados exitosamente!')
 
+# Mostrar tablas de datos de Carlos y Cinthia
+if 'Progreso_ind' in st.session_state:
+    st.header('Datos de Carlos')
+    df_carlos = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Carlos'].style.set_caption("Tabla de Carlos").applymap(lambda _: 'color: black')
+    st.dataframe(df_carlos)
+
+    st.header('Datos de Cinthia')
+    df_cinthia = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Cinthia'].style.set_caption("Tabla de Cinthia").applymap(lambda _: 'color: black')
+    st.dataframe(df_cinthia)
+
 # Gráficos
 if 'Progreso_ind' in st.session_state:
     st.header('Gráficos para Visualizar el Progreso')
 
     # Gráfico de Línea para Pesos Levantados
-    fig_linea = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
-    fig_linea.update_traces(line_color='rgb(0,0,0)')  # Color Negro
-    fig_linea.update_traces(line=dict(color='rgb(173,216,230)'))  # Color Celeste Claro
+    fig_linea = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados',color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
     st.plotly_chart(fig_linea)
 
     # Gráfico de Barras para Repeticiones o Sets
-    fig_barras = px.bar(st.session_state['Progreso_ind'], x='Dia', y='Repeticiones', color='Persona', title='Repeticiones')
-    fig_barras.update_traces(marker_color='rgb(0,0,0)')  # Color Negro
-    fig_barras.update_traces(marker=dict(color='rgb(173,216,230)'))  # Color Celeste Claro
+    fig_barras = px.bar(st.session_state['Progreso_ind'], x='Dia', y='Repeticiones', color='Persona', title='Repeticiones',color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
     st.plotly_chart(fig_barras)
 
     # Histograma de Pesos
-    fig_hist = px.histogram(st.session_state['Progreso_ind'], x='Peso', color='Persona', title='Histograma de Pesos')
-    fig_hist.update_traces(marker_color='rgb(0,0,0)')  # Color Negro
-    fig_hist.update_traces(marker=dict(color='rgb(173,216,230)'))  # Color Celeste Claro
+    fig_hist = px.histogram(st.session_state['Progreso_ind'], x='Peso', color='Persona', title='Histograma de Pesos',color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
     st.plotly_chart(fig_hist)
 
     # Diagrama de Dispersión Peso vs Repeticiones
-    fig_dispersion = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
-    fig_dispersion.update_traces(marker_color='rgb(0,0,0)')  # Color Negro
-    fig_dispersion.update_traces(marker=dict(color='rgb(173,216,230)'))  # Color Celeste Claro
+    fig_dispersion = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones',color_discrete_map={'Carlos': 'black', 'Cinthia': 'lightblue'})
     st.plotly_chart(fig_dispersion)
 
 
