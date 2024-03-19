@@ -15,7 +15,6 @@ if 'Progreso_ind' not in st.session_state:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
 # Definir las funciones
-# Definir las funciones
 def formulario_desarrollo_fuerza(sets):
     pesos = [st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, step=0.1, format="%.1f") for i in range(sets)]
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
@@ -85,8 +84,8 @@ with st.sidebar:
     persona_filtro = st.multiselect('Selecciona las personas:', st.session_state['Progreso_ind']['Persona'].unique())
     maquina_filtro = st.multiselect('Selecciona las máquinas:', st.session_state['Progreso_ind']['Maquina'].unique())
     enfoque_filtro = st.multiselect('Selecciona el enfoque de entrenamiento:', ['Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'])
-    peso_min = st.number_input('Peso mínimo (kg):', min_value=0, max_value=100, step=1, value=0)
-    peso_max = st.number_input('Peso máximo (kg):', min_value=peso_min, max_value=100, step=1, value=100)
+    peso_min = st.number_input('Peso mínimo (kg):', min_value=0, max_value=100, step=0.1, value=0.0)
+    peso_max = st.number_input('Peso máximo (kg):', min_value=peso_min, max_value=100, step=0.1, value=100.0)
     repeticiones_min = st.number_input('Repeticiones mínimas:', min_value=1, max_value=30, step=1, value=1)
     repeticiones_max = st.number_input('Repeticiones máximas:', min_value=repeticiones_min, max_value=30, step=1, value=30)
 
