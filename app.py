@@ -108,7 +108,7 @@ with st.expander('📓 Datos Registrados'):
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
     unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     st.dataframe(unique_values.reset_index(drop=True))
-    st.markdown(download_csv(unique_values, 'Progreso')
+    st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
 
          
 # Mostrar tablas de datos de Carlos y Cinthia
