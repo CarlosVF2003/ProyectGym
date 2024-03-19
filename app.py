@@ -95,7 +95,7 @@ with st.expander('📓 Datos Registrados'):
     unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     st.dataframe(unique_values.reset_index(drop=True))
     @st.cache_data
-    def convert_df(df):
+    def convert_df(unique_values):
         # IMPORTANT: Cache the conversion to prevent computation on every rerun
         return unique_values.to_csv().encode('utf-8')
     
