@@ -77,7 +77,7 @@ with st.expander('📝 Registro de Datos'):
             st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
 
 # Agregar filtros
-with st.sidebar('🎛️ Filtros'):
+with st.sidebar:
     fecha_inicio = st.number_input('Selecciona el día de inicio:', min_value=1, max_value=31, step=1, value=1)
     fecha_fin = st.number_input('Selecciona el día de fin:', min_value=fecha_inicio, max_value=31, step=1, value=31)
     persona_filtro = st.multiselect('Selecciona las personas:', st.session_state['Progreso_ind']['Persona'].unique())
