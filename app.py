@@ -94,11 +94,18 @@ with st.expander('📓 Datos Registrados'):
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
     unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     st.dataframe(unique_values.reset_index(drop=True))
+    @st.cache_data
+    def convert_df(df):
+        # IMPORTANT: Cache the conversion to prevent computation on every rerun
+        return unique_values.to_csv().encode('utf-8')
+    
+    unique_values = convert_df(Progreso)
+    
     st.download_button(
-    label="Download data as CSV",
-    data=unique_values,
-    file_name='Progreso.csv',
-    mime='text/csv',
+        label="Download data as CSV",
+        data=csv,
+        file_name='Progreso.csv',
+        mime='text/csv',
     )
                  
 # Mostrar tablas de datos de Carlos y Cinthia
