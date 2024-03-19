@@ -40,8 +40,7 @@ st.title('🏋️‍♂️ Nuestro Progreso en el Gimnasio 🏋️‍♀️')
 with st.expander('📝 Registro de Datos'):
     Dia = st.text_input('Ingresa el Día 📆:')
     Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
-    Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores','Press de pecho','Extension de hombro',
-                                                                'Extension tricep en polea','Extension lateral','Extension frontal'))
+    Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Press de pecho','Extension de hombro','Extension tricep en polea','Extension lateral','Extension frontal','Peso muerto','Curl femoral','Abducción','Glúteo en maquina'))
     Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
     sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
     
