@@ -81,22 +81,22 @@ if 'Progreso_ind' in st.session_state:
 
     # Gráfico de Línea para Pesos Levantados
     fig_linea = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
-    fig_linea.update_traces(line=dict(color=['black', 'lightblue']))  # Aquí se define el color para Carlos y Cinthia
+    fig_linea.update_traces(line=dict(color=['rgb(0,0,0)', 'rgb(173,216,230)']))  # Aquí se define el color para Carlos y Cinthia
     st.plotly_chart(fig_linea)
 
     # Gráfico de Barras para Repeticiones o Sets
     fig_barras = px.bar(st.session_state['Progreso_ind'], x='Dia', y='Repeticiones', color='Persona', title='Repeticiones')
-    fig_barras.update_traces(marker=dict(color=['black', 'lightblue']))  # Aquí se define el color para Carlos y Cinthia
+    fig_barras.update_traces(marker=dict(color=['rgb(0,0,0)', 'rgb(173,216,230)']))  # Aquí se define el color para Carlos y Cinthia
     st.plotly_chart(fig_barras)
 
     # Histograma de Pesos
     fig_hist = px.histogram(st.session_state['Progreso_ind'], x='Peso', color='Persona', title='Histograma de Pesos')
-    fig_hist.update_traces(marker=dict(color=['black', 'lightblue']))  # Aquí se define el color para Carlos y Cinthia
+    fig_hist.update_traces(marker=dict(color=['rgb(0,0,0)', 'rgb(173,216,230)']))  # Aquí se define el color para Carlos y Cinthia
     st.plotly_chart(fig_hist)
 
     # Diagrama de Dispersión Peso vs Repeticiones
     fig_dispersion = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
-    fig_dispersion.update_traces(marker=dict(color=['black', 'lightblue']))  # Aquí se define el color para Carlos y Cinthia
+    fig_dispersion.update_traces(marker=dict(color=['rgb(0,0,0)', 'rgb(173,216,230)']))  # Aquí se define el color para Carlos y Cinthia
     st.plotly_chart(fig_dispersion)
 
 # Algoritmo de Machine Learning (Random Forest Regression)
