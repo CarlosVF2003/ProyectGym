@@ -45,7 +45,7 @@ def formulario_hipertrofia_muscular(sets):
 
 # Función para descargar DataFrame como CSV
 def download_csv(df, filename):
-    csv = df.to_csv(index=False).encode()
+    csv = df.to_csv(index=False, encoding='utf-8-sig').encode()
     href = f'<a href="data:file/csv;base64,{b64encode(csv).decode()}" download="{filename}.csv">Descargar CSV</a>'
     return href
     
