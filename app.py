@@ -16,6 +16,10 @@ if 'Progreso_ind' not in st.session_state:
 
 # Definir las funciones
 def formulario_desarrollo_fuerza(sets):
+    if sets <= 0:
+        st.error('El número de sets debe ser mayor que 0.')
+        return [], [], []
+    
     pesos = [st.number_input(f'💪 Peso para el set {i+1}:', min_value=0, step=0.1, format="%.1f") for i in range(sets)]
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
