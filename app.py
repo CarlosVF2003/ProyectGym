@@ -72,15 +72,15 @@ with st.expander('📝 Registro de Datos'):
             # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
             if Enfoque != 'Hipertrofia Muscular':
                 st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])[['Peso', 'Repeticiones']].transform('size')
-        st.session_state['show_enfoque_form'] = False 
-        st.success('¡Datos registrados con éxito!')
-        st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
+            st.success('¡Datos registrados con éxito!')
+            st.session_state['show_enfoque_form'] = False 
+            st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
 
 with st.expander('📝 Datos Registrados'):
     st.subheader("Visualización de datos registrados")
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
     unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
-    st.write(unique_values[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']], index=False)
+    st.write(unique_values[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']], index=True)
 
 # Mostrar tablas de datos de Carlos y Cinthia
 if 'Progreso_ind' in st.session_state:
