@@ -79,7 +79,7 @@ st.dataframe(cinthia_df_styled)
 
 # Gráfico de Línea para Pesos Levantados
 fig_linea = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados por Sesión de Entrenamiento')
-fig_linea.update_traces(line=dict(color=['black', 'lightblue']))
+fig_linea.update_traces(line=dict(color=['black', 'lightblue']), selector=dict(type='scatter'))
 st.plotly_chart(fig_linea)
 
 # Gráfico de Barras para Repeticiones o Sets
