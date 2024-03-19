@@ -60,21 +60,18 @@ with st.expander('📝 Registro de Datos'):
     if form_completo:
         if st.button('Guardar'):
             for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Repeticiones': repeticion, 'Descanso': descanso, 'Sets': sets}
+                Progreso_new = pd.DataFrame({
+                    'Dia': [Dia] * sets,
+                    'Persona': [Persona] * sets,
+                    'Maquina': [Maquina] * sets,
+                    'Enfoque': [Enfoque] * sets,
+                    'Peso': peso,
+                    'Repeticiones': repeticion,
+                    'Descanso': descanso
+                })
                 st.session_state['Progreso_ind'] = st.session_state['Progreso_ind'].append(Progreso_new, ignore_index=True)
-                st.success('Datos guardados exitosamente!')
-    else:
-        st.warning('Por favor completa todos los campos antes de guardar.')
-        
-# Mostrar tablas de datos de Carlos y Cinthia
-if 'Progreso_ind' in st.session_state:
-    st.header('Datos de Carlos')
-    df_carlos = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Carlos'].style.set_caption("Tabla de Carlos").applymap(lambda _: 'color: black')
-    st.dataframe(df_carlos)
-
-    st.header('Datos de Cinthia')
-    df_cinthia = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Cinthia'].style.set_caption("Tabla de Cinthia").applymap(lambda _: 'color: black')
-    st.dataframe(df_cinthia)
+                st.session_state['Progreso_ind'].to_csv("Progreso.csv", index=False, sep=';')
+                st.success('¡Datos guardados exitosamente!')
 
 # Gráficos
 if 'Progreso_ind' in st.session_state:
@@ -82,22 +79,22 @@ if 'Progreso_ind' in st.session_state:
 
     # Gráfico de Línea para Pesos Levantados
     fig_linea = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
-    fig_linea.update_traces(line=dict(color=['rgb(0,0,0)', 'rgb(173,216,230)']))  # Aquí se define el color para Carlos y Cinthia
+    fig_linea.update_traces(line=dict(color=['#000000', '#add8e6']))  # Colores Negro y Celeste Claro en formato hexadecimal
     st.plotly_chart(fig_linea)
 
     # Gráfico de Barras para Repeticiones o Sets
     fig_barras = px.bar(st.session_state['Progreso_ind'], x='Dia', y='Repeticiones', color='Persona', title='Repeticiones')
-    fig_barras.update_traces(marker=dict(color=['rgb(0,0,0)', 'rgb(173,216,230)']))  # Aquí se define el color para Carlos y Cinthia
+    fig_barras.update_traces(marker=dict(color=['#000000', '#add8e6']))  # Colores Negro y Celeste Claro en formato hexadecimal
     st.plotly_chart(fig_barras)
 
     # Histograma de Pesos
     fig_hist = px.histogram(st.session_state['Progreso_ind'], x='Peso', color='Persona', title='Histograma de Pesos')
-    fig_hist.update_traces(marker=dict(color=['rgb(0,0,0)', 'rgb(173,216,230)']))  # Aquí se define el color para Carlos y Cinthia
+    fig_hist.update_traces(marker=dict(color=['#000000', '#add8e6']))  # Colores Negro y Celeste Claro en formato hexadecimal
     st.plotly_chart(fig_hist)
 
     # Diagrama de Dispersión Peso vs Repeticiones
     fig_dispersion = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
-    fig_dispersion.update_traces(marker=dict(color=['rgb(0,0,0)', 'rgb(173,216,230)']))  # Aquí se define el color para Carlos y Cinthia
+    fig_dispersion.update_traces(marker=dict(color=['#000000', '#add8e6']))  # Colores Negro y Celeste Claro en formato hexadecimal
     st.plotly_chart(fig_dispersion)
 
 # Algoritmo de Machine Learning (Random Forest Regression)
