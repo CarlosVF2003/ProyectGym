@@ -86,11 +86,11 @@ with st.expander('📝 Datos Registrados'):
 # Mostrar tablas de datos de Carlos y Cinthia
 if 'Progreso_ind' in st.session_state:
     st.header('Datos de Carlos')
-    df_carlos = unique_values[unique_values['Persona'] == 'Carlos'].style.set_caption("Tabla de Carlos").applymap(lambda _: 'color: black')
+    df_carlos = unique_values[unique_values['Persona'] == 'Carlos']
     st.dataframe(df_carlos.reset_index(drop=True))
 
     st.header('Datos de Cinthia')
-    df_cinthia = unique_values[unique_values['Persona'] == 'Cinthia'].style.set_caption("Tabla de Cinthia").applymap(lambda _: 'color: black')
+    df_cinthia = unique_values[unique_values['Persona'] == 'Cinthia']
     st.dataframe(df_cinthia.reset_index(drop=True))
 
 # Gráficos
