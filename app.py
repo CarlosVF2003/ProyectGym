@@ -34,7 +34,7 @@ def formulario_hipertrofia_muscular(sets):
     return [peso] * sets, [repeticiones] * sets, [descanso] * sets
 
 # Título de la aplicación
-st.title('🏋️‍♂️ Nuestro progreso en el Gimnasio 🏋️‍♀️')
+st.title('🏋️‍♂️ Nuestro Progreso en el Gimnasio 🏋️‍♀️')
 
 # Mostrar tablas de datos de Carlos y Cinthia
 st.header('Datos de Carlos')
@@ -79,7 +79,7 @@ with st.expander("📝 Abrir Formulario Principal"):
 # Gráfico de Líneas para Pesos Levantados
 st.header('Gráfico de Líneas para Pesos Levantados')
 fig_line = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados a lo largo del tiempo')
-fig_line.update_traces(marker=dict(color=['black', 'lightblue']))
+fig_line.update_traces(marker=dict(color=['black', 'lightblue']), line=dict(width=2))
 st.plotly_chart(fig_line)
 
 # Gráfico de Barras para Repeticiones o Sets
@@ -88,7 +88,7 @@ fig_bar = px.bar(st.session_state['Progreso_ind'], x='Dia', y='Sets', color='Per
 fig_bar.update_traces(marker=dict(color=['black', 'lightblue']))
 st.plotly_chart(fig_bar)
 
-# Histograma para analizar la distribución de las repeticiones
+# Histograma para analizar la distribución de repeticiones
 st.header('Histograma para Repeticiones')
 fig_hist = px.histogram(st.session_state['Progreso_ind'], x='Repeticiones', color='Persona', title='Distribución de Repeticiones')
 fig_hist.update_traces(marker=dict(color=['black', 'lightblue']))
