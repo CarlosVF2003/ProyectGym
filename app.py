@@ -76,26 +76,17 @@ with st.expander('📝 Registro de Datos'):
             st.session_state['show_enfoque_form'] = False 
             st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
 
-
-# Filtros
-st.sidebar.title('Filtros')
-if 'Progreso_ind' in st.session_state:
-    with st.sidebar.expander('Filtros Avanzados'):
-        # Filtro de Fecha
-        fecha_inicio = st.date_input('Fecha de inicio:', min_value=st.session_state['Progreso_ind']['Dia'].min(), max_value=st.session_state['Progreso_ind']['Dia'].max())
-        fecha_fin = st.date_input('Fecha de fin:', min_value=st.session_state['Progreso_ind']['Dia'].min(), max_value=st.session_state['Progreso_ind']['Dia'].max())
-        
-        # Filtro de Persona
-        personas = st.multiselect('Seleccionar Persona:', st.session_state['Progreso_ind']['Persona'].unique())
-        
-        # Filtro de Máquina
-        maquinas = st.multiselect('Seleccionar Máquinas:', st.session_state['Progreso_ind']['Maquina'].unique())
-        
-        # Filtro de Enfoque de Entrenamiento
-        enfoques = st.multiselect('Seleccionar Enfoque de Entrenamiento:', st.session_state['Progreso_ind']['Enfoque'].unique())
-        
-        # Filtro de Número de Sets
-        num_sets = st.slider('Número de Sets:', min_value=st.session_state['Progreso_ind']['Sets'].min(), max_value=st.session_state['Progreso_ind']['Sets'].max())
+# Agregar filtros
+with st.expander('🎛️ Filtros'):
+    fecha_inicio = st.number_input('Selecciona el día de inicio:', min_value=1, max_value=31, step=1, value=1)
+    fecha_fin = st.number_input('Selecciona el día de fin:', min_value=fecha_inicio, max_value=31, step=1, value=31)
+    persona_filtro = st.multiselect('Selecciona las personas:', st.session_state['Progreso_ind']['Persona'].unique())
+    maquina_filtro = st.multiselect('Selecciona las máquinas:', st.session_state['Progreso_ind']['Maquina'].unique())
+    enfoque_filtro = st.multiselect('Selecciona el enfoque de entrenamiento:', ['Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'])
+    peso_min = st.number_input('Peso mínimo (kg):', min_value=0, max_value=100, step=1, value=0)
+    peso_max = st.number_input('Peso máximo (kg):', min_value=peso_min, max_value=100, step=1, value=100)
+    repeticiones_min = st.number_input('Repeticiones mínimas:', min_value=1, max_value=30, step=1, value=1)
+    repeticiones_max = st.number_input('Repeticiones máximas:', min_value=repeticiones_min, max_value=30, step=1, value=30)
 
 
 with st.expander('📓 Datos Registrados'):
