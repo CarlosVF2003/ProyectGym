@@ -99,7 +99,7 @@ with st.expander('📓 Datos Registrados'):
     data=unique_values,
     file_name='Progreso.csv',
     mime='text/csv',
-)
+    )
                  
 # Mostrar tablas de datos de Carlos y Cinthia
 with st.expander('🤵‍♂️ Tabla de datos de Carlos'):
