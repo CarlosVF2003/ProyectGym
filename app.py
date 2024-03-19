@@ -87,11 +87,12 @@ if 'Progreso_ind' in st.session_state:
 if 'Progreso_ind' in st.session_state:
     st.header('Gráficos para Visualizar el Progreso')
 
-     # Gráfico de Línea para Pesos Levantados
+    # Gráfico de Línea para Pesos Levantados
     fig_linea = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
     # Asignar colores a cada categoría
-    fig_linea.update_traces(line_color=['rgb(0,0,0)', 'rgb(173,216,230)'])  # Negro para Carlos y celeste claro para Cinthia
+    fig_linea.update_traces(line=dict(color=['rgb(0,0,0)', 'rgb(173,216,230)']))  # Negro para Carlos y celeste claro para Cinthia
     st.plotly_chart(fig_linea)
+
 
 
     # Gráfico de Barras para Repeticiones o Sets
