@@ -67,35 +67,38 @@ with st.expander('📝 Registro de Datos'):
         st.warning('Por favor completa todos los campos antes de guardar.')
         
 # Mostrar tablas de datos de Carlos y Cinthia
-st.header('Datos de Carlos')
-carlos_df = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Carlos']
-carlos_df_styled = carlos_df.style.set_caption("Tabla de Carlos").format("{:.1f}", subset=['Peso']).bar(color='lightgrey', vmin=0)
-st.dataframe(carlos_df_styled)
+if 'Progreso_ind' in st.session_state:
+    st.header('Datos de Carlos')
+    df_carlos = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Carlos'].style.set_caption("Tabla de Carlos").applymap(lambda _: 'color: black')
+    st.dataframe(df_carlos)
 
-st.header('Datos de Cinthia')
-cinthia_df = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Cinthia']
-cinthia_df_styled = cinthia_df.style.set_caption("Tabla de Cinthia").format("{:.1f}", subset=['Peso']).bar(color='lightgrey', vmin=0)
-st.dataframe(cinthia_df_styled)
+    st.header('Datos de Cinthia')
+    df_cinthia = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Cinthia'].style.set_caption("Tabla de Cinthia").applymap(lambda _: 'color: lightblue')
+    st.dataframe(df_cinthia)
 
-# Gráfico de Línea para Pesos Levantados
-fig_linea = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados por Sesión de Entrenamiento')
-fig_linea.update_traces(line=dict(color=['black', 'lightblue']), selector=dict(type='scatter'))
-st.plotly_chart(fig_linea)
+# Gráficos
+if 'Progreso_ind' in st.session_state:
+    st.header('Gráficos para Visualizar el Progreso')
 
-# Gráfico de Barras para Repeticiones o Sets
-fig_barras = px.bar(st.session_state['Progreso_ind'], x='Dia', y='Repeticiones', color='Persona', title='Repeticiones por Sesión de Entrenamiento')
-fig_barras.update_traces(marker_color=['black', 'lightblue'])
-st.plotly_chart(fig_barras)
+    # Gráfico de Línea para Pesos Levantados
+    fig_linea = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
+    fig_linea.update_traces(line=dict(color=['black', 'lightblue']), selector=dict(type='scatter'))
+    st.plotly_chart(fig_linea)
 
-# Histograma para Distribución de Repeticiones
-fig_histograma = px.histogram(st.session_state['Progreso_ind'], x='Repeticiones', color='Persona', title='Distribución de Repeticiones')
-fig_histograma.update_traces(marker_color=['black', 'lightblue'])
-st.plotly_chart(fig_histograma)
+    # Gráfico de Barras para Repeticiones o Sets
+    fig_barras = px.bar(st.session_state['Progreso_ind'], x='Dia', y='Repeticiones', color='Persona', title='Repeticiones')
+    fig_barras.update_traces(marker=dict(color=['black', 'lightblue']))
+    st.plotly_chart(fig_barras)
 
-# Diagrama de Dispersión para Peso vs Repeticiones
-fig_dispersion = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
-fig_dispersion.update_traces(marker_color=['black', 'lightblue'])
-st.plotly_chart(fig_dispersion)
+    # Histograma de Pesos
+    fig_hist = px.histogram(st.session_state['Progreso_ind'], x='Peso', color='Persona', title='Histograma de Pesos')
+    fig_hist.update_traces(marker=dict(color=['black', 'lightblue']))
+    st.plotly_chart(fig_hist)
+
+    # Diagrama de Dispersión Peso vs Repeticiones
+    fig_dispersion = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
+    fig_dispersion.update_traces(marker=dict(color=['black', 'lightblue']))
+    st.plotly_chart(fig_dispersion)
 
 # Algoritmo de Machine Learning (Random Forest Regression)
 st.header('Algoritmo de Machine Learning: Random Forest Regression')
