@@ -1,4 +1,3 @@
-# Importar librerias
 import pandas as pd
 import streamlit as st
 import plotly.express as px
@@ -82,7 +81,7 @@ if 'Progreso_ind' in st.session_state:
 
     # Gráfico de Línea para Pesos Levantados
     fig_linea = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
-    fig_linea.update_traces(selector=dict(type='scatter'), line=dict(color=['black', 'lightblue']))
+    fig_linea.update_traces(line=dict(color=['black', 'lightblue']))
     st.plotly_chart(fig_linea)
 
     # Gráfico de Barras para Repeticiones o Sets
