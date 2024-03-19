@@ -99,7 +99,7 @@ with st.expander('📓 Datos Registrados'):
         # IMPORTANT: Cache the conversion to prevent computation on every rerun
         return unique_values.to_csv().encode('utf-8')
     
-    unique_values = convert_df(Progreso)
+    unique_values = convert_df(my_Progreso)
     
     st.download_button(
         label="Download data as CSV",
