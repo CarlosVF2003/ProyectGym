@@ -58,25 +58,22 @@ with st.expander('📝 Registro de Datos'):
     # Si el formulario está completo, guardar los datos
     if form_completo:
         if st.button('Guardar'):
-            for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-                Progreso_new = pd.DataFrame({
-                    'Dia': [Dia] * sets,
-                    'Persona': [Persona] * sets,
-                    'Maquina': [Maquina] * sets,
-                    'Enfoque': [Enfoque] * sets,
-                    'Peso': peso,
-                    'Repeticiones': repeticion,
-                    'Descanso': descanso
-                })
-                st.session_state['Progreso_ind'] = st.session_state['Progreso_ind'].append(Progreso_new, ignore_index=True)
+            Progreso_new = pd.DataFrame({
+                'Dia': [Dia] * sets,
+                'Persona': [Persona] * sets,
+                'Maquina': [Maquina] * sets,
+                'Enfoque': [Enfoque] * sets,
+                'Peso': pesos,
+                'Repeticiones': repeticiones,
+                'Descanso': descansos
+            })
+            st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], Progreso_new], ignore_index=True)
             # Guardar el DataFrame actualizado en un archivo CSV
             # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
             st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])['Peso'].transform('size')
             st.session_state['show_enfoque_form'] = False 
             st.success('¡Datos registrados con éxito!')
-            st.session_state['Progreso_ind'].to_csv('Progreso.csv', index= False, sep= ';')
-               
-
+            st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
 
 # Mostrar tablas de datos de Carlos y Cinthia
 if 'Progreso_ind' in st.session_state:
@@ -123,7 +120,6 @@ if 'Progreso_ind' in st.session_state:
     # Actualizar el color de Cinthia a celeste claro
     fig_dispersion.update_traces(marker=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
     st.plotly_chart(fig_dispersion)
-
 
 # Algoritmo de Machine Learning (Random Forest Regression)
 st.header('Algoritmo de Machine Learning: Random Forest Regression')
