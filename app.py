@@ -43,9 +43,10 @@ st.dataframe(st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['
 st.header('Datos de Cinthia')
 st.dataframe(st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Persona'] == 'Cinthia'].style.set_caption("Tabla de Cinthia").applymap(lambda _: 'color: black'))
 
-# Registro de datos
-with st.form(key='mi_formulario'):
-    # Widgets de entrada
+# Formulario desplegable y botón de guardar
+form_expanded = st.form(key='mi_formulario_expandido')
+with form_expanded:
+    st.write('## 📝 Registro de Datos')
     Dia = st.text_input('Ingresa el Día 📆:')
     Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
     Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Prensa de Piernas', 'Multipowers', 'Máquina de Extensión de Cuádriceps', 'Máquina de Femorales', 'Máquina de Aductores', 'Máquina de Abductores','Press de pecho','Extension de hombro',
@@ -66,10 +67,11 @@ with st.form(key='mi_formulario'):
     
     # Si el formulario está completo, guardar los datos
     if form_completo:
-        for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
-            Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Repeticiones': repeticion, 'Descanso': descanso, 'Sets': sets}
-            st.session_state['Progreso_ind'] = st.session_state['Progreso_ind'].append(Progreso_new, ignore_index=True)
-            st.success('Datos guardados exitosamente!')
+        if st.form_submit_button('Guardar'):
+            for peso, repeticion, descanso in zip(pesos, repeticiones, descansos):
+                Progreso_new = {'Dia': Dia, 'Persona': Persona, 'Maquina': Maquina, 'Peso': peso, 'Repeticiones': repeticion, 'Descanso': descanso, 'Sets': sets}
+                st.session_state['Progreso_ind'] = st.session_state['Progreso_ind'].append(Progreso_new, ignore_index=True)
+                st.success('Datos guardados exitosamente!')
     else:
         st.warning('Por favor completa todos los campos antes de guardar.')
 
@@ -86,7 +88,7 @@ fig_bar.update_traces(marker=dict(color=['black', 'lightblue']))
 st.plotly_chart(fig_bar)
 
 # Histograma para analizar la distribución de repeticiones
-st.header('Histograma para Repeticiones')
+st.header('Histograma para Distribución de Repeticiones')
 fig_hist = px.histogram(st.session_state['Progreso_ind'], x='Repeticiones', color='Persona', title='Distribución de Repeticiones')
 fig_hist.update_traces(marker=dict(color=['black', 'lightblue']))
 st.plotly_chart(fig_hist)
