@@ -12,7 +12,7 @@ from base64 import b64encode
 # Cargar el archivo Progreso.csv si existe
 if 'Progreso_ind' not in st.session_state:
     if Path("Progreso.csv").is_file():
-        st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv", sep=',')
+        st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv")
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
