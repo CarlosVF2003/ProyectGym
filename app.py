@@ -132,33 +132,20 @@ with st.expander('🙍 Tabla de datos de Cinthia'):
 # Gráficos
 if 'Progreso_ind' in st.session_state:
     st.header('Gráficos para Visualizar el Progreso')
-    # Luego, creamos una columna para los ejercicios de pierna y brazo
+    # Añadir una columna para los músculos
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal']), 'Musculo'] = 'Brazo'
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto','Curl femoral','Abducción','Glúteo en maquina','Leg press','Hack squat','Aducción','Leg extension']), 'Musculo'] = 'Pierna'
     
-    # Ahora, creamos una gráfica de línea para cada tipo de ejercicio
-    plt.figure(figsize=(10, 5))
-    
-    # Filtramos el DataFrame para ejercicios de pierna y brazo
+    # Filtrar por músculo
     df_pierna = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Musculo'] == 'Pierna']
     df_brazo = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Musculo'] == 'Brazo']
     
-    # Gráfica para ejercicios de pierna
-    plt.plot(df_pierna['Fecha'], df_pierna['Peso'], label='Pierna', marker='o')
+    # Gráficos con Plotly
+    fig = px.line(df_pierna, x='Fecha', y='Peso', title='Progreso de Peso Levantado (Pierna)', markers=True)
+    st.plotly_chart(fig)
     
-    # Gráfica para ejercicios de brazo
-    plt.plot(df_brazo['Fecha'], df_brazo['Peso'], label='Brazo', marker='x')
-    
-    # Añadimos detalles a la gráfica
-    plt.title('Progreso de Peso Levantado')
-    plt.xlabel('Fecha')
-    plt.ylabel('Peso (kg)')
-    plt.legend()
-    plt.xticks(rotation=45) # Rota las fechas para mejor visualización
-    plt.tight_layout() # Ajusta la disposición para evitar solapamientos
-    
-    # Mostramos la gráfica
-    plt.show()
+    fig = px.line(df_brazo, x='Fecha', y='Peso', title='Progreso de Peso Levantado (Brazo)', markers=True)
+    st.plotly_chart(fig)
     
     # Gráfico de Línea para Pesos Levantados
     fig_linea = px.line(df_filtred, x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
