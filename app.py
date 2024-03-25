@@ -131,7 +131,7 @@ with st.expander('🙍 Tabla de datos de Cinthia'):
 
 # Gráficos
 if 'Progreso_ind' in st.session_state:
-    st.header('Gráficos para Visualizar el Progreso')
+     st.header('Gráficos para Visualizar el Progreso')
     # Añadir una columna para los músculos
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal']), 'Musculo'] = 'Brazo'
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto','Curl femoral','Abducción','Glúteo en maquina','Leg press','Hack squat','Aducción','Leg extension']), 'Musculo'] = 'Pierna'
@@ -141,41 +141,33 @@ if 'Progreso_ind' in st.session_state:
     df_brazo = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Musculo'] == 'Brazo']
     
     # Gráficos con Plotly
-    fig = px.line(df_pierna, x='Fecha', y='Peso', title='Progreso de Peso Levantado (Pierna)', markers=True)
-    st.plotly_chart(fig)
+    fig_pierna = px.line(df_pierna, x='Dia', y='Peso', title='Progreso de Peso Levantado (Pierna)', markers=True)
+    st.plotly_chart(fig_pierna)
     
-    fig = px.line(df_brazo, x='Fecha', y='Peso', title='Progreso de Peso Levantado (Brazo)', markers=True)
-    st.plotly_chart(fig)
-    
+    fig_brazo = px.line(df_brazo, x='Dia', y='Peso', title='Progreso de Peso Levantado (Brazo)', markers=True)
+    st.plotly_chart(fig_brazo)
+
     # Gráfico de Línea para Pesos Levantados
     fig_linea = px.line(df_filtred, x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
-    # Actualizar el color de Carlos a negro
     fig_linea.update_traces(line=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
-    # Actualizar el color de Cinthia a celeste claro
     fig_linea.update_traces(line=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
     st.plotly_chart(fig_linea)
 
     # Gráfico de Barras para Repeticiones o Sets
     fig_barras = px.bar(df_filtred, x='Dia', y='Repeticiones', color='Persona', title='Repeticiones')
-    # Actualizar el color de Carlos a negro
     fig_barras.update_traces(marker=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
-    # Actualizar el color de Cinthia a celeste claro
     fig_barras.update_traces(marker=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
     st.plotly_chart(fig_barras)
 
     # Histograma de Pesos
     fig_hist = px.histogram(df_filtred, x='Peso', color='Persona', title='Histograma de Pesos')
-    # Actualizar el color de Carlos a negro
     fig_hist.update_traces(marker=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
-    # Actualizar el color de Cinthia a celeste claro
     fig_hist.update_traces(marker=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
     st.plotly_chart(fig_hist)
 
     # Diagrama de Dispersión Peso vs Repeticiones
     fig_dispersion = px.scatter(df_filtred, x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
-    # Actualizar el color de Carlos a negro
     fig_dispersion.update_traces(marker=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
-    # Actualizar el color de Cinthia a celeste claro
     fig_dispersion.update_traces(marker=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
     st.plotly_chart(fig_dispersion)
 
