@@ -75,6 +75,12 @@ with st.expander('📝 Registro de Datos'):
     
     # Si el formulario está completo, guardar los datos
     if form_completo:
+        if Maquina in ['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal']:
+        musculo = 'Brazo'
+        elif Maquina in ['Peso muerto', 'Curl femoral', 'Abducción', 'Glúteo en maquina', 'Leg press', 'Hack squat', 'Aducción', 'Leg extension']:
+            musculo = 'Pierna'
+        else:
+            musculo = 'Desconocido'
         if st.button('Guardar'):
             Progreso_new = pd.DataFrame({
                 'Dia': [Dia] * sets,
