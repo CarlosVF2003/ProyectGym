@@ -150,36 +150,37 @@ if 'Progreso_ind' in st.session_state:
     df_pierna = df_filtred[df_filtred['Musculo'] == 'Pierna']
     df_brazo = df_filtred[df_filtred['Musculo'] == 'Brazo']
     
-    # Gráficos con Plotly
-    fig_pierna = px.line(df_pierna, x='Dia', y='Peso', title='Progreso de Peso Levantado (Pierna)', markers=True)
+     # Gráficos con Plotly
+    fig_pierna = px.line(df_pierna.reset_index(), x=df_pierna.reset_index()['index'] + 1, y='Peso', title='Progreso de Peso Levantado (Pierna)', markers=True, color='Persona')
     st.plotly_chart(fig_pierna)
     
-    fig_brazo = px.line(df_brazo, x='Dia', y='Peso', title='Progreso de Peso Levantado (Brazo)', markers=True)
+    fig_brazo = px.line(df_brazo.reset_index(), x=df_brazo.reset_index()['index'] + 1, y='Peso', title='Progreso de Peso Levantado (Brazo)', markers=True, color='Persona')
     st.plotly_chart(fig_brazo)
-
+    
     # Gráfico de Línea para Pesos Levantados
-    fig_linea = px.line(df_filtred, x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
+    fig_linea = px.line(df_filtred.reset_index(), x=df_filtred.reset_index()['index'] + 1, y='Peso', color='Persona', title='Pesos Levantados')
     fig_linea.update_traces(line=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
     fig_linea.update_traces(line=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
     st.plotly_chart(fig_linea)
-
+    
     # Gráfico de Barras para Repeticiones o Sets
-    fig_barras = px.bar(df_filtred, x='Dia', y='Repeticiones', color='Persona', title='Repeticiones')
+    fig_barras = px.bar(df_filtred.reset_index(), x=df_filtred.reset_index()['index'] + 1, y='Repeticiones', color='Persona', title='Repeticiones')
     fig_barras.update_traces(marker=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
     fig_barras.update_traces(marker=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
     st.plotly_chart(fig_barras)
-
+    
     # Histograma de Pesos
     fig_hist = px.histogram(df_filtred, x='Peso', color='Persona', title='Histograma de Pesos')
     fig_hist.update_traces(marker=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
     fig_hist.update_traces(marker=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
     st.plotly_chart(fig_hist)
-
+    
     # Diagrama de Dispersión Peso vs Repeticiones
-    fig_dispersion = px.scatter(df_filtred, x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
+    fig_dispersion = px.scatter(df_filtred.reset_index(), x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
     fig_dispersion.update_traces(marker=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
     fig_dispersion.update_traces(marker=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
     st.plotly_chart(fig_dispersion)
+
 
 # Algoritmo de Machine Learning (Random Forest Regression)
 st.header('Algoritmo de Machine Learning: Random Forest Regression')
