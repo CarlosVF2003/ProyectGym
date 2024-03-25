@@ -99,35 +99,14 @@ with st.sidebar:
     fecha_fin = st.number_input('Selecciona el día de fin:', min_value=fecha_inicio, max_value=31, step=1, value=31)
     persona_filtro = st.multiselect('Selecciona las personas:', st.session_state['Progreso_ind']['Persona'].unique())
     maquina_filtro = st.multiselect('Selecciona las máquinas:', st.session_state['Progreso_ind']['Maquina'].unique())
-    enfoque_filtro = st.multiselect('Selecciona el enfoque de entrenamiento:', ['Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'])
-    peso_min = st.number_input('Peso mínimo (kg):', min_value=0.0, max_value=100.0, step=0.1, value=0.0)
-    peso_max = st.number_input('Peso máximo (kg):', min_value=peso_min, max_value=100.0, step=0.1, value=100.0)
-    repeticiones_min = st.number_input('Repeticiones mínimas:', min_value=1, max_value=30, step=1, value=1)
-    repeticiones_max = st.number_input('Repeticiones máximas:', min_value=repeticiones_min, max_value=30, step=1, value=30)
-# Aplicar filtros a los datos
-filtered_data = unique_values[
-    (unique_values['Dia'] >= fecha_inicio) & 
-    (unique_values['Dia'] <= fecha_fin) & 
-    (unique_values['Persona'].isin(persona_filtro)) & 
-    (unique_values['Maquina'].isin(maquina_filtro)) & 
-    (unique_values['Enfoque'].isin(enfoque_filtro)) & 
-    (unique_values['Peso'] >= peso_min) & 
-    (unique_values['Peso'] <= peso_max) & 
-    (unique_values['Repeticiones'] >= repeticiones_min) & 
-    (unique_values['Repeticiones'] <= repeticiones_max)
+
+# Filtrar los datos según las selecciones del usuario
+st.session_state['Progreso_ind'] = st.session_state['Progreso_ind'][
+    (st.session_state['Progreso_ind']['Dia'].astype(int) >= fecha_inicio) & 
+    (st.session_state['Progreso_ind']['Dia'].astype(int) <= fecha_fin) &
+    (st.session_state['Progreso_ind']['Persona'].isin(persona_filtro)) &
+    (st.session_state['Progreso_ind']['Maquina'].isin(maquina_filtro))
 ]
-
-# Mostrar los datos filtrados
-st.dataframe(filtered_data.reset_index(drop=True))
-st.markdown(download_csv(filtered_data, 'Progreso_filtrado'), unsafe_allow_html=True)
-
-
-with st.expander('📓 Datos Registrados'):
-    st.subheader("Visualización de datos registrados")
-    # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
-    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
-    st.dataframe(unique_values.reset_index(drop=True))
-    st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
 
          
 # Mostrar tablas de datos de Carlos y Cinthia
