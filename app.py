@@ -139,11 +139,13 @@ if 'Progreso_ind' in st.session_state:
     plt.figure(figsize=(10, 5))
     
     # Gráfica para ejercicios de pierna
-    plt.plot(st.session_state['Progreso_ind']['Fecha'], st.session_state['Progreso_ind']['Musculo'], label='Pierna', marker='o')
+    df_pierna = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Musculo'] == 'Pierna']
+    plt.plot(df_pierna['Fecha'], df_pierna['Peso'], label='Pierna', marker='o')
     
     # Gráfica para ejercicios de brazo
-    plt.plot(st.session_state['Progreso_ind']['Fecha'], st.session_state['Progreso_ind']['Musculo'], label='Brazo', marker='x')
-    
+    df_brazo = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Musculo'] == 'Brazo']
+    plt.plot(df_brazo['Fecha'], df_brazo['Peso'], label='Brazo', marker='x')
+
     # Añadimos detalles a la gráfica
     plt.title('Progreso de Peso Levantado')
     plt.xlabel('Fecha')
