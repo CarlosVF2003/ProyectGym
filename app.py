@@ -91,8 +91,15 @@ with st.expander('📝 Registro de Datos'):
                 st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])[['Peso', 'Repeticiones']].transform('size')
             st.success('¡Datos registrados con éxito!')
             st.session_state['show_enfoque_form'] = False 
-            st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=',')
+            st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)
 
+with st.expander('📓 Datos Registrados'):
+    st.subheader("Visualización de datos registrados")
+    # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
+    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
+    st.dataframe(unique_values.reset_index(drop=True))
+    st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
+    
 # Agregar filtros
 with st.sidebar:
     fecha_inicio = st.number_input('Selecciona el día de inicio:', min_value=1, max_value=31, step=1, value=1)
