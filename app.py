@@ -73,7 +73,7 @@ with st.expander('📝 Registro de Datos'):
     # Verificar que ambos formularios estén completos
     form_completo = all(pesos) and all(repeticiones) and all(descansos)
     
-    # Si el formulario está completo, guardar los datos
+
     # Si el formulario está completo, guardar los datos
     if form_completo:
         if Maquina in ['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal']:
@@ -150,18 +150,25 @@ if 'Progreso_ind' in st.session_state:
     df_pierna = df_filtred[df_filtred['Musculo'] == 'Pierna']
     df_brazo = df_filtred[df_filtred['Musculo'] == 'Brazo']
     
-     # Gráficos con Plotly
-    fig_pierna = px.line(df_pierna.reset_index(), x=df_pierna.reset_index()['index'] + 1, y='Peso', title='Progreso de Peso Levantado (Pierna)', markers=True, color='Persona')
+    # Gráficos con Plotly
+    fig_pierna = px.line(df_pierna.reset_index(), x=df_pierna.reset_index().index + 1, y='Peso', title='Progreso de Peso Levantado (Pierna)', markers=True, color='Persona')
     st.plotly_chart(fig_pierna)
     
-    fig_brazo = px.line(df_brazo.reset_index(), x=df_brazo.reset_index()['index'] + 1, y='Peso', title='Progreso de Peso Levantado (Brazo)', markers=True, color='Persona')
+    fig_brazo = px.line(df_brazo.reset_index(), x=df_brazo.reset_index().index + 1, y='Peso', title='Progreso de Peso Levantado (Brazo)', markers=True, color='Persona')
     st.plotly_chart(fig_brazo)
     
     # Gráfico de Línea para Pesos Levantados
-    fig_linea = px.line(df_filtred.reset_index(), x=df_filtred.reset_index()['index'] + 1, y='Peso', color='Persona', title='Pesos Levantados')
-    fig_linea.update_traces(line=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
-    fig_linea.update_traces(line=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
-    st.plotly_chart(fig_linea)
+    fig_linea_carlos = px.line(df_carlos.reset_index(), x=df_carlos.reset_index().index + 1, y='Peso', title='Pesos Levantados - Carlos', color='Persona')
+    fig_linea_cinthia = px.line(df_cinthia.reset_index(), x=df_cinthia.reset_index().index + 1, y='Peso', title='Pesos Levantados - Cinthia', color='Persona')
+    
+    fig_linea_carlos.update_traces(line=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
+    fig_linea_carlos.update_traces(line=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
+    
+    fig_linea_cinthia.update_traces(line=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
+    fig_linea_cinthia.update_traces(line=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
+    
+    st.plotly_chart(fig_linea_carlos)
+    st.plotly_chart(fig_linea_cinthia)
     
     # Gráfico de Barras para Repeticiones o Sets
     fig_barras = px.bar(df_filtred.reset_index(), x=df_filtred.reset_index()['index'] + 1, y='Repeticiones', color='Persona', title='Repeticiones')
