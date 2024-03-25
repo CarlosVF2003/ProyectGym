@@ -99,6 +99,7 @@ with st.expander('📓 Datos Registrados'):
     unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     st.dataframe(unique_values.reset_index(drop=True))
     st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
+    df_filtred = unique_values
     
 # Agregar filtros
 with st.sidebar:
@@ -108,31 +109,23 @@ with st.sidebar:
    
     if st.button('Aplicar'):
         # Filtrar los datos según las selecciones del usuario
-        st.session_state['Progreso_ind'] = unique_values
-        st.session_state['Progreso_ind'] = st.session_state['Progreso_ind'][
+        df_filtred = st.session_state['Progreso_ind'][
             (st.session_state['Progreso_ind']['Dia'].astype(int) >= fecha_inicio) & 
             (st.session_state['Progreso_ind']['Dia'].astype(int) <= fecha_fin) &
             (st.session_state['Progreso_ind']['Persona'].isin(persona_filtro)) 
         ]
-
-with st.expander('📓 Datos Registrados'):
-    st.subheader("Visualización de datos registrados")
-    # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
-    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
-    st.dataframe(unique_values.reset_index(drop=True))
-    st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
          
 # Mostrar tablas de datos de Carlos y Cinthia
 with st.expander('🤵‍♂️ Tabla de datos de Carlos'):
     if 'Progreso_ind' in st.session_state:
         st.header('Datos de Carlos')
-        df_carlos = unique_values[unique_values['Persona'] == 'Carlos']
+        df_carlos = df_filtred[df_filtred['Persona'] == 'Carlos']
         st.dataframe(df_carlos.reset_index(drop=True))
 
 with st.expander('🙍 Tabla de datos de Cinthia'):
     if 'Progreso_ind' in st.session_state:
         st.header('Datos de Cinthia')
-        df_cinthia = unique_values[unique_values['Persona'] == 'Cinthia']
+        df_cinthia = df_filtred[df_filtred['Persona'] == 'Cinthia']
         st.dataframe(df_cinthia.reset_index(drop=True))
 
 # Gráficos
@@ -140,7 +133,7 @@ if 'Progreso_ind' in st.session_state:
     st.header('Gráficos para Visualizar el Progreso')
 
     # Gráfico de Línea para Pesos Levantados
-    fig_linea = px.line(st.session_state['Progreso_ind'], x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
+    fig_linea = px.line(df_filtred, x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
     # Actualizar el color de Carlos a negro
     fig_linea.update_traces(line=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
     # Actualizar el color de Cinthia a celeste claro
@@ -148,7 +141,7 @@ if 'Progreso_ind' in st.session_state:
     st.plotly_chart(fig_linea)
 
     # Gráfico de Barras para Repeticiones o Sets
-    fig_barras = px.bar(st.session_state['Progreso_ind'], x='Dia', y='Repeticiones', color='Persona', title='Repeticiones')
+    fig_barras = px.bar(df_filtred, x='Dia', y='Repeticiones', color='Persona', title='Repeticiones')
     # Actualizar el color de Carlos a negro
     fig_barras.update_traces(marker=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
     # Actualizar el color de Cinthia a celeste claro
@@ -156,7 +149,7 @@ if 'Progreso_ind' in st.session_state:
     st.plotly_chart(fig_barras)
 
     # Histograma de Pesos
-    fig_hist = px.histogram(st.session_state['Progreso_ind'], x='Peso', color='Persona', title='Histograma de Pesos')
+    fig_hist = px.histogram(df_filtred, x='Peso', color='Persona', title='Histograma de Pesos')
     # Actualizar el color de Carlos a negro
     fig_hist.update_traces(marker=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
     # Actualizar el color de Cinthia a celeste claro
@@ -164,7 +157,7 @@ if 'Progreso_ind' in st.session_state:
     st.plotly_chart(fig_hist)
 
     # Diagrama de Dispersión Peso vs Repeticiones
-    fig_dispersion = px.scatter(st.session_state['Progreso_ind'], x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
+    fig_dispersion = px.scatter(df_filtred, x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
     # Actualizar el color de Carlos a negro
     fig_dispersion.update_traces(marker=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
     # Actualizar el color de Cinthia a celeste claro
@@ -173,8 +166,8 @@ if 'Progreso_ind' in st.session_state:
 
 # Algoritmo de Machine Learning (Random Forest Regression)
 st.header('Algoritmo de Machine Learning: Random Forest Regression')
-X = st.session_state['Progreso_ind'][['Repeticiones', 'Sets']]
-y = st.session_state['Progreso_ind']['Peso']
+X = df_filtred[['Repeticiones', 'Sets']]
+y = df_filtred['Peso']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 model = RandomForestRegressor()
 model.fit(X_train, y_train)
