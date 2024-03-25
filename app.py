@@ -12,7 +12,7 @@ from base64 import b64encode
 # Cargar el archivo Progreso.csv si existe
 if 'Progreso_ind' not in st.session_state:
     if Path("Progreso.csv").is_file():
-        st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv", sep=';')
+        st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv", sep=',')
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
@@ -91,7 +91,7 @@ with st.expander('📝 Registro de Datos'):
                 st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])[['Peso', 'Repeticiones']].transform('size')
             st.success('¡Datos registrados con éxito!')
             st.session_state['show_enfoque_form'] = False 
-            st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=';')
+            st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False, sep=',')
 
 # Agregar filtros
 with st.sidebar:
