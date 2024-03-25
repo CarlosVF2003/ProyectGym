@@ -104,8 +104,8 @@ with st.expander('📓 Datos Registrados'):
 with st.sidebar:
     fecha_inicio = st.number_input('Selecciona el día de inicio:', min_value=1, max_value=31, step=1, value=1)
     fecha_fin = st.number_input('Selecciona el día de fin:', min_value=fecha_inicio, max_value=31, step=1, value=31)
-    persona_filtro = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
-    maquina_filtro = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal','Peso muerto','Curl femoral','Abducción'
+    persona_filtro = st.selectbox('Selecciona tu nombre:', ('Carlos', 'Cinthia'))
+    maquina_filtro = st.selectbox('Selecciona una máquina:', ('Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal','Peso muerto','Curl femoral','Abducción'
                                                           ,'Glúteo en maquina','Leg press','Hack squat','Aducción','Leg extension'))
 
     if st.button('Aplicar'):
