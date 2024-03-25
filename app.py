@@ -137,14 +137,15 @@ with st.expander('🙍 Tabla de datos de Cinthia'):
 
 # Gráficos
 if 'Progreso_ind' in st.session_state:
-     st.header('Gráficos para Visualizar el Progreso')
+    st.header('Gráficos para Visualizar el Progreso')
     # Añadir una columna para los músculos
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal']), 'Musculo'] = 'Brazo'
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto','Curl femoral','Abducción','Glúteo en maquina','Leg press','Hack squat','Aducción','Leg extension']), 'Musculo'] = 'Pierna'
 
     # Filtrar por músculo
-    df_pierna = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Musculo'] == 'Pierna']
-    df_brazo = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Musculo'] == 'Brazo']
+    df_filtred['Musculo'] = df_filtred['Maquina'].apply(lambda x: 'Brazo' if x in ['Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal'] else 'Pierna')
+    df_pierna = df_filtred[df_filtred['Musculo'] == 'Pierna']
+    df_brazo = df_filtred[df_filtred['Musculo'] == 'Brazo']
     
     # Gráficos con Plotly
     fig_pierna = px.line(df_pierna, x='Dia', y='Peso', title='Progreso de Peso Levantado (Pierna)', markers=True)
@@ -179,11 +180,14 @@ if 'Progreso_ind' in st.session_state:
 
 # Algoritmo de Machine Learning (Random Forest Regression)
 st.header('Algoritmo de Machine Learning: Random Forest Regression')
-X = df_filtred[['Repeticiones', 'Sets']]
-y = df_filtred['Peso']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-model = RandomForestRegressor()
-model.fit(X_train, y_train)
-y_pred = model.predict(X_test)
-mse = mean_squared_error(y_test, y_pred)
-st.write(f'MSE (Error Cuadrático Medio): {mse}')
+if 'Progreso_ind' in st.session_state:
+    X = df_filtred[['Repeticiones', 'Sets']]
+    y = df_filtred['Peso']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = RandomForestRegressor()
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    mse = mean_squared_error(y_test, y_pred)
+    st.write(f'MSE (Error Cuadrático Medio): {mse}')
+else:
+    st.write('No hay suficientes datos para entrenar el modelo.')
