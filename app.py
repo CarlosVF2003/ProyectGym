@@ -131,7 +131,31 @@ with st.expander('🙍 Tabla de datos de Cinthia'):
 # Gráficos
 if 'Progreso_ind' in st.session_state:
     st.header('Gráficos para Visualizar el Progreso')
-
+    # Primero, separamos los ejercicios de pierna y brazo
+    df_pierna = df[df['Tipo de Ejercicio'].str.contains('Peso muerto','Curl femoral','Abducción'
+                                                          ,'Glúteo en maquina','Leg press','Hack squat','Aducción','Leg extension')]
+    df_brazo = df[df['Tipo de Ejercicio'].str.contains('Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal')]
+    
+    # Luego, creamos una gráfica de línea para cada tipo de ejercicio
+    plt.figure(figsize=(10, 5))
+    
+    # Gráfica para ejercicios de pierna
+    plt.plot(df_pierna['Fecha'], df_pierna['Peso'], label='Pierna', marker='o')
+    
+    # Gráfica para ejercicios de brazo
+    plt.plot(df_brazo['Fecha'], df_brazo['Peso'], label='Brazo', marker='x')
+    
+    # Añadimos detalles a la gráfica
+    plt.title('Progreso de Peso Levantado')
+    plt.xlabel('Fecha')
+    plt.ylabel('Peso (kg)')
+    plt.legend()
+    plt.xticks(rotation=45) # Rota las fechas para mejor visualización
+    plt.tight_layout() # Ajusta la disposición para evitar solapamientos
+    
+    # Mostramos la gráfica
+    plt.show()
+    
     # Gráfico de Línea para Pesos Levantados
     fig_linea = px.line(df_filtred, x='Dia', y='Peso', color='Persona', title='Pesos Levantados')
     # Actualizar el color de Carlos a negro
