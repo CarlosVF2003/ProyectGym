@@ -132,20 +132,25 @@ with st.expander('🙍 Tabla de datos de Cinthia'):
 if 'Progreso_ind' in st.session_state:
     st.header('Gráficos para Visualizar el Progreso')
     # Primero, crearemos una columna para los ejercicios de pierna y brazo
-    st.session_state['Progreso_ind'].loc[df['Maquina'].isin(['Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal']), 'Musculo'] = 'Brazo'
-    st.session_state['Progreso_ind'].loc[df['Maquina'].isin(['Peso muerto','Curl femoral','Abducción','Glúteo en maquina','Leg press','Hack squat','Aducción','Leg extension']), 'Musculo'] = 'Pierna'
+    st.session_state['Progreso_ind'] = df.copy()
+
+    # Luego, creamos una columna para los ejercicios de pierna y brazo
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal']), 'Musculo'] = 'Brazo'
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto','Curl femoral','Abducción','Glúteo en maquina','Leg press','Hack squat','Aducción','Leg extension']), 'Musculo'] = 'Pierna'
     
-    # Luego, creamos una gráfica de línea para cada tipo de ejercicio
+    # Ahora, creamos una gráfica de línea para cada tipo de ejercicio
     plt.figure(figsize=(10, 5))
     
-    # Gráfica para ejercicios de pierna
+    # Filtramos el DataFrame para ejercicios de pierna y brazo
     df_pierna = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Musculo'] == 'Pierna']
+    df_brazo = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Musculo'] == 'Brazo']
+    
+    # Gráfica para ejercicios de pierna
     plt.plot(df_pierna['Fecha'], df_pierna['Peso'], label='Pierna', marker='o')
     
     # Gráfica para ejercicios de brazo
-    df_brazo = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Musculo'] == 'Brazo']
     plt.plot(df_brazo['Fecha'], df_brazo['Peso'], label='Brazo', marker='x')
-
+    
     # Añadimos detalles a la gráfica
     plt.title('Progreso de Peso Levantado')
     plt.xlabel('Fecha')
