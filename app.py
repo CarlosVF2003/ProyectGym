@@ -74,9 +74,10 @@ with st.expander('📝 Registro de Datos'):
     form_completo = all(pesos) and all(repeticiones) and all(descansos)
     
     # Si el formulario está completo, guardar los datos
+    # Si el formulario está completo, guardar los datos
     if form_completo:
         if Maquina in ['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal']:
-        musculo = 'Brazo'
+            musculo = 'Brazo'
         elif Maquina in ['Peso muerto', 'Curl femoral', 'Abducción', 'Glúteo en maquina', 'Leg press', 'Hack squat', 'Aducción', 'Leg extension']:
             musculo = 'Pierna'
         else:
@@ -86,6 +87,7 @@ with st.expander('📝 Registro de Datos'):
                 'Dia': [Dia] * sets,
                 'Persona': [Persona] * sets,
                 'Maquina': [Maquina] * sets,
+                'Musculo': [musculo] * sets,
                 'Sets' : sets,
                 'Peso': pesos,
                 'Repeticiones': repeticiones,
@@ -99,6 +101,7 @@ with st.expander('📝 Registro de Datos'):
             st.success('¡Datos registrados con éxito!')
             st.session_state['show_enfoque_form'] = False 
             st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)
+
 
 with st.expander('📓 Datos Registrados'):
     st.subheader("Visualización de datos registrados")
