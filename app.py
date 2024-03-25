@@ -135,7 +135,7 @@ if 'Progreso_ind' in st.session_state:
     # Añadir una columna para los músculos
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal']), 'Musculo'] = 'Brazo'
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto','Curl femoral','Abducción','Glúteo en maquina','Leg press','Hack squat','Aducción','Leg extension']), 'Musculo'] = 'Pierna'
-    
+
     # Filtrar por músculo
     df_pierna = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Musculo'] == 'Pierna']
     df_brazo = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['Musculo'] == 'Brazo']
