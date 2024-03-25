@@ -108,6 +108,7 @@ with st.sidebar:
    
     if st.button('Aplicar'):
         # Filtrar los datos según las selecciones del usuario
+        st.session_state['Progreso_ind'] = unique_values
         st.session_state['Progreso_ind'] = st.session_state['Progreso_ind'][
             (st.session_state['Progreso_ind']['Dia'].astype(int) >= fecha_inicio) & 
             (st.session_state['Progreso_ind']['Dia'].astype(int) <= fecha_fin) &
