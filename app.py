@@ -106,6 +106,7 @@ with st.sidebar:
     fecha_fin = st.number_input('Selecciona el día de fin:', min_value=fecha_inicio, max_value=31, step=1, value=31)
     persona_filtro = st.multiselect('Selecciona las personas:', st.session_state['Progreso_ind']['Persona'].unique())
     maquina_filtro = st.multiselect('Selecciona las máquinas:', st.session_state['Progreso_ind']['Maquina'].unique())
+    
     if st.button('Aplicar'):
         # Filtrar los datos según las selecciones del usuario
         st.session_state['Progreso_ind'] = st.session_state['Progreso_ind'][
