@@ -104,6 +104,22 @@ with st.sidebar:
     peso_max = st.number_input('Peso máximo (kg):', min_value=peso_min, max_value=100.0, step=0.1, value=100.0)
     repeticiones_min = st.number_input('Repeticiones mínimas:', min_value=1, max_value=30, step=1, value=1)
     repeticiones_max = st.number_input('Repeticiones máximas:', min_value=repeticiones_min, max_value=30, step=1, value=30)
+# Aplicar filtros a los datos
+filtered_data = unique_values[
+    (unique_values['Dia'] >= fecha_inicio) & 
+    (unique_values['Dia'] <= fecha_fin) & 
+    (unique_values['Persona'].isin(persona_filtro)) & 
+    (unique_values['Maquina'].isin(maquina_filtro)) & 
+    (unique_values['Enfoque'].isin(enfoque_filtro)) & 
+    (unique_values['Peso'] >= peso_min) & 
+    (unique_values['Peso'] <= peso_max) & 
+    (unique_values['Repeticiones'] >= repeticiones_min) & 
+    (unique_values['Repeticiones'] <= repeticiones_max)
+]
+
+# Mostrar los datos filtrados
+st.dataframe(filtered_data.reset_index(drop=True))
+st.markdown(download_csv(filtered_data, 'Progreso_filtrado'), unsafe_allow_html=True)
 
 
 with st.expander('📓 Datos Registrados'):
