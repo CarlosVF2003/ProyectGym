@@ -14,7 +14,7 @@ Dia,Persona,Maquina,Peso,Descanso,Sets,Repeticiones
 1,Carlos,Extensión frontal,3.0,2-3 min,1,10
 1,Cinthia,Extensión frontal,1.0,2-3 min,1,10
 2,Carlos,Peso muerto,22.0,3-4 min,4,15
-2,Carlos,Curl femoral,47.5,3-4 min,4,20
+2,Carlos,Leg Curl,47.5,3-4 min,4,20
 2,Carlos,Abducción,50.0,1-2 min,1,20
 2,Carlos,Abducción,60.0,1-2 min,1,20
 2,Carlos,Abducción,70.0,1-2 min,1,20
@@ -23,8 +23,8 @@ Dia,Persona,Maquina,Peso,Descanso,Sets,Repeticiones
 2,Carlos,Glúteo en maquina,32.5,2-3 min,1,15
 2,Carlos,Glúteo en maquina,35.0,2-3 min,1,15
 2,Cinthia,Peso muerto,10.0,3-4 min,4,15
-2,Cinthia,Curl femoral,17.5,3-4 min,1,20
-2,Cinthia,Curl femoral,20.0,3-4 min,3,20
+2,Cinthia,Leg Curl,17.5,3-4 min,1,20
+2,Cinthia,Leg Curl,20.0,3-4 min,3,20
 2,Cinthia,Abducción,27.5,1-2 min,1,15
 2,Cinthia,Abducción,30.0,1-2 min,2,15
 2,Cinthia,Abducción,35.0,1-2 min,1,15
