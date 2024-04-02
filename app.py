@@ -13,7 +13,7 @@ from base64 import b64encode
 # Cargar el archivo Progreso.csv si existe
 if 'Progreso_ind' not in st.session_state:
     if Path("Progreso.csv").is_file():
-        st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv", sep=';')
+        st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv")
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
@@ -46,7 +46,7 @@ def formulario_hipertrofia_muscular(sets):
 
 # Función para descargar DataFrame como CSV
 def download_csv(df, filename):
-    csv = df.to_csv(index=False, encoding='utf-8').encode('utf-8')
+    csv = df.to_csv(index=False, sep=',', encoding='utf-8').encode('utf-8')
     href = f'<a href="data:text/csv;base64,{b64encode(csv).decode()}" download="{filename}.csv">Descargar CSV</a>'
     return href
     
