@@ -46,6 +46,7 @@ def formulario_hipertrofia_muscular(sets):
 
 # Función para descargar DataFrame como CSV
 def download_csv(df, filename):
+    df = df['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones']
     csv = df.to_csv(index=False, sep=',', encoding='utf-8').encode('utf-8')
     href = f'<a href="data:text/csv;base64,{b64encode(csv).decode()}" download="{filename}.csv">Descargar CSV</a>'
     return href
@@ -108,8 +109,7 @@ with st.expander('📓 Datos Registrados'):
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
     unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones'])
     st.dataframe(unique_values.reset_index(drop=True))
-    columns = ['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones']
-    st.markdown(download_csv(unique_values, 'Progreso',columns), unsafe_allow_html=True)
+    st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
     df_filtred = unique_values
     
 # Agregar filtros
