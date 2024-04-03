@@ -56,7 +56,7 @@ def calcular_promedio(df):
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
     for persona in ['Carlos', 'Cinthia']:
-        df_persona = df_grupo[df_grupo['Persona'] == persona]
+        df_persona = df_grupo[df_grupo['persona'] == persona]
 
         # Gráfico de líneas del promedio de peso levantado por día
         line_chart = alt.Chart(df_persona).mark_line().encode(
