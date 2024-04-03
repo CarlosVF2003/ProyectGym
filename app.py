@@ -56,7 +56,7 @@ def download_csv(df, filename):
 st.title('🏋️‍♂️ Nuestro Progreso en el Gym 🏋️‍♀️')
 
 # Formulario desplegable y botón de guardar
-with st_ace('📝 Registro de Datos'):
+with st.sidebar('📝 Registro de Datos'):
     Dia = st.text_input('Ingresa el Día 📆:')
     Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
     Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal','Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo','Peso muerto','Leg Curl','Abducción'
