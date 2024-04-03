@@ -1,4 +1,3 @@
-# Importar librerias
 import pandas as pd
 import streamlit as st
 import altair as alt
@@ -91,6 +90,7 @@ def crear_graficos(df_grupo, colores):
         title="Total de Repeticiones"
     )
     st.altair_chart(bar_chart, use_container_width=True)
+
 
 
 # Título de la aplicación
