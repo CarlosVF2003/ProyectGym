@@ -67,7 +67,7 @@ def crear_graficos(df_grupo, colores):
         return
     
     # Agregar una columna 'Dia_ordenado' que contenga el orden de los días dentro de cada grupo muscular
-    df_grupo['Dia_ordenado'] = df_grupo.groupby('Dia').cumcount() + 1
+    df_grupo['Dia_ordenado'] = df_grupo.groupby('Dia').count() + 1
     
     # Convertir la columna 'Dia_ordenado' a tipo entero
     df_grupo['Dia_ordenado'] = df_grupo['Dia_ordenado'].astype(int)
