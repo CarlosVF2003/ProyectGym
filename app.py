@@ -54,7 +54,7 @@ def calcular_promedio(df):
     return df.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] / x['Repeticiones']).mean()).reset_index(name='Promedio')
 
 # Función para crear gráficos de líneas y barras
-def crear_graficos(df_grupo, colores):
+def crear_graficos(df_grupo):
     # Filtrar datos para Carlos y Cinthia
     df_carlos = df_grupo[df_grupo['Persona'] == 'Carlos']
     df_cinthia = df_grupo[df_grupo['Persona'] == 'Cinthia']
@@ -63,7 +63,7 @@ def crear_graficos(df_grupo, colores):
     line_chart = alt.Chart(df_grupo).mark_line().encode(
         x='Dia:O',
         y=alt.Y('mean(Peso):Q', title='Promedio de Peso'),
-        color='Persona:N',
+        color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue'])),
         tooltip=['Persona', 'Dia', 'mean(Peso)']
     ).properties(
         title="Promedio de Peso Levantado"
@@ -74,7 +74,7 @@ def crear_graficos(df_grupo, colores):
     bar_chart = alt.Chart(df_grupo).mark_bar().encode(
         x='Dia:O',
         y=alt.Y('sum(Repeticiones):Q', title='Total de Repeticiones'),
-        color='Persona:N',
+        color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue'])),
         tooltip=['Persona', 'Dia', 'sum(Repeticiones)']
     ).properties(
         title="Total de Repeticiones"
