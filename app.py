@@ -1,14 +1,12 @@
 # Importar librerias
 import pandas as pd
 import streamlit as st
-import matplotlib.pyplot as plt
-import plotly.express as px
+import altair as alt
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 from pathlib import Path
 from base64 import b64encode
-import altair as alt
 
 # Cargar el archivo Progreso.csv si existe
 if 'Progreso_ind' not in st.session_state:
@@ -58,14 +56,14 @@ def calcular_promedio(df):
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
     for persona in ['Carlos', 'Cinthia']:
-        df_persona = df_grupo[df_grupo['persona'] == persona]
+        df_persona = df_grupo[df_grupo['Persona'] == persona]
 
         # Gráfico de líneas del promedio de peso levantado por día
         line_chart = alt.Chart(df_persona).mark_line().encode(
-            x='dia:O',
-            y=alt.Y('promedio_peso:Q', title='Promedio de Peso'),
+            x='Dia:O',
+            y=alt.Y('Promedio:Q', title='Promedio de Peso'),
             color=alt.value(colores[persona]),
-            tooltip=['dia', 'promedio_peso']
+            tooltip=['Dia', 'Promedio']
         ).properties(
             title=f"Promedio de Peso Levantado por {persona}"
         )
@@ -73,10 +71,10 @@ def crear_graficos(df_grupo, colores):
 
         # Gráfico de barras del total de repeticiones por día
         bar_chart = alt.Chart(df_persona).mark_bar().encode(
-            x='dia:O',
-            y=alt.Y('sum(repeticiones):Q', title='Total de Repeticiones'),
+            x='Dia:O',
+            y=alt.Y('sum(Repeticiones):Q', title='Total de Repeticiones'),
             color=alt.value(colores[persona]),
-            tooltip=['dia', 'sum(repeticiones)']
+            tooltip=['Dia', 'sum(Repeticiones)']
         ).properties(
             title=f"Total de Repeticiones por {persona}"
         )
@@ -93,7 +91,7 @@ with st.expander('📝 Registro de Datos'):
                                                           ,'Glúteo en maquina','Leg press','Hack squat','Aducción','Leg extension','Hip thrust'))
     Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
     sets = st.number_input('Número de sets:', min_value=1, max_value=10, step=1, value=4)
-
+    
     # Capturar datos según el enfoque de entrenamiento seleccionado
     if Enfoque == 'Desarrollo de Fuerza':
         pesos, repeticiones, descansos = formulario_desarrollo_fuerza(sets)
@@ -101,9 +99,10 @@ with st.expander('📝 Registro de Datos'):
         pesos, repeticiones, descansos = formulario_mejora_resistencia(sets)
     else:  # Hipertrofia Muscular
         pesos, repeticiones, descansos = formulario_hipertrofia_muscular(sets)
-
+        
     # Verificar que ambos formularios estén completos
     form_completo = all(pesos) and all(repeticiones) and all(descansos)
+    
 
     # Si el formulario está completo, guardar los datos
     if form_completo:
@@ -141,8 +140,8 @@ with st.expander('📓 Datos Registrados'):
     st.dataframe(unique_values.reset_index(drop=True))
     st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
     df_filtred = unique_values
-
-
+    
+         
 # Mostrar tablas de datos de Carlos y Cinthia
 with st.expander('🤵‍♂️ Tabla de datos de Carlos'):
     if 'Progreso_ind' in st.session_state:
@@ -155,22 +154,50 @@ with st.expander('🙍 Tabla de datos de Cinthia'):
         st.header('Datos de Cinthia')
         df_cinthia = df_filtred[df_filtred['Persona'] == 'Cinthia']
         st.dataframe(df_cinthia.reset_index(drop=True))
-
-
-# Gráficos por grupos musculares
+        
+# Crear pestañas con los nombres proporcionados
+tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
+    
+# Gráficos
 if 'Progreso_ind' in st.session_state:
+    # Añadir una columna para los músculos
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal','Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo']), 'Musculo'] = 'Brazo'
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina', 'Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'Musculo'] = 'Pierna'
+    # Añadir una columna para los grupos musculares
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal']), 'GM'] = 'D'
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo']), 'GM'] = 'B'
+    
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina']), 'GM'] = 'C'
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'GM'] = 'A'
+       
+    colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
+    # Suponiendo que 'st.session_state['Progreso_ind']' ya contiene el DataFrame con los datos necesarios
     df = st.session_state['Progreso_ind']
-
+    
     # Asegúrate de que las columnas del DataFrame coincidan con las proporcionadas
     df.rename(columns={'Dia': 'dia', 'Persona': 'persona', 'Maquina': 'maquina',
                        'Peso': 'peso', 'Repeticiones': 'repeticiones', 'Descanso': 'descanso',
                        'GM': 'grupo_muscular'}, inplace=True)
-    df['promedio_peso'] = df.groupby(['dia', 'maquina'])['peso'].transform('mean')
 
-    # Crear pestañas para los diferentes grupos musculares
-    tabs_titles = ["Cuadriceps (A)", "Espalda y Biceps (B)", "Gluteos y femorales (C)", "Hombro, tricep y pecho (D)"]
-    for title in tabs_titles:
-        with st.expander(title):
-            df_group = df[df['grupo_muscular'] == title[-2]]
-            colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
-            crear_graficos(df_group, colores)
+    # Calcula el promedio de peso levantado por día y máquina
+    df['promedio_peso'] = df.groupby(['dia', 'maquina'])['peso'].transform('mean')
+    
+    with tab1:
+        st.header("Cuadriceps (A)")
+        df_cuadriceps = df[df['grupo_muscular'] == 'A']
+        crear_graficos(df_cuadriceps, colores)
+    
+    with tab2:
+        st.header("Espalda y Biceps (B)")
+        df_espalda_biceps = df[df['grupo_muscular'] == 'B']
+        crear_graficos(df_espalda_biceps, colores)
+    
+    with tab3:
+        st.header("Gluteos y femorales (C)")
+        df_gluteos_femorales = df[df['grupo_muscular'] == 'C']
+        crear_graficos(df_gluteos_femorales, colores)
+    
+    with tab4:
+        st.header("Hombro, tricep y pecho (D)")
+        df_pectoral_hombros_triceps = df[df['grupo_muscular'] == 'D']
+        crear_graficos(df_pectoral_hombros_triceps, colores)
