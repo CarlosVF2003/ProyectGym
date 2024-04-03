@@ -73,7 +73,7 @@ def calcular_promedio(df):
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
     # Calcula el promedio de peso por día y máquina
-    df_promedio = df_grupo.groupby(['Dia', 'Maquina']).apply(calcular_promedio).reset_index(drop=True)
+    df_promedio = df_grupo.groupby(['Dia']).apply(calcular_promedio).reset_index(drop=True)
     
     # Gráfico de líneas del promedio de peso levantado por día para ambas personas
     line_chart = alt.Chart(df_promedio).mark_line().encode(
