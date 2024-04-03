@@ -141,9 +141,34 @@ with st.expander('🙍 Tabla de datos de Cinthia'):
 
 # Gráficos
 if 'Progreso_ind' in st.session_state:
-    st.header('Gráficos para Visualizar el Progreso')
+    st.header('Progreso por grupo muscular')
     # Añadir una columna para los músculos
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal','Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo']), 'Musculo'] = 'Brazo'
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina', 'Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'Musculo'] = 'Pierna'
-
+    # Añadir una columna para los grupos musculares
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal']), 'GM'] = 'D'
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo']), 'GM'] = 'B'
+    
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina']), 'Musculo'] = 'C'
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'Musculo'] = 'A'
+   
+    # Define las páginas de tu aplicación
+    paginas = ["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"]
+    
+    # Crea un selectbox para seleccionar la página
+    pagina_seleccionada = st.selectbox("Selecciona una página:", paginas)
+    
+    # Muestra el contenido de la página seleccionada
+    #A
+    if pagina_seleccionada == "Cuadriceps":
+        st.write("Contenido de Cuadriceps")
+    #B
+    elif pagina_seleccionada == "Espalda y Biceps":
+        st.write("Contenido de Espalda y Biceps")
+    #C
+    elif pagina_seleccionada == "Gluteos y femorales":
+        st.write("Contenido de Gluteos y femorales")
+    #D
+    elif pagina_seleccionada == "Pectorales, hombros y triceps":
+        st.write("Contenido de Pectorales, hombros y triceps")
 
