@@ -15,8 +15,6 @@ if 'Progreso_ind' not in st.session_state:
         st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv")
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
-    # Crear pestañas con los nombres proporcionados
-    tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
     
 # Definir las funciones
 def formulario_desarrollo_fuerza(sets):
@@ -126,7 +124,10 @@ with st.expander('🙍 Tabla de datos de Cinthia'):
         st.header('Datos de Cinthia')
         df_cinthia = df_filtred[df_filtred['Persona'] == 'Cinthia']
         st.dataframe(df_cinthia.reset_index(drop=True))
-
+        
+# Crear pestañas con los nombres proporcionados
+tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
+    
 # Gráficos
 if 'Progreso_ind' in st.session_state:
     st.header('Progreso por grupo muscular')
