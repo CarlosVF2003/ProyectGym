@@ -180,31 +180,26 @@ if 'Progreso_ind' in st.session_state:
     colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
     # Suponiendo que 'st.session_state['Progreso_ind']' ya contiene el DataFrame con los datos necesarios
     df = st.session_state['Progreso_ind']
-    
-    # Asegúrate de que las columnas del DataFrame coincidan con las proporcionadas
-    df.rename(columns={'Dia': 'dia', 'Persona': 'persona', 'Maquina': 'maquina',
-                       'Peso': 'peso', 'Repeticiones': 'repeticiones', 'Descanso': 'descanso',
-                       'GM': 'grupo_muscular'}, inplace=True)
 
     # Calcula el promedio de peso levantado por día y máquina
-    df['promedio_peso'] = df.groupby(['dia', 'maquina'])['peso'].transform('mean')
+    df['promedio_peso'] = df.groupby(['Dia', 'Maquina'])['peso'].transform('mean')
     
     with tab1:
         st.header("Cuadriceps (A)")
-        df_cuadriceps = df[df['grupo_muscular'] == 'A']
+        df_cuadriceps = df[df['GM'] == 'A']
         crear_graficos(df_cuadriceps, colores)
     
     with tab2:
         st.header("Espalda y Biceps (B)")
-        df_espalda_biceps = df[df['grupo_muscular'] == 'B']
+        df_espalda_biceps = df[df['GM'] == 'B']
         crear_graficos(df_espalda_biceps, colores)
     
     with tab3:
         st.header("Gluteos y femorales (C)")
-        df_gluteos_femorales = df[df['grupo_muscular'] == 'C']
+        df_gluteos_femorales = df[df['GM'] == 'C']
         crear_graficos(df_gluteos_femorales, colores)
     
     with tab4:
         st.header("Hombro, tricep y pecho (D)")
-        df_pectoral_hombros_triceps = df[df['grupo_muscular'] == 'D']
+        df_pectoral_hombros_triceps = df[df['GM'] == 'D']
         crear_graficos(df_pectoral_hombros_triceps, colores)
