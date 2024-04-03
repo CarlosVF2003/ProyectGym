@@ -150,8 +150,8 @@ if 'Progreso_ind' in st.session_state:
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal']), 'GM'] = 'D'
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo']), 'GM'] = 'B'
     
-    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina']), 'Musculo'] = 'C'
-    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'Musculo'] = 'A'
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina']), 'GM'] = 'C'
+    st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'GM'] = 'A'
        
     colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
   
@@ -159,7 +159,7 @@ if 'Progreso_ind' in st.session_state:
         st.header("Cuadriceps (A)")
         # Filtramos el dataframe para Cuadriceps y graficamos para cada Persona
         for Persona in st.session_state['Progreso_ind']['Persona'].unique():
-            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['grupo_muscular'] == 'A') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
+            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'A') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
             plt.plot(st_Persona['dia'], st_Persona['peso'], marker='o', color=colores[Persona], label=Persona)
         plt.legend()
         plt.title('Progresión de Peso en Cuadriceps')
@@ -189,7 +189,7 @@ if 'Progreso_ind' in st.session_state:
         st.header("Pectorales, hombros y triceps (D)")
         # Filtramos el dataframe para Pectorales, hombros y triceps y graficamos para cada Persona
         for Persona in st.session_state['Progreso_ind']['Persona'].unique():
-            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['grupo_muscular'] == 'D') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
+            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'D') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
             plt.plot(st_Persona['dia'], st_Persona['peso'], marker='o', color=colores[Persona], label=Persona)
         plt.legend()
         plt.title('Progresión de Peso en Pectorales, hombros y triceps')
