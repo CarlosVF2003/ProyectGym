@@ -51,7 +51,9 @@ def download_csv(df, filename):
 
 # Función para calcular el promedio de peso por día y máquina
 def calcular_promedio(df):
-    return df.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso']* x['Repeticiones']* x['Sets'] / x['Repeticiones']*x['Sets']).mean()).reset_index(name='Promedio')
+    # Calcula el promedio del producto del peso, sets y repeticiones dividido por el producto de sets y repeticiones
+    df['promedio_peso'] = df.groupby(['Dia', 'Maquina']).apply(lambda x: ((x['Peso'] * x['Sets'] * x['Repeticiones']) / (x['Sets'] * x['Repeticiones'])).mean()).reset_index(name='Promedio de Peso')
+    return df
 
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
