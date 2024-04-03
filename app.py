@@ -156,6 +156,7 @@ if 'Progreso_ind' in st.session_state:
         st.pyplot(plt)
         
         # Gráfico adicional: Histograma de repeticiones para Cuadriceps
+        plt.figure()  # Añadir esta línea para iniciar una nueva figura
         for Persona in st.session_state['Progreso_ind']['Persona'].unique():
             st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'A') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
             plt.hist(st_Persona['Repeticiones'], bins=10, color=colores[Persona], label=f'Repeticiones {Persona}', alpha=0.5)
@@ -168,6 +169,7 @@ if 'Progreso_ind' in st.session_state:
     with tab2:
         st.header("Espalda y Biceps (B)")
         # Filtramos el dataframe para Espalda y Biceps y graficamos para cada Persona
+        plt.figure()  # Añadir esta línea para iniciar una nueva figura
         st.session_state['Progreso_ind'].groupby(['Dia', 'Persona'])['Peso'].sum().unstack().plot(kind='bar', color=[colores['Carlos'], colores['Cinthia']])
         plt.title('Peso Total por Día en Espalda y Biceps')
         plt.xlabel('Día')
@@ -175,7 +177,8 @@ if 'Progreso_ind' in st.session_state:
         st.pyplot(plt)
         
         # Gráfico adicional: Boxplot de peso para Espalda y Biceps
-        st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'B'].boxplot(column='Peso', by='Persona', grid=False, color=dict(boxes=colores, whiskers=colores, medians=colores, caps=colores))
+        plt.figure()  # Añadir esta línea para iniciar una nueva figura
+        st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'B'].boxplot(column='Peso', by='Persona', grid=False)
         plt.title('Boxplot de Peso para Espalda y Biceps')
         plt.suptitle('')
         plt.xlabel('Persona')
@@ -185,6 +188,7 @@ if 'Progreso_ind' in st.session_state:
     with tab3:
         st.header("Gluteos y femorales (C)")
         # Filtramos el dataframe para Gluteos y femorales y graficamos para cada Persona
+        plt.figure()  # Añadir esta línea para iniciar una nueva figura
         st.session_state['Progreso_ind'].groupby(['Dia', 'Persona'])['Peso'].sum().unstack().plot(kind='area', color=[colores['Carlos'], colores['Cinthia']])
         plt.title('Volumen de Entrenamiento en Gluteos y femorales')
         plt.xlabel('Día')
@@ -192,6 +196,7 @@ if 'Progreso_ind' in st.session_state:
         st.pyplot(plt)
         
         # Gráfico adicional: Gráfico de dispersión de peso vs. repeticiones para Gluteos y femorales
+        plt.figure()  # Añadir esta línea para iniciar una nueva figura
         for Persona in st.session_state['Progreso_ind']['Persona'].unique():
             st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'C') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
             plt.scatter(st_Persona['Peso'], st_Persona['Repeticiones'], color=colores[Persona], label=Persona)
@@ -204,6 +209,7 @@ if 'Progreso_ind' in st.session_state:
     with tab4:
         st.header("Pectorales, hombros y triceps (D)")
         # Filtramos el dataframe para Pectorales, hombros y triceps y graficamos para cada Persona
+        plt.figure()  # Añadir esta línea para iniciar una nueva figura
         for Persona in st.session_state['Progreso_ind']['Persona'].unique():
             st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'D') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
             plt.plot(st_Persona['Dia'], st_Persona['Peso'], marker='o', color=colores[Persona], label=Persona)
@@ -214,6 +220,7 @@ if 'Progreso_ind' in st.session_state:
         st.pyplot(plt)
         
         # Gráfico adicional: Gráfico de líneas de descanso para Pectorales, hombros y triceps
+        plt.figure()  # Añadir esta línea para iniciar una nueva figura
         for Persona in st.session_state['Progreso_ind']['Persona'].unique():
             st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'D') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
             plt.plot(st_Persona['Dia'], st_Persona['Descanso'], marker='s', linestyle='--', color=colores[Persona], label=f'Descanso {Persona}')
