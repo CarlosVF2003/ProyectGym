@@ -153,20 +153,46 @@ if 'Progreso_ind' in st.session_state:
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina']), 'Musculo'] = 'C'
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'Musculo'] = 'A'
        
+    colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
+    
     with tab1:
-        st.header()
-        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Cuadriceps
+        st.header("Cuadriceps (A)")
+        # Filtramos el dataframe para Cuadriceps y graficamos para cada persona
+        for persona in df['persona'].unique():
+            df_persona = df[(df['grupo_muscular'] == 'A') & (df['persona'] == persona)]
+            plt.plot(df_persona['dia'], df_persona['peso'], marker='o', color=colores[persona], label=persona)
+        plt.legend()
+        plt.title('Progresión de Peso en Cuadriceps')
+        plt.xlabel('Día')
+        plt.ylabel('Peso')
+        st.pyplot(plt)
     
     with tab2:
-        st.header()
-        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Espalda y Biceps
-        
+        st.header("Espalda y Biceps (B)")
+        # Filtramos el dataframe para Espalda y Biceps y graficamos para cada persona
+        df.groupby(['dia', 'persona'])['peso'].sum().unstack().plot(kind='bar', color=[colores['Carlos'], colores['Cinthia']])
+        plt.title('Peso Total por Día en Espalda y Biceps')
+        plt.xlabel('Día')
+        plt.ylabel('Peso Total')
+        st.pyplot(plt)
+    
     with tab3:
-        st.header()
-        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Gluteos y femorales
-        
+        st.header("Gluteos y femorales (C)")
+        # Filtramos el dataframe para Gluteos y femorales y graficamos para cada persona
+        df.groupby(['dia', 'persona'])['peso'].sum().unstack().plot(kind='area', color=[colores['Carlos'], colores['Cinthia']])
+        plt.title('Volumen de Entrenamiento en Gluteos y femorales')
+        plt.xlabel('Día')
+        plt.ylabel('Volumen de Peso')
+        st.pyplot(plt)
+    
     with tab4:
-        st.header()
-        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Pectorales, hombros y triceps
-
-
+        st.header("Pectorales, hombros y triceps (D)")
+        # Filtramos el dataframe para Pectorales, hombros y triceps y graficamos para cada persona
+        for persona in df['persona'].unique():
+            df_persona = df[(df['grupo_muscular'] == 'D') & (df['persona'] == persona)]
+            plt.plot(df_persona['dia'], df_persona['peso'], marker='o', color=colores[persona], label=persona)
+        plt.legend()
+        plt.title('Progresión de Peso en Pectorales, hombros y triceps')
+        plt.xlabel('Día')
+        plt.ylabel('Peso')
+        st.pyplot(plt)
