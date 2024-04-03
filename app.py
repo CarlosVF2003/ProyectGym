@@ -133,7 +133,7 @@ with st.expander('📝 Registro de Datos'):
             # Guardar el DataFrame actualizado en un archivo CSV
             # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
             if Enfoque != 'Hipertrofia Muscular':
-                st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso', 'Repeticiones','Descanso'])[['Peso', 'Repeticiones']].transform('size')
+                st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso','Set','Repeticiones','Descanso'])[['Peso', 'Repeticiones']].transform('size')
             st.success('¡Datos registrados con éxito!')
             st.session_state['show_enfoque_form'] = False 
             st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)
