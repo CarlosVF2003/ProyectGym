@@ -158,9 +158,9 @@ if 'Progreso_ind' in st.session_state:
     with tab1:
         st.header("Cuadriceps (A)")
         # Filtramos el dataframe para Cuadriceps y graficamos para cada persona
-        for persona in df['persona']:
-            df_persona = df[(df['grupo_muscular'] == 'A') & (df['persona'] == persona)]
-            plt.plot(df_persona['dia'], df_persona['peso'], marker='o', color=colores[persona], label=persona)
+        for persona in st.session_state['Progreso_ind']['persona'].unique():
+            st.session_state['Progreso_ind']_persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['grupo_muscular'] == 'A') & (st.session_state['Progreso_ind']['persona'] == persona)]
+            plt.plot(st.session_state['Progreso_ind']_persona['dia'], st.session_state['Progreso_ind']_persona['peso'], marker='o', color=colores[persona], label=persona)
         plt.legend()
         plt.title('Progresión de Peso en Cuadriceps')
         plt.xlabel('Día')
@@ -170,7 +170,7 @@ if 'Progreso_ind' in st.session_state:
     with tab2:
         st.header("Espalda y Biceps (B)")
         # Filtramos el dataframe para Espalda y Biceps y graficamos para cada persona
-        df.groupby(['dia', 'persona'])['peso'].sum().unstack().plot(kind='bar', color=[colores['Carlos'], colores['Cinthia']])
+        st.session_state['Progreso_ind'].groupby(['dia', 'persona'])['peso'].sum().unstack().plot(kind='bar', color=[colores['Carlos'], colores['Cinthia']])
         plt.title('Peso Total por Día en Espalda y Biceps')
         plt.xlabel('Día')
         plt.ylabel('Peso Total')
@@ -179,7 +179,7 @@ if 'Progreso_ind' in st.session_state:
     with tab3:
         st.header("Gluteos y femorales (C)")
         # Filtramos el dataframe para Gluteos y femorales y graficamos para cada persona
-        df.groupby(['dia', 'persona'])['peso'].sum().unstack().plot(kind='area', color=[colores['Carlos'], colores['Cinthia']])
+        st.session_state['Progreso_ind'].groupby(['dia', 'persona'])['peso'].sum().unstack().plot(kind='area', color=[colores['Carlos'], colores['Cinthia']])
         plt.title('Volumen de Entrenamiento en Gluteos y femorales')
         plt.xlabel('Día')
         plt.ylabel('Volumen de Peso')
@@ -188,11 +188,12 @@ if 'Progreso_ind' in st.session_state:
     with tab4:
         st.header("Pectorales, hombros y triceps (D)")
         # Filtramos el dataframe para Pectorales, hombros y triceps y graficamos para cada persona
-        for persona in df['persona'].unique():
-            df_persona = df[(df['grupo_muscular'] == 'D') & (df['persona'] == persona)]
-            plt.plot(df_persona['dia'], df_persona['peso'], marker='o', color=colores[persona], label=persona)
+        for persona in st.session_state['Progreso_ind']['persona'].unique():
+            st.session_state['Progreso_ind']_persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['grupo_muscular'] == 'D') & (st.session_state['Progreso_ind']['persona'] == persona)]
+            plt.plot(st.session_state['Progreso_ind']_persona['dia'], st.session_state['Progreso_ind']_persona['peso'], marker='o', color=colores[persona], label=persona)
         plt.legend()
         plt.title('Progresión de Peso en Pectorales, hombros y triceps')
         plt.xlabel('Día')
         plt.ylabel('Peso')
         st.pyplot(plt)
+
