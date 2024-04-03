@@ -142,7 +142,7 @@ if 'Progreso_ind' in st.session_state:
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'GM'] = 'A'
        
     colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
-  
+    
     with tab1:
         st.header("Cuadriceps (A)")
         # Filtramos el dataframe para Cuadriceps y graficamos para cada Persona
@@ -154,7 +154,17 @@ if 'Progreso_ind' in st.session_state:
         plt.xlabel('Día')
         plt.ylabel('Peso')
         st.pyplot(plt)
-
+        
+        # Gráfico adicional: Histograma de repeticiones para Cuadriceps
+        for Persona in st.session_state['Progreso_ind']['Persona'].unique():
+            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'A') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
+            plt.hist(st_Persona['Repeticiones'], bins=10, color=colores[Persona], label=f'Repeticiones {Persona}', alpha=0.5)
+        plt.legend()
+        plt.title('Histograma de Repeticiones para Cuadriceps')
+        plt.xlabel('Repeticiones')
+        plt.ylabel('Frecuencia')
+        st.pyplot(plt)
+    
     with tab2:
         st.header("Espalda y Biceps (B)")
         # Filtramos el dataframe para Espalda y Biceps y graficamos para cada Persona
@@ -162,6 +172,14 @@ if 'Progreso_ind' in st.session_state:
         plt.title('Peso Total por Día en Espalda y Biceps')
         plt.xlabel('Día')
         plt.ylabel('Peso Total')
+        st.pyplot(plt)
+        
+        # Gráfico adicional: Boxplot de peso para Espalda y Biceps
+        st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'B'].boxplot(column='Peso', by='Persona', grid=False, color=dict(boxes=colores, whiskers=colores, medians=colores, caps=colores))
+        plt.title('Boxplot de Peso para Espalda y Biceps')
+        plt.suptitle('')
+        plt.xlabel('Persona')
+        plt.ylabel('Peso')
         st.pyplot(plt)
     
     with tab3:
@@ -171,6 +189,16 @@ if 'Progreso_ind' in st.session_state:
         plt.title('Volumen de Entrenamiento en Gluteos y femorales')
         plt.xlabel('Día')
         plt.ylabel('Volumen de Peso')
+        st.pyplot(plt)
+        
+        # Gráfico adicional: Gráfico de dispersión de peso vs. repeticiones para Gluteos y femorales
+        for Persona in st.session_state['Progreso_ind']['Persona'].unique():
+            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'C') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
+            plt.scatter(st_Persona['Peso'], st_Persona['Repeticiones'], color=colores[Persona], label=Persona)
+        plt.legend()
+        plt.title('Dispersión de Peso vs. Repeticiones para Gluteos y femorales')
+        plt.xlabel('Peso')
+        plt.ylabel('Repeticiones')
         st.pyplot(plt)
     
     with tab4:
@@ -184,5 +212,13 @@ if 'Progreso_ind' in st.session_state:
         plt.xlabel('Día')
         plt.ylabel('Peso')
         st.pyplot(plt)
-
-   
+        
+        # Gráfico adicional: Gráfico de líneas de descanso para Pectorales, hombros y triceps
+        for Persona in st.session_state['Progreso_ind']['Persona'].unique():
+            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'D') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
+            plt.plot(st_Persona['Dia'], st_Persona['Descanso'], marker='s', linestyle='--', color=colores[Persona], label=f'Descanso {Persona}')
+        plt.legend()
+        plt.title('Progresión de Descanso en Pectorales, hombros y triceps')
+        plt.xlabel('Día')
+        plt.ylabel('Descanso (segundos)')
+        st.pyplot(plt)
