@@ -55,30 +55,31 @@ def calcular_promedio(df):
 
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
-    for persona in ['Carlos', 'Cinthia']:
-        df_persona = df_grupo[df_grupo['Persona'] == persona]
+    # Filtrar datos para Carlos y Cinthia
+    df_carlos = df_grupo[df_grupo['Persona'] == 'Carlos']
+    df_cinthia = df_grupo[df_grupo['Persona'] == 'Cinthia']
 
-        # Gráfico de líneas del promedio de peso levantado por día
-        line_chart = alt.Chart(df_persona).mark_line().encode(
-            x='Dia:O',
-            y=alt.Y('mean(Peso):Q', title='Promedio de Peso'),
-            color=alt.ColorValue(colores[persona]),
-            tooltip=['Dia', 'mean(Peso)']
-        ).properties(
-            title=f"Promedio de Peso Levantado por {persona}"
-        )
-        st.altair_chart(line_chart, use_container_width=True)
+    # Gráfico de líneas del promedio de peso levantado por día para ambas personas
+    line_chart = alt.Chart(df_grupo).mark_line().encode(
+        x='Dia:O',
+        y=alt.Y('mean(Peso):Q', title='Promedio de Peso'),
+        color='Persona:N',
+        tooltip=['Persona', 'Dia', 'mean(Peso)']
+    ).properties(
+        title="Promedio de Peso Levantado"
+    )
+    st.altair_chart(line_chart, use_container_width=True)
 
-        # Gráfico de barras del total de repeticiones por día
-        bar_chart = alt.Chart(df_persona).mark_bar().encode(
-            x='Dia:O',
-            y=alt.Y('sum(Repeticiones):Q', title='Total de Repeticiones'),
-            color=alt.ColorValue(colores[persona]),
-            tooltip=['Dia', 'sum(Repeticiones)']
-        ).properties(
-            title=f"Total de Repeticiones por {persona}"
-        )
-        st.altair_chart(bar_chart, use_container_width=True)
+    # Gráfico de barras del total de repeticiones por día para ambas personas
+    bar_chart = alt.Chart(df_grupo).mark_bar().encode(
+        x='Dia:O',
+        y=alt.Y('sum(Repeticiones):Q', title='Total de Repeticiones'),
+        color='Persona:N',
+        tooltip=['Persona', 'Dia', 'sum(Repeticiones)']
+    ).properties(
+        title="Total de Repeticiones"
+    )
+    st.altair_chart(bar_chart, use_container_width=True)
 
 
 
