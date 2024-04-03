@@ -6,3 +6,4 @@ plotly
 demoji
 scikit-learn
 matplotlib
+altair
