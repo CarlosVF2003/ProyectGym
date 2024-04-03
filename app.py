@@ -85,6 +85,8 @@ def crear_graficos(df_grupo, colores):
         st.write("Mostrando gráfico de barras")
         st.altair_chart(bar_chart, use_container_width=True)
 
+
+
 # Título de la aplicación
 st.title('🏋️‍♂️ Nuestro Progreso en el Gym 🏋️‍♀️')
 
