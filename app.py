@@ -57,7 +57,6 @@ def calcular_promedio(df):
     return df
 
 
-
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
     # Reiniciar el índice para evitar problemas con Altair
@@ -65,6 +64,9 @@ def crear_graficos(df_grupo, colores):
     
     # Agregar una columna 'Dia_ordenado' que contenga el orden de los días dentro de cada grupo muscular
     df_grupo['Dia_ordenado'] = df_grupo.groupby('Dia').cumcount() + 1
+    
+    # Convertir la columna 'Dia_ordenado' a tipo entero
+    df_grupo['Dia_ordenado'] = df_grupo['Dia_ordenado'].astype(int)
     
     # Gráfico de líneas del promedio de peso levantado por día para ambas personas
     line_chart = alt.Chart(df_grupo).mark_line().encode(
