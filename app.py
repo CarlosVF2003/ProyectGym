@@ -183,6 +183,8 @@ if 'Progreso_ind' in st.session_state:
     # Suponiendo que 'st.session_state['Progreso_ind']' ya contiene el DataFrame con los datos necesarios
     df = st.session_state['Progreso_ind']
 
+    df = df.sort_values(by='Dia')
+
     with tab1:
         st.header("Cuadriceps (A)")
         df_cuadriceps = df[df['GM'] == 'A']
