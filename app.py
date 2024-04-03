@@ -55,15 +55,12 @@ def calcular_promedio(df):
 
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
-    # Calcula el promedio de peso levantado por día y máquina
-    df_promedio_peso = df_grupo.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] * x['Sets'] * x['Repeticiones']).sum() / (x['Sets'] * x['Repeticiones']).sum()).reset_index(name='Promedio de Peso')
-
     # Gráfico de líneas del promedio de peso levantado por día para ambas personas
-    line_chart = alt.Chart(df_promedio_peso).mark_line().encode(
+    line_chart = alt.Chart(df_grupo).mark_line().encode(
         x='Dia:O',
-        y=alt.Y('Promedio de Peso:Q', title='Promedio de Peso'),
+        y=alt.Y('promedio_peso:Q', title='Promedio de Peso'),
         color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue'])),
-        tooltip=['Persona', 'Dia', 'Promedio de Peso']
+        tooltip=['Persona', 'Dia', 'promedio_peso']
     ).properties(
         title="Promedio de Peso Levantado"
     )
