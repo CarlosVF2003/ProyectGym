@@ -56,28 +56,33 @@ def calcular_promedio(df):
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
     for persona in ['Carlos', 'Cinthia']:
-        df_persona = df_grupo[df_grupo['persona'] == persona]
+        st.write(f"Creando gráficos para {persona}")
+        df_persona = df_grupo[df_grupo['Persona'] == persona]
 
         # Gráfico de líneas del promedio de peso levantado por día
+        st.write("Creando gráfico de líneas")
         line_chart = alt.Chart(df_persona).mark_line().encode(
             x='Dia:O',
             y=alt.Y('Promedio:Q', title='Promedio de Peso'),
             color=alt.value(colores[persona]),
-            tooltip=['dia', 'Promedio']
+            tooltip=['Dia', 'Promedio']
         ).properties(
             title=f"Promedio de Peso Levantado por {persona}"
         )
+        st.write("Mostrando gráfico de líneas")
         st.altair_chart(line_chart, use_container_width=True)
 
         # Gráfico de barras del total de repeticiones por día
+        st.write("Creando gráfico de barras")
         bar_chart = alt.Chart(df_persona).mark_bar().encode(
             x='Dia:O',
             y=alt.Y('sum(Repeticiones):Q', title='Total de Repeticiones'),
             color=alt.value(colores[persona]),
-            tooltip=['dia', 'sum(Repeticiones)']
+            tooltip=['Dia', 'sum(Repeticiones)']
         ).properties(
             title=f"Total de Repeticiones por {persona}"
         )
+        st.write("Mostrando gráfico de barras")
         st.altair_chart(bar_chart, use_container_width=True)
 
 # Título de la aplicación
