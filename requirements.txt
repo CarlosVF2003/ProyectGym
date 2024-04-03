@@ -1,6 +1,6 @@
 streamlit
 pandas
-wordCloud
+wordcloud
 matplotlib
 plotly
 demoji
