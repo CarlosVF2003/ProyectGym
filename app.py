@@ -178,31 +178,30 @@ if 'Progreso_ind' in st.session_state:
         df_pectoral_hombros_triceps = df[df['grupo_muscular'] == 'D']
         crear_graficos(df_pectoral_hombros_triceps, colores)
 
-# Definir los colores para cada persona
-colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
-# Función para crear gráficos de líneas y barras
-def crear_graficos(df_grupo, colores):
-    for persona in ['Carlos', 'Cinthia']:
-        df_persona = df_grupo[df_grupo['persona'] == persona]
-        
-        # Gráfico de líneas del promedio de peso levantado por día
-        line_chart = alt.Chart(df_persona).mark_line().encode(
-            x='dia:O',
-            y=alt.Y('promedio_peso:Q', title='Promedio de Peso'),
-            color=alt.value(colores[persona]),
-            tooltip=['dia', 'promedio_peso']
-        ).properties(
-            title=f"Promedio de Peso Levantado por {persona}"
-        )
-        st.altair_chart(line_chart, use_container_width=True)
-        
-        # Gráfico de barras del total de repeticiones por día
-        bar_chart = alt.Chart(df_persona).mark_bar().encode(
-            x='dia:O',
-            y=alt.Y('sum(repeticiones):Q', title='Total de Repeticiones'),
-            color=alt.value(colores[persona]),
-            tooltip=['dia', 'sum(repeticiones)']
-        ).properties(
-            title=f"Total de Repeticiones por {persona}"
-        )
-        st.altair_chart(bar_chart, use_container_width=True)
+    
+    # Función para crear gráficos de líneas y barras
+    def crear_graficos(df_grupo, colores):
+        for persona in ['Carlos', 'Cinthia']:
+            df_persona = df_grupo[df_grupo['persona'] == persona]
+            
+            # Gráfico de líneas del promedio de peso levantado por día
+            line_chart = alt.Chart(df_persona).mark_line().encode(
+                x='dia:O',
+                y=alt.Y('promedio_peso:Q', title='Promedio de Peso'),
+                color=alt.value(colores[persona]),
+                tooltip=['dia', 'promedio_peso']
+            ).properties(
+                title=f"Promedio de Peso Levantado por {persona}"
+            )
+            st.altair_chart(line_chart, use_container_width=True)
+            
+            # Gráfico de barras del total de repeticiones por día
+            bar_chart = alt.Chart(df_persona).mark_bar().encode(
+                x='dia:O',
+                y=alt.Y('sum(repeticiones):Q', title='Total de Repeticiones'),
+                color=alt.value(colores[persona]),
+                tooltip=['dia', 'sum(repeticiones)']
+            ).properties(
+                title=f"Total de Repeticiones por {persona}"
+            )
+            st.altair_chart(bar_chart, use_container_width=True)
