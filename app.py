@@ -62,8 +62,8 @@ def crear_graficos(df_grupo, colores):
         # Gráfico de líneas del promedio de peso levantado por día
         st.write("Creando gráfico de líneas")
         line_chart = alt.Chart(df_persona).mark_line().encode(
-            x='Dia',
-            y=alt.Y('Promedio', title='Promedio de Peso'),
+            x='Dia:O',
+            y=alt.Y('Promedio:Q', title='Promedio de Peso'),
             color=alt.value(colores[persona]),
             tooltip=['Dia', 'Promedio']
         ).properties(
