@@ -56,7 +56,7 @@ def download_csv(df, filename):
 st.title('🏋️‍♂️ Nuestro Progreso en el Gym 🏋️‍♀️')
 
 # Formulario desplegable y botón de guardar
-with st.expander('📝 Registro de Datos'):
+with st.slider('📝 Registro de Datos'):
     Dia = st.text_input('Ingresa el Día 📆:')
     Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
     Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal','Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo','Peso muerto','Leg Curl','Abducción'
@@ -113,19 +113,6 @@ with st.expander('📓 Datos Registrados'):
     st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
     df_filtred = unique_values
     
-# Agregar filtros
-with st.sidebar:
-    fecha_inicio = st.number_input('Selecciona el día de inicio:', min_value=1, max_value=31, step=1, value=1)
-    fecha_fin = st.number_input('Selecciona el día de fin:', min_value=fecha_inicio, max_value=31, step=1, value=31)
-    Persona_filtro = st.multiselect('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
-   
-    if st.button('Aplicar'):
-        # Filtrar los datos según las selecciones del usuario
-        df_filtred = st.session_state['Progreso_ind'][
-            (st.session_state['Progreso_ind']['Dia'].astype(int) >= fecha_inicio) & 
-            (st.session_state['Progreso_ind']['Dia'].astype(int) <= fecha_fin) &
-            (st.session_state['Progreso_ind']['Persona'].isin(Persona_filtro)) 
-        ]
          
 # Mostrar tablas de datos de Carlos y Cinthia
 with st.expander('🤵‍♂️ Tabla de datos de Carlos'):
