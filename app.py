@@ -158,7 +158,7 @@ if 'Progreso_ind' in st.session_state:
     with tab1:
         st.header("Cuadriceps (A)")
         # Filtramos el dataframe para Cuadriceps y graficamos para cada persona
-        for persona in df['persona'].unique():
+        for persona in df['persona']:
             df_persona = df[(df['grupo_muscular'] == 'A') & (df['persona'] == persona)]
             plt.plot(df_persona['dia'], df_persona['peso'], marker='o', color=colores[persona], label=persona)
         plt.legend()
