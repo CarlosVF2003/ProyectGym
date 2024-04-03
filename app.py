@@ -65,7 +65,7 @@ def crear_graficos(df_grupo, colores):
         return
     
     # Calcular el orden de los días dentro de cada grupo muscular usando rank
-    df_grupo['Dia_ordenado'] = df_grupo.groupby('Dia')['Dia'].rank(method='first')
+    df_grupo['Dia_ordenado'] = df_grupo.groupby('Dia').cumcount() + 1
     
     # Gráfico de líneas del promedio de peso levantado por día para ambas personas
     line_chart = alt.Chart(df_grupo).mark_line().encode(
