@@ -160,7 +160,7 @@ if 'Progreso_ind' in st.session_state:
     df['promedio_peso'] = df.groupby(['dia', 'maquina'])['peso'].transform('mean')
     
     
-        with tab1:
+    with tab1:
         st.header("Cuadriceps (A)")
         df_cuadriceps = df[df['grupo_muscular'] == 'A']
         crear_graficos(df_cuadriceps, colores)
