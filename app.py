@@ -154,19 +154,19 @@ if 'Progreso_ind' in st.session_state:
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'Musculo'] = 'A'
        
     with tab1:
-        st.header("Cuadriceps")
+        st.header()
         # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Cuadriceps
     
     with tab2:
-        st.header("Espalda y Biceps")
+        st.header()
         # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Espalda y Biceps
         
     with tab3:
-        st.header("Gluteos y femorales")
+        st.header()
         # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Gluteos y femorales
         
     with tab4:
-        st.header("Pectorales, hombros y triceps")
+        st.header()
         # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Pectorales, hombros y triceps
 
 
