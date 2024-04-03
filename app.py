@@ -49,7 +49,11 @@ def download_csv(df, filename):
     csv = df.to_csv(index=False, sep=',', encoding='utf-8').encode('utf-8')
     href = f'<a href="data:text/csv;base64,{b64encode(csv).decode()}" download="{filename}.csv">Descargar CSV</a>'
     return href
-    
+
+# Función para calcular el promedio de peso por día y máquina
+def calcular_promedio(df):
+    return df.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] / x['Repeticiones']).mean()).reset_index(name='Promedio')
+
 # Título de la aplicación
 st.title('🏋️‍♂️ Nuestro Progreso en el Gym 🏋️‍♀️')
 
@@ -141,55 +145,64 @@ if 'Progreso_ind' in st.session_state:
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'GM'] = 'A'
        
     colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
+    # Suponiendo que 'st.session_state['Progreso_ind']' ya contiene el DataFrame con los datos necesarios
+    df = st.session_state['Progreso_ind']
+    
+    # Asegúrate de que las columnas del DataFrame coincidan con las proporcionadas
+    df.rename(columns={'Dia': 'dia', 'Persona': 'persona', 'Maquina': 'maquina',
+                       'Peso': 'peso', 'Repeticiones': 'repeticiones', 'Descanso': 'descanso',
+                       'GM': 'grupo_muscular'}, inplace=True)
+    
+    # Definir los colores para cada persona
+    colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
 
-    with tab1:
+    # Calcula el promedio de peso levantado por día y máquina
+    df['promedio_peso'] = df.groupby(['dia', 'maquina'])['peso'].transform('mean')
+    
+    
+        with tab1:
         st.header("Cuadriceps (A)")
-        df_cuadriceps = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'A']
-        df_cuadriceps_promedio = calcular_promedio(df_cuadriceps)
-        
-        # Gráfico de líneas del promedio de peso por día
-        for Persona in df_cuadriceps['Persona'].unique():
-            st_Persona = df_cuadriceps_promedio[df_cuadriceps_promedio['Persona'] == Persona]
-            st.line_chart(st_Persona[['Dia', 'Promedio']].set_index('Dia'), width=0, height=300, use_container_width=True)
-        
-        # Gráfico de barras del total de repeticiones por día
-        st.bar_chart(df_cuadriceps.groupby(['Dia', 'Persona'])['Repeticiones'].sum().unstack(), width=0, height=300, use_container_width=True)
-
+        df_cuadriceps = df[df['grupo_muscular'] == 'A']
+        crear_graficos(df_cuadriceps, colores)
+    
     with tab2:
         st.header("Espalda y Biceps (B)")
-        df_espalda_biceps = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'B']
-        df_espalda_biceps_promedio = calcular_promedio(df_espalda_biceps)
-        
-        # Gráfico de líneas del promedio de peso por día
-        for Persona in df_espalda_biceps['Persona'].unique():
-            st_Persona = df_espalda_biceps_promedio[df_espalda_biceps_promedio['Persona'] == Persona]
-            st.line_chart(st_Persona[['Dia', 'Promedio']].set_index('Dia'), width=0, height=300, use_container_width=True)
-        
-        # Gráfico de barras del total de repeticiones por día
-        st.bar_chart(df_espalda_biceps.groupby(['Dia', 'Persona'])['Repeticiones'].sum().unstack(), width=0, height=300, use_container_width=True)
+        df_espalda_biceps = df[df['grupo_muscular'] == 'B']
+        crear_graficos(df_espalda_biceps, colores)
     
     with tab3:
         st.header("Gluteos y femorales (C)")
-        df_gluteos_femorales = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'C']
-        df_gluteos_femorales_promedio = calcular_promedio(df_gluteos_femorales)
-        
-        # Gráfico de líneas del promedio de peso por día
-        for Persona in df_gluteos_femorales['Persona'].unique():
-            st_Persona = df_gluteos_femorales_promedio[df_gluteos_femorales_promedio['Persona'] == Persona]
-            st.line_chart(st_Persona[['Dia', 'Promedio']].set_index('Dia'), width=0, height=300, use_container_width=True)
-        
-        # Gráfico de barras del total de repeticiones por día
-        st.bar_chart(df_gluteos_femorales.groupby(['Dia', 'Persona'])['Repeticiones'].sum().unstack(), width=0, height=300, use_container_width=True)
+        df_gluteos_femorales = df[df['grupo_muscular'] == 'C']
+        crear_graficos(df_gluteos_femorales, colores)
     
     with tab4:
-        st.header("Pectorales, hombros y triceps (D)")
-        df_pectoral_hombros_triceps = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'D']
-        df_pectoral_hombros_triceps_promedio = calcular_promedio(df_pectoral_hombros_triceps)
+        st.header("Hombro, tricep y pecho (D)")
+        df_pectoral_hombros_triceps = df[df['grupo_muscular'] == 'D']
+        crear_graficos(df_pectoral_hombros_triceps, colores)
+
+# Función para crear gráficos de líneas y barras
+def crear_graficos(df_grupo, colores):
+    for persona in ['Carlos', 'Cinthia']:
+        df_persona = df_grupo[df_grupo['persona'] == persona]
         
-        # Gráfico de líneas del promedio de peso por día
-        for Persona in df_pectoral_hombros_triceps['Persona'].unique():
-            st_Persona = df_pectoral_hombros_triceps_promedio[df_pectoral_hombros_triceps_promedio['Persona'] == Persona]
-            st.line_chart(st_Persona[['Dia', 'Promedio']].set_index('Dia'), width=0, height=300, use_container_width=True)
+        # Gráfico de líneas del promedio de peso levantado por día
+        line_chart = alt.Chart(df_persona).mark_line().encode(
+            x='dia:O',
+            y=alt.Y('promedio_peso:Q', title='Promedio de Peso'),
+            color=alt.value(colores[persona]),
+            tooltip=['dia', 'promedio_peso']
+        ).properties(
+            title=f"Promedio de Peso Levantado por {persona}"
+        )
+        st.altair_chart(line_chart, use_container_width=True)
         
         # Gráfico de barras del total de repeticiones por día
-        st.bar_chart(df_pectoral_hombros_triceps.groupby(['Dia', 'Persona'])['Repeticiones'].sum().unstack(), width=0, height=300, use_container_width=True)
+        bar_chart = alt.Chart(df_persona).mark_bar().encode(
+            x='dia:O',
+            y=alt.Y('sum(repeticiones):Q', title='Total de Repeticiones'),
+            color=alt.value(colores[persona]),
+            tooltip=['dia', 'sum(repeticiones)']
+        ).properties(
+            title=f"Total de Repeticiones por {persona}"
+        )
+        st.altair_chart(bar_chart, use_container_width=True)
