@@ -46,7 +46,7 @@ def formulario_hipertrofia_muscular(sets):
 
 # Función para descargar DataFrame como CSV
 def download_csv(df, filename):
-    df = df[['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Repeticiones']]
+    
     csv = df.to_csv(index=False, sep=',', encoding='utf-8').encode('utf-8')
     href = f'<a href="data:text/csv;base64,{b64encode(csv).decode()}" download="{filename}.csv">Descargar CSV</a>'
     return href
@@ -146,60 +146,4 @@ if 'Progreso_ind' in st.session_state:
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal']), 'Musculo'] = 'Brazo'
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto','Leg Curl','Abducción','Glúteo en maquina','Leg press','Hack squat','Aducción','Leg extension']), 'Musculo'] = 'Pierna'
 
-    # Filtrar por músculo
-    df_filtred['Musculo'] = df_filtred['Maquina'].apply(lambda x: 'Brazo' if x in ['Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal'] else 'Pierna')
-    df_pierna = df_filtred[df_filtred['Musculo'] == 'Pierna']
-    df_brazo = df_filtred[df_filtred['Musculo'] == 'Brazo']
-    
-    # Gráficos con Plotly
-    fig_pierna = px.line(df_pierna.reset_index(), x=df_pierna.reset_index().index + 1, y='Peso', title='Progreso de Peso Levantado (Pierna)', markers=True, color='Persona')
-    st.plotly_chart(fig_pierna)
-    
-    fig_brazo = px.line(df_brazo.reset_index(), x=df_brazo.reset_index().index + 1, y='Peso', title='Progreso de Peso Levantado (Brazo)', markers=True, color='Persona')
-    st.plotly_chart(fig_brazo)
-    
-    # Gráfico de Línea para Pesos Levantados
-    fig_linea_carlos = px.line(df_carlos.reset_index(), x=df_carlos.reset_index().index + 1, y='Peso', title='Pesos Levantados - Carlos', color='Persona')
-    fig_linea_cinthia = px.line(df_cinthia.reset_index(), x=df_cinthia.reset_index().index + 1, y='Peso', title='Pesos Levantados - Cinthia', color='Persona')
-    
-    fig_linea_carlos.update_traces(line=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
-    fig_linea_carlos.update_traces(line=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
-    
-    fig_linea_cinthia.update_traces(line=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
-    fig_linea_cinthia.update_traces(line=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
-    
-    st.plotly_chart(fig_linea_carlos)
-    st.plotly_chart(fig_linea_cinthia)
-    
-    # Gráfico de Barras para Repeticiones o Sets
-    fig_barras = px.bar(df_filtred.reset_index(), x=df_filtred.reset_index()['index'] + 1, y='Repeticiones', color='Persona', title='Repeticiones')
-    fig_barras.update_traces(marker=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
-    fig_barras.update_traces(marker=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
-    st.plotly_chart(fig_barras)
-    
-    # Histograma de Pesos
-    fig_hist = px.histogram(df_filtred, x='Peso', color='Persona', title='Histograma de Pesos')
-    fig_hist.update_traces(marker=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
-    fig_hist.update_traces(marker=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
-    st.plotly_chart(fig_hist)
-    
-    # Diagrama de Dispersión Peso vs Repeticiones
-    fig_dispersion = px.scatter(df_filtred.reset_index(), x='Peso', y='Repeticiones', color='Persona', title='Peso vs Repeticiones')
-    fig_dispersion.update_traces(marker=dict(color='rgb(0,0,0)'), selector=dict(name='Carlos'))
-    fig_dispersion.update_traces(marker=dict(color='rgb(173,216,230)'), selector=dict(name='Cinthia'))
-    st.plotly_chart(fig_dispersion)
 
-
-# Algoritmo de Machine Learning (Random Forest Regression)
-st.header('Algoritmo de Machine Learning: Random Forest Regression')
-if 'Progreso_ind' in st.session_state:
-    X = df_filtred[['Repeticiones', 'Sets']]
-    y = df_filtred['Peso']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    model = RandomForestRegressor()
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    mse = mean_squared_error(y_test, y_pred)
-    st.write(f'MSE (Error Cuadrático Medio): {mse}')
-else:
-    st.write('No hay suficientes datos para entrenar el modelo.')
