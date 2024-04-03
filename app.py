@@ -60,12 +60,15 @@ def calcular_promedio(df):
 
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
-    # Calcula el promedio de peso por día y máquina
-    df_promedio = df_grupo.groupby(['Dia']).apply(calcular_promedio).reset_index(drop=True)
+    # Reiniciar el índice para evitar problemas con Altair
+    df_grupo = df_grupo.reset_index(drop=True)
+    
+    # Agregar una columna 'Dia_ordenado' que contenga el orden de los días dentro de cada grupo muscular
+    df_grupo['Dia_ordenado'] = df_grupo.groupby('Dia').cumcount() + 1
     
     # Gráfico de líneas del promedio de peso levantado por día para ambas personas
-    line_chart = alt.Chart(df_promedio).mark_line().encode(
-        x='Dia:T',  # Utiliza el tipo de dato 'temporal' para la variable del eje X
+    line_chart = alt.Chart(df_grupo).mark_line().encode(
+        x='Dia_ordenado:O',  # Utiliza el tipo de dato 'ordinal' para el eje X
         y=alt.Y('mean(promedio_peso):Q', title='Promedio de Peso'),  # Utiliza la media del promedio de peso para el eje Y
         color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue'])),
         tooltip=['Persona', 'Dia', 'mean(promedio_peso)']  # Utiliza la media del promedio de peso para la etiqueta del tooltip
@@ -75,8 +78,8 @@ def crear_graficos(df_grupo, colores):
     st.altair_chart(line_chart, use_container_width=True)
 
     # Gráfico de barras del total de repeticiones por día para ambas personas
-    bar_chart = alt.Chart(df_promedio).mark_bar().encode(
-        x='Dia:T',  # Utiliza el tipo de dato 'temporal' para el eje X
+    bar_chart = alt.Chart(df_grupo).mark_bar().encode(
+        x='Dia_ordenado:O',  # Utiliza el tipo de dato 'ordinal' para el eje X
         y=alt.Y('sum(Repeticiones):Q', title='Total de Repeticiones'),
         color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue'])),
         tooltip=['Persona', 'Dia', 'sum(Repeticiones)']
