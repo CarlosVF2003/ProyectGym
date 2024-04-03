@@ -51,7 +51,7 @@ def download_csv(df, filename):
 
 # Función para calcular el promedio de peso por día y máquina
 def calcular_promedio(df):
-    return df.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] / x['Repeticiones']).mean()).reSets_index(name='Promedio')
+    return df.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] / x['Repeticiones']).mean()).reset_index(name='Promedio')
 
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
@@ -60,7 +60,7 @@ def crear_graficos(df_grupo, colores):
     df_cinthia = df_grupo[df_grupo['Persona'] == 'Cinthia']
 
     # Calcula el promedio de peso levantado por día y máquina
-    df_grupo['promedio_peso'] = df_grupo.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] * x['Sets'] * x['Repeticiones']).sum() / (x['Sets'] * x['Repeticiones']).sum()).reSets_index(name='Promedio de Peso')
+    df_grupo['promedio_peso'] = df_grupo.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] * x['Sets'] * x['Repeticiones']).sum() / (x['Sets'] * x['Repeticiones']).sum()).reset_index(name='Promedio de Peso')
 
     # Gráfico de líneas del promedio de peso levantado por día para ambas personas
     line_chart = alt.Chart(df_grupo).mark_line().encode(
@@ -153,13 +153,13 @@ with st.expander('🤵‍♂️ Tabla de datos de Carlos'):
     if 'Progreso_ind' in st.session_state:
         st.header('Datos de Carlos')
         df_carlos = df_filtred[df_filtred['Persona'] == 'Carlos']
-        st.dataframe(df_carlos.reSets_index(drop=True))
+        st.dataframe(df_carlos.reset_index(drop=True))
 
 with st.expander('🙍 Tabla de datos de Cinthia'):
     if 'Progreso_ind' in st.session_state:
         st.header('Datos de Cinthia')
         df_cinthia = df_filtred[df_filtred['Persona'] == 'Cinthia']
-        st.dataframe(df_cinthia.reSets_index(drop=True))
+        st.dataframe(df_cinthia.reset_index(drop=True))
         
 # Crear pestañas con los nombres proporcionados
 tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
