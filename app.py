@@ -54,7 +54,7 @@ def calcular_promedio(df):
     return df.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] / x['Repeticiones']).mean()).reset_index(name='Promedio')
 
 # Función para crear gráficos de líneas y barras
-def crear_graficos(df_grupo):
+def crear_graficos(df_grupo, colores):
     # Filtrar datos para Carlos y Cinthia
     df_carlos = df_grupo[df_grupo['Persona'] == 'Carlos']
     df_cinthia = df_grupo[df_grupo['Persona'] == 'Cinthia']
@@ -80,6 +80,7 @@ def crear_graficos(df_grupo):
         title="Total de Repeticiones"
     )
     st.altair_chart(bar_chart, use_container_width=True)
+
 
 
 
