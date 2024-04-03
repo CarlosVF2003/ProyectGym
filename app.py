@@ -15,8 +15,8 @@ if 'Progreso_ind' not in st.session_state:
         st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv")
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
-# Crear pestañas con los nombres proporcionados
-tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
+    # Crear pestañas con los nombres proporcionados
+    tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
     
 # Definir las funciones
 def formulario_desarrollo_fuerza(sets):
