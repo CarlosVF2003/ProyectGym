@@ -57,13 +57,14 @@ def calcular_promedio(df):
     # Calcula el denominador (SUMAPRODUCTO(F41:F45;G41:G45))
     denominador = (df['Sets'] * df['Repeticiones']).sum()
     
-    # Calcula el promedio
+    # Calcula el promedio ponderado
     promedio = numerador / denominador
     
     # Crea una nueva columna 'promedio_peso' en el DataFrame y asigna el valor del promedio calculado
     df['promedio_peso'] = promedio
     
     return df
+
 
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
