@@ -16,42 +16,42 @@ if 'Progreso_ind' not in st.session_state:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
 # Definir las funciones
-def formulario_desarrollo_fuerza(Set):
+def formulario_desarrollo_fuerza(Sets):
     pesos = []
-    for i in range(Set):
-        peso = st.number_input(f'💪 Peso para el set {i+1}:', min_value=0.0, step=0.1, format="%.1f")
+    for i in range(Sets):
+        peso = st.number_input(f'💪 Peso para el Sets {i+1}:', min_value=0.0, step=0.1, format="%.1f")
         pesos.append(peso)
 
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return pesos, [repeticiones] * Set, [descanso] * Set
+    return pesos, [repeticiones] * Sets, [descanso] * Sets
 
-def formulario_mejora_resistencia(Set):
+def formulario_mejora_resistencia(Sets):
     pesos = []
-    for i in range(Set):
-        peso = st.number_input(f'💪 Peso para el set {i+1}:', min_value=0.0, step=0.1, format="%.1f")
+    for i in range(Sets):
+        peso = st.number_input(f'💪 Peso para el Sets {i+1}:', min_value=0.0, step=0.1, format="%.1f")
         pesos.append(peso)
 
-    repeticiones = [st.number_input(f'🏃 Repeticiones para el set {i+1}:', min_value=1, max_value=30, step=1) for i in range(Set)]
+    repeticiones = [st.number_input(f'🏃 Repeticiones para el Sets {i+1}:', min_value=1, max_value=30, step=1) for i in range(Sets)]
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return pesos, repeticiones, [descanso] * Set
+    return pesos, repeticiones, [descanso] * Sets
 
-def formulario_hipertrofia_muscular(Set):
+def formulario_hipertrofia_muscular(Sets):
     peso = st.number_input('💪 Peso (kg):', min_value=0.0, step=0.1, format="%.1f")
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return [peso] * Set, [repeticiones] * Set, [descanso] * Set
+    return [peso] * Sets, [repeticiones] * Sets, [descanso] * Sets
 
 # Función para descargar DataFrame como CSV
 def download_csv(df, filename):
-    df = df[['Dia', 'Persona', 'Maquina', 'Peso','Set','Repeticiones','Descanso']]
+    df = df[['Dia', 'Persona', 'Maquina', 'Peso','Sets','Repeticiones','Descanso']]
     csv = df.to_csv(index=False, sep=',', encoding='utf-8').encode('utf-8')
     href = f'<a href="data:text/csv;base64,{b64encode(csv).decode()}" download="{filename}.csv">Descargar CSV</a>'
     return href
 
 # Función para calcular el promedio de peso por día y máquina
 def calcular_promedio(df):
-    return df.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] / x['Repeticiones']).mean()).reset_index(name='Promedio')
+    return df.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] / x['Repeticiones']).mean()).reSets_index(name='Promedio')
 
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
@@ -60,7 +60,7 @@ def crear_graficos(df_grupo, colores):
     df_cinthia = df_grupo[df_grupo['Persona'] == 'Cinthia']
 
     # Calcula el promedio de peso levantado por día y máquina
-    df_grupo['promedio_peso'] = df_grupo.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] * x['Set'] * x['Repeticiones']).sum() / (x['Set'] * x['Repeticiones']).sum()).reset_index(name='Promedio de Peso')
+    df_grupo['promedio_peso'] = df_grupo.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] * x['Sets'] * x['Repeticiones']).sum() / (x['Sets'] * x['Repeticiones']).sum()).reSets_index(name='Promedio de Peso')
 
     # Gráfico de líneas del promedio de peso levantado por día para ambas personas
     line_chart = alt.Chart(df_grupo).mark_line().encode(
@@ -96,15 +96,15 @@ with st.expander('📝 Registro de Datos'):
     Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral','Extensión frontal','Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo','Peso muerto','Leg Curl','Abducción'
                                                           ,'Glúteo en maquina','Leg press','Hack squat','Aducción','Leg extension','Hip thrust'))
     Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
-    Set = st.number_input('Número de Set:', min_value=1, max_value=10, step=1, value=4)
+    Sets = st.number_input('Número de Sets:', min_value=1, max_value=10, step=1, value=4)
     
     # Capturar datos según el enfoque de entrenamiento seleccionado
     if Enfoque == 'Desarrollo de Fuerza':
-        pesos, repeticiones, descansos = formulario_desarrollo_fuerza(Set)
+        pesos, repeticiones, descansos = formulario_desarrollo_fuerza(Sets)
     elif Enfoque == 'Mejora de la Resistencia':
-        pesos, repeticiones, descansos = formulario_mejora_resistencia(Set)
+        pesos, repeticiones, descansos = formulario_mejora_resistencia(Sets)
     else:  # Hipertrofia Muscular
-        pesos, repeticiones, descansos = formulario_hipertrofia_muscular(Set)
+        pesos, repeticiones, descansos = formulario_hipertrofia_muscular(Sets)
         
     # Verificar que ambos formularios estén completos
     form_completo = all(pesos) and all(repeticiones) and all(descansos)
@@ -120,11 +120,11 @@ with st.expander('📝 Registro de Datos'):
             musculo = 'Desconocido'
         if st.button('Guardar'):
             Progreso_new = pd.DataFrame({
-                'Dia': [Dia] * Set,
-                'Persona': [Persona] * Set,
-                'Maquina': [Maquina] * Set,
-                'Musculo': [musculo] * Set,
-                'Set' : Set,
+                'Dia': [Dia] * Sets,
+                'Persona': [Persona] * Sets,
+                'Maquina': [Maquina] * Sets,
+                'Musculo': [musculo] * Sets,
+                'Sets' : Sets,
                 'Peso': pesos,
                 'Repeticiones': repeticiones,
                 'Descanso': descansos
@@ -133,7 +133,7 @@ with st.expander('📝 Registro de Datos'):
             # Guardar el DataFrame actualizado en un archivo CSV
             # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
             if Enfoque != 'Hipertrofia Muscular':
-                st.session_state['Progreso_ind']['Set'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso','Repeticiones','Descanso'])[['Peso', 'Repeticiones']].transform('size')
+                st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso','Repeticiones','Descanso'])[['Peso', 'Repeticiones']].transform('size')
             st.success('¡Datos registrados con éxito!')
             st.session_state['show_enfoque_form'] = False 
             st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)
@@ -141,9 +141,9 @@ with st.expander('📝 Registro de Datos'):
 
 with st.expander('📓 Datos Registrados'):
     st.subheader("Visualización de datos registrados")
-    # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los Set
-    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso','Set','Repeticiones','Descanso'])
-    st.dataframe(unique_values.reset_index(drop=True))
+    # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los Sets
+    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subSets=['Dia', 'Persona', 'Maquina', 'Peso','Sets','Repeticiones','Descanso'])
+    st.dataframe(unique_values.reSets_index(drop=True))
     st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
     df_filtred = unique_values
     
@@ -153,13 +153,13 @@ with st.expander('🤵‍♂️ Tabla de datos de Carlos'):
     if 'Progreso_ind' in st.session_state:
         st.header('Datos de Carlos')
         df_carlos = df_filtred[df_filtred['Persona'] == 'Carlos']
-        st.dataframe(df_carlos.reset_index(drop=True))
+        st.dataframe(df_carlos.reSets_index(drop=True))
 
 with st.expander('🙍 Tabla de datos de Cinthia'):
     if 'Progreso_ind' in st.session_state:
         st.header('Datos de Cinthia')
         df_cinthia = df_filtred[df_filtred['Persona'] == 'Cinthia']
-        st.dataframe(df_cinthia.reset_index(drop=True))
+        st.dataframe(df_cinthia.reSets_index(drop=True))
         
 # Crear pestañas con los nombres proporcionados
 tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
