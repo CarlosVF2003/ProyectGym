@@ -51,17 +51,8 @@ def download_csv(df, filename):
 
 # Función para calcular el promedio de peso por día y máquina
 def calcular_promedio(df):    
-    # Calcula el numerador (SUMAPRODUCTO(D41:D45;F41:F45;G41:G45))
-    numerador = (df['Peso'] * df['Sets'] * df['Repeticiones']).sum()
-    
-    # Calcula el denominador (SUMAPRODUCTO(F41:F45;G41:G45))
-    denominador = (df['Sets'] * df['Repeticiones']).sum()
-    
-    # Calcula el promedio ponderado
-    promedio = numerador / denominador
-    
-    # Crea una nueva columna 'promedio_peso' en el DataFrame y asigna el valor del promedio calculado
-    df['promedio_peso'] = promedio
+
+    df['promedio_peso']  = (df['Peso'] * df['Sets'] * df['Repeticiones']).sum()/(df['Sets'] * df['Repeticiones']).sum()
     
     return df
 
