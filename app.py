@@ -66,11 +66,8 @@ def crear_graficos(df_grupo, colores):
         st.warning("No hay suficientes datos disponibles para mostrar los gráficos.")
         return
     
-    # Agregar una columna 'Dia_ordenado' que contenga el orden de los días dentro de cada grupo muscular
-    df_grupo['Dia_ordenado'] = df_grupo.groupby('Dia').count() + 1
-    
-    # Convertir la columna 'Dia_ordenado' a tipo entero
-    df_grupo['Dia_ordenado'] = df_grupo['Dia_ordenado'].astype(int)
+    # Calcular el orden de los días dentro de cada grupo muscular usando rank
+    df_grupo['Dia_ordenado'] = df_grupo.groupby('Dia')['Dia'].rank(method='first')
     
     # Gráfico de líneas del promedio de peso levantado por día para ambas personas
     line_chart = alt.Chart(df_grupo).mark_line().encode(
@@ -93,6 +90,7 @@ def crear_graficos(df_grupo, colores):
         title="Total de Repeticiones"
     )
     st.altair_chart(bar_chart, use_container_width=True)
+
 
 
 
