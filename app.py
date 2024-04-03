@@ -180,9 +180,6 @@ if 'Progreso_ind' in st.session_state:
     # Suponiendo que 'st.session_state['Progreso_ind']' ya contiene el DataFrame con los datos necesarios
     df = st.session_state['Progreso_ind']
 
-    # Calcula el promedio de peso levantado por día y máquina
-    df['promedio_peso'] = df.groupby(['Dia', 'Maquina'])['Peso'].transform('mean')
-    
     with tab1:
         st.header("Cuadriceps (A)")
         df_cuadriceps = df[df['GM'] == 'A']
