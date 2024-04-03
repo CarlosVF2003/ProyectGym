@@ -130,7 +130,6 @@ tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y f
     
 # Gráficos
 if 'Progreso_ind' in st.session_state:
-    st.header('Progreso por grupo muscular')
     # Añadir una columna para los músculos
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal','Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo']), 'Musculo'] = 'Brazo'
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina', 'Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'Musculo'] = 'Pierna'
@@ -142,90 +141,32 @@ if 'Progreso_ind' in st.session_state:
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'GM'] = 'A'
        
     colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
-    
+
     with tab1:
         st.header("Cuadriceps (A)")
         # Filtramos el dataframe para Cuadriceps y graficamos para cada Persona
-        for Persona in st.session_state['Progreso_ind']['Persona'].unique():
-            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'A') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
-            plt.plot(st_Persona['Dia'], st_Persona['Peso'], marker='o', color=colores[Persona], label=Persona)
-        plt.legend()
-        plt.title('Progresión de Peso en Cuadriceps')
-        plt.xlabel('Día')
-        plt.ylabel('Peso')
-        st.pyplot(plt)
-        
-        # Gráfico adicional: Histograma de repeticiones para Cuadriceps
-        plt.figure()  # Añadir esta línea para iniciar una nueva figura
-        for Persona in st.session_state['Progreso_ind']['Persona'].unique():
-            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'A') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
-            plt.hist(st_Persona['Repeticiones'], bins=10, color=colores[Persona], label=f'Repeticiones {Persona}', alpha=0.5)
-        plt.legend()
-        plt.title('Histograma de Repeticiones para Cuadriceps')
-        plt.xlabel('Repeticiones')
-        plt.ylabel('Frecuencia')
-        st.pyplot(plt)
+        df_cuadriceps = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'A']
+        for Persona in df_cuadriceps['Persona'].unique():
+            st_Persona = df_cuadriceps[df_cuadriceps['Persona'] == Persona]
+            st.line_chart(st_Persona[['Dia', 'Peso']].set_index('Dia'), width=0, height=300)
     
     with tab2:
         st.header("Espalda y Biceps (B)")
         # Filtramos el dataframe para Espalda y Biceps y graficamos para cada Persona
-        plt.figure()  # Añadir esta línea para iniciar una nueva figura
-        st.session_state['Progreso_ind'].groupby(['Dia', 'Persona'])['Peso'].sum().unstack().plot(kind='bar', color=[colores['Carlos'], colores['Cinthia']])
-        plt.title('Peso Total por Día en Espalda y Biceps')
-        plt.xlabel('Día')
-        plt.ylabel('Peso Total')
-        st.pyplot(plt)
-        
-        # Gráfico adicional: Boxplot de peso para Espalda y Biceps
-        plt.figure()  # Añadir esta línea para iniciar una nueva figura
-        st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'B'].boxplot(column='Peso', by='Persona', grid=False)
-        plt.title('Boxplot de Peso para Espalda y Biceps')
-        plt.suptitle('')
-        plt.xlabel('Persona')
-        plt.ylabel('Peso')
-        st.pyplot(plt)
+        df_espalda_biceps = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'B']
+        st.bar_chart(df_espalda_biceps.groupby(['Dia', 'Persona'])['Peso'].sum().unstack(), width=0, height=300)
     
     with tab3:
         st.header("Gluteos y femorales (C)")
         # Filtramos el dataframe para Gluteos y femorales y graficamos para cada Persona
-        plt.figure()  # Añadir esta línea para iniciar una nueva figura
-        st.session_state['Progreso_ind'].groupby(['Dia', 'Persona'])['Peso'].sum().unstack().plot(kind='area', color=[colores['Carlos'], colores['Cinthia']])
-        plt.title('Volumen de Entrenamiento en Gluteos y femorales')
-        plt.xlabel('Día')
-        plt.ylabel('Volumen de Peso')
-        st.pyplot(plt)
-        
-        # Gráfico adicional: Gráfico de dispersión de peso vs. repeticiones para Gluteos y femorales
-        plt.figure()  # Añadir esta línea para iniciar una nueva figura
-        for Persona in st.session_state['Progreso_ind']['Persona'].unique():
-            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'C') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
-            plt.scatter(st_Persona['Peso'], st_Persona['Repeticiones'], color=colores[Persona], label=Persona)
-        plt.legend()
-        plt.title('Dispersión de Peso vs. Repeticiones para Gluteos y femorales')
-        plt.xlabel('Peso')
-        plt.ylabel('Repeticiones')
-        st.pyplot(plt)
+        df_gluteos_femorales = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'C']
+        st.area_chart(df_gluteos_femorales.groupby(['Dia', 'Persona'])['Peso'].sum().unstack(), width=0, height=300)
     
     with tab4:
         st.header("Pectorales, hombros y triceps (D)")
         # Filtramos el dataframe para Pectorales, hombros y triceps y graficamos para cada Persona
-        plt.figure()  # Añadir esta línea para iniciar una nueva figura
-        for Persona in st.session_state['Progreso_ind']['Persona'].unique():
-            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'D') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
-            plt.plot(st_Persona['Dia'], st_Persona['Peso'], marker='o', color=colores[Persona], label=Persona)
-        plt.legend()
-        plt.title('Progresión de Peso en Pectorales, hombros y triceps')
-        plt.xlabel('Día')
-        plt.ylabel('Peso')
-        st.pyplot(plt)
-        
-        # Gráfico adicional: Gráfico de líneas de descanso para Pectorales, hombros y triceps
-        plt.figure()  # Añadir esta línea para iniciar una nueva figura
-        for Persona in st.session_state['Progreso_ind']['Persona'].unique():
-            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['GM'] == 'D') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
-            plt.plot(st_Persona['Dia'], st_Persona['Descanso'], marker='s', linestyle='--', color=colores[Persona], label=f'Descanso {Persona}')
-        plt.legend()
-        plt.title('Progresión de Descanso en Pectorales, hombros y triceps')
-        plt.xlabel('Día')
-        plt.ylabel('Descanso (segundos)')
-        st.pyplot(plt)
+        df_pectoral_hombros_triceps = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'D']
+        for Persona in df_pectoral_hombros_triceps['Persona'].unique():
+            st_Persona = df_pectoral_hombros_triceps[df_pectoral_hombros_triceps['Persona'] == Persona]
+            st.line_chart(st_Persona[['Dia', 'Peso']].set_index('Dia'), width=0, height=300)
+    
