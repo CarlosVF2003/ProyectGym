@@ -18,22 +18,6 @@ if 'Progreso_ind' not in st.session_state:
 # Crear pestañas con los nombres proporcionados
 tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
     
-with tab1:
-     st.header("Cuadriceps")
-        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Cuadriceps
-    
-with tab2:
-    st.header("Espalda y Biceps")
-        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Espalda y Biceps
-    
-with tab3:
-    st.header("Gluteos y femorales")
-        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Gluteos y femorales
-    
-with tab4:
-    st.header("Pectorales, hombros y triceps")
-        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Pectorales, hombros y triceps
-
 # Definir las funciones
 def formulario_desarrollo_fuerza(sets):
     pesos = []
@@ -169,5 +153,20 @@ if 'Progreso_ind' in st.session_state:
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina']), 'Musculo'] = 'C'
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'Musculo'] = 'A'
        
+    with tab1:
+        st.header("Cuadriceps")
+        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Cuadriceps
     
+    with tab2:
+        st.header("Espalda y Biceps")
+        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Espalda y Biceps
+        
+    with tab3:
+        st.header("Gluteos y femorales")
+        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Gluteos y femorales
+        
+    with tab4:
+        st.header("Pectorales, hombros y triceps")
+        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Pectorales, hombros y triceps
+
 
