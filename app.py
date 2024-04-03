@@ -55,6 +55,33 @@ def download_csv(df, filename):
 def calcular_promedio(df):
     return df.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] / x['Repeticiones']).mean()).reset_index(name='Promedio')
 
+# Función para crear gráficos de líneas y barras
+    def crear_graficos(df_grupo, colores):
+        for persona in ['Carlos', 'Cinthia']:
+            df_persona = df_grupo[df_grupo['persona'] == persona]
+            
+            # Gráfico de líneas del promedio de peso levantado por día
+            line_chart = alt.Chart(df_persona).mark_line().encode(
+                x='dia:O',
+                y=alt.Y('promedio_peso:Q', title='Promedio de Peso'),
+                color=alt.value(colores[persona]),
+                tooltip=['dia', 'promedio_peso']
+            ).properties(
+                title=f"Promedio de Peso Levantado por {persona}"
+            )
+            st.altair_chart(line_chart, use_container_width=True)
+            
+            # Gráfico de barras del total de repeticiones por día
+            bar_chart = alt.Chart(df_persona).mark_bar().encode(
+                x='dia:O',
+                y=alt.Y('sum(repeticiones):Q', title='Total de Repeticiones'),
+                color=alt.value(colores[persona]),
+                tooltip=['dia', 'sum(repeticiones)']
+            ).properties(
+                title=f"Total de Repeticiones por {persona}"
+            )
+            st.altair_chart(bar_chart, use_container_width=True)
+
 # Título de la aplicación
 st.title('🏋️‍♂️ Nuestro Progreso en el Gym 🏋️‍♀️')
 
@@ -157,7 +184,6 @@ if 'Progreso_ind' in st.session_state:
     # Calcula el promedio de peso levantado por día y máquina
     df['promedio_peso'] = df.groupby(['dia', 'maquina'])['peso'].transform('mean')
     
-    
     with tab1:
         st.header("Cuadriceps (A)")
         df_cuadriceps = df[df['grupo_muscular'] == 'A']
@@ -179,29 +205,4 @@ if 'Progreso_ind' in st.session_state:
         crear_graficos(df_pectoral_hombros_triceps, colores)
 
     
-    # Función para crear gráficos de líneas y barras
-    def crear_graficos(df_grupo, colores):
-        for persona in ['Carlos', 'Cinthia']:
-            df_persona = df_grupo[df_grupo['persona'] == persona]
-            
-            # Gráfico de líneas del promedio de peso levantado por día
-            line_chart = alt.Chart(df_persona).mark_line().encode(
-                x='dia:O',
-                y=alt.Y('promedio_peso:Q', title='Promedio de Peso'),
-                color=alt.value(colores[persona]),
-                tooltip=['dia', 'promedio_peso']
-            ).properties(
-                title=f"Promedio de Peso Levantado por {persona}"
-            )
-            st.altair_chart(line_chart, use_container_width=True)
-            
-            # Gráfico de barras del total de repeticiones por día
-            bar_chart = alt.Chart(df_persona).mark_bar().encode(
-                x='dia:O',
-                y=alt.Y('sum(repeticiones):Q', title='Total de Repeticiones'),
-                color=alt.value(colores[persona]),
-                tooltip=['dia', 'sum(repeticiones)']
-            ).properties(
-                title=f"Total de Repeticiones por {persona}"
-            )
-            st.altair_chart(bar_chart, use_container_width=True)
+    
