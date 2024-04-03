@@ -63,9 +63,9 @@ def crear_graficos(df_grupo, colores):
         st.write("Creando gráfico de líneas")
         line_chart = alt.Chart(df_persona).mark_line().encode(
             x='Dia:O',
-            y=alt.Y('Promedio:Q', title='Promedio de Peso'),
-            color=alt.value(colores[persona]),
-            tooltip=['Dia', 'Promedio']
+            y=alt.Y('mean(Peso):Q', title='Promedio de Peso'),
+            color=alt.ColorValue(colores[persona]),
+            tooltip=['Dia', 'mean(Peso)']
         ).properties(
             title=f"Promedio de Peso Levantado por {persona}"
         )
@@ -77,7 +77,7 @@ def crear_graficos(df_grupo, colores):
         bar_chart = alt.Chart(df_persona).mark_bar().encode(
             x='Dia:O',
             y=alt.Y('sum(Repeticiones):Q', title='Total de Repeticiones'),
-            color=alt.value(colores[persona]),
+            color=alt.ColorValue(colores[persona]),
             tooltip=['Dia', 'sum(Repeticiones)']
         ).properties(
             title=f"Total de Repeticiones por {persona}"
