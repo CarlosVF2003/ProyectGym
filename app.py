@@ -133,7 +133,7 @@ with st.expander('📝 Registro de Datos'):
             # Guardar el DataFrame actualizado en un archivo CSV
             # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
             if Enfoque != 'Hipertrofia Muscular':
-                st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso','Repeticiones','Descanso'])[['Peso', 'Repeticiones']].transform('size')
+                st.session_state['Progreso_ind']['Sets'] = st.session_state['Progreso_ind'].groupby(['Dia', 'Persona', 'Maquina', 'Peso','Descanso','Repeticiones'])[['Peso', 'Repeticiones']].transform('size')
             st.success('¡Datos registrados con éxito!')
             st.session_state['show_enfoque_form'] = False 
             st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)
@@ -142,7 +142,7 @@ with st.expander('📝 Registro de Datos'):
 with st.expander('📓 Datos Registrados'):
     st.subheader("Visualización de datos registrados")
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los Sets
-    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Sets', 'Repeticiones', 'Descanso'])
+    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso','Descanso', 'Sets', 'Repeticiones'])
     st.dataframe(unique_values.reset_index(drop=True))
     st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
     df_filtred = unique_values
