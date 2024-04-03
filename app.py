@@ -142,11 +142,12 @@ with st.expander('📝 Registro de Datos'):
 with st.expander('📓 Datos Registrados'):
     st.subheader("Visualización de datos registrados")
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los Sets
-    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso','Descanso', 'Sets', 'Repeticiones'])
-    st.dataframe(unique_values.reset_index(drop=True))
-    st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
-    df_filtred = unique_values
-    
+if 'Progreso_ind' in st.session_state:
+    if not st.session_state['Progreso_ind'].empty:
+        unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones'])
+        st.dataframe(unique_values.reset_index(drop=True))
+        st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
+
          
 # Mostrar tablas de datos de Carlos y Cinthia
 with st.expander('🤵‍♂️ Tabla de datos de Carlos'):
