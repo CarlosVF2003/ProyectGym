@@ -151,24 +151,24 @@ if 'Progreso_ind' in st.session_state:
     
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina']), 'Musculo'] = 'C'
     st.session_state['Progreso_ind'].loc[st.session_state['Progreso_ind']['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'Musculo'] = 'A'
-   
-    # Define las páginas de tu aplicación
-    paginas = ["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"]
+       
+    # Crear pestañas con los nombres proporcionados
+    tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
     
-    # Crea un selectbox para seleccionar la página
-    pagina_seleccionada = st.selectbox("Selecciona una página:", paginas)
+    with tab1:
+        st.header("Cuadriceps")
+        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Cuadriceps
     
-    # Muestra el contenido de la página seleccionada
-    #A
-    if pagina_seleccionada == "Cuadriceps":
-        st.write("Contenido de Cuadriceps")
-    #B
-    elif pagina_seleccionada == "Espalda y Biceps":
-        st.write("Contenido de Espalda y Biceps")
-    #C
-    elif pagina_seleccionada == "Gluteos y femorales":
-        st.write("Contenido de Gluteos y femorales")
-    #D
-    elif pagina_seleccionada == "Pectorales, hombros y triceps":
-        st.write("Contenido de Pectorales, hombros y triceps")
+    with tab2:
+        st.header("Espalda y Biceps")
+        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Espalda y Biceps
+    
+    with tab3:
+        st.header("Gluteos y femorales")
+        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Gluteos y femorales
+    
+    with tab4:
+        st.header("Pectorales, hombros y triceps")
+        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Pectorales, hombros y triceps
+
 
