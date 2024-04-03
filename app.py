@@ -156,16 +156,16 @@ if 'Progreso_ind' in st.session_state:
     colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
   
     with tab1:
-    st.header("Cuadriceps (A)")
-    # Filtramos el dataframe para Cuadriceps y graficamos para cada persona
-    for persona in st.session_state['Progreso_ind']['persona'].unique():
-        st_persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['grupo_muscular'] == 'A') & (st.session_state['Progreso_ind']['persona'] == persona)]
-        plt.plot(st_persona['dia'], st_persona['peso'], marker='o', color=colores[persona], label=persona)
-    plt.legend()
-    plt.title('Progresión de Peso en Cuadriceps')
-    plt.xlabel('Día')
-    plt.ylabel('Peso')
-    st.pyplot(plt)
+        st.header("Cuadriceps (A)")
+        # Filtramos el dataframe para Cuadriceps y graficamos para cada persona
+        for persona in st.session_state['Progreso_ind']['persona'].unique():
+            st_persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['grupo_muscular'] == 'A') & (st.session_state['Progreso_ind']['persona'] == persona)]
+            plt.plot(st_persona['dia'], st_persona['peso'], marker='o', color=colores[persona], label=persona)
+        plt.legend()
+        plt.title('Progresión de Peso en Cuadriceps')
+        plt.xlabel('Día')
+        plt.ylabel('Peso')
+        st.pyplot(plt)
 
     with tab2:
         st.header("Espalda y Biceps (B)")
