@@ -9,31 +9,30 @@ from sklearn.metrics import mean_squared_error
 from pathlib import Path
 from base64 import b64encode
 
-# Crear pestañas con los nombres proporcionados
-    tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
-    
-    with tab1:
-        st.header("Cuadriceps")
-        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Cuadriceps
-    
-    with tab2:
-        st.header("Espalda y Biceps")
-        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Espalda y Biceps
-    
-    with tab3:
-        st.header("Gluteos y femorales")
-        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Gluteos y femorales
-    
-    with tab4:
-        st.header("Pectorales, hombros y triceps")
-        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Pectorales, hombros y triceps
-
 # Cargar el archivo Progreso.csv si existe
 if 'Progreso_ind' not in st.session_state:
     if Path("Progreso.csv").is_file():
         st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv")
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
+# Crear pestañas con los nombres proporcionados
+tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
+    
+with tab1:
+     st.header("Cuadriceps")
+        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Cuadriceps
+    
+with tab2:
+    st.header("Espalda y Biceps")
+        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Espalda y Biceps
+    
+with tab3:
+    st.header("Gluteos y femorales")
+        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Gluteos y femorales
+    
+with tab4:
+    st.header("Pectorales, hombros y triceps")
+        # Aquí puedes añadir el código para mostrar el gráfico o contenido relacionado con Pectorales, hombros y triceps
 
 # Definir las funciones
 def formulario_desarrollo_fuerza(sets):
