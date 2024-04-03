@@ -117,14 +117,14 @@ with st.expander('📓 Datos Registrados'):
 with st.sidebar:
     fecha_inicio = st.number_input('Selecciona el día de inicio:', min_value=1, max_value=31, step=1, value=1)
     fecha_fin = st.number_input('Selecciona el día de fin:', min_value=fecha_inicio, max_value=31, step=1, value=31)
-    persona_filtro = st.multiselect('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
+    Persona_filtro = st.multiselect('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
    
     if st.button('Aplicar'):
         # Filtrar los datos según las selecciones del usuario
         df_filtred = st.session_state['Progreso_ind'][
             (st.session_state['Progreso_ind']['Dia'].astype(int) >= fecha_inicio) & 
             (st.session_state['Progreso_ind']['Dia'].astype(int) <= fecha_fin) &
-            (st.session_state['Progreso_ind']['Persona'].isin(persona_filtro)) 
+            (st.session_state['Progreso_ind']['Persona'].isin(Persona_filtro)) 
         ]
          
 # Mostrar tablas de datos de Carlos y Cinthia
@@ -157,10 +157,10 @@ if 'Progreso_ind' in st.session_state:
   
     with tab1:
         st.header("Cuadriceps (A)")
-        # Filtramos el dataframe para Cuadriceps y graficamos para cada persona
-        for persona in st.session_state['Progreso_ind']['persona'].unique():
-            st_persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['grupo_muscular'] == 'A') & (st.session_state['Progreso_ind']['persona'] == persona)]
-            plt.plot(st_persona['dia'], st_persona['peso'], marker='o', color=colores[persona], label=persona)
+        # Filtramos el dataframe para Cuadriceps y graficamos para cada Persona
+        for Persona in st.session_state['Progreso_ind']['Persona'].unique():
+            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['grupo_muscular'] == 'A') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
+            plt.plot(st_Persona['dia'], st_Persona['peso'], marker='o', color=colores[Persona], label=Persona)
         plt.legend()
         plt.title('Progresión de Peso en Cuadriceps')
         plt.xlabel('Día')
@@ -169,8 +169,8 @@ if 'Progreso_ind' in st.session_state:
 
     with tab2:
         st.header("Espalda y Biceps (B)")
-        # Filtramos el dataframe para Espalda y Biceps y graficamos para cada persona
-        st.session_state['Progreso_ind'].groupby(['dia', 'persona'])['peso'].sum().unstack().plot(kind='bar', color=[colores['Carlos'], colores['Cinthia']])
+        # Filtramos el dataframe para Espalda y Biceps y graficamos para cada Persona
+        st.session_state['Progreso_ind'].groupby(['dia', 'Persona'])['peso'].sum().unstack().plot(kind='bar', color=[colores['Carlos'], colores['Cinthia']])
         plt.title('Peso Total por Día en Espalda y Biceps')
         plt.xlabel('Día')
         plt.ylabel('Peso Total')
@@ -178,8 +178,8 @@ if 'Progreso_ind' in st.session_state:
     
     with tab3:
         st.header("Gluteos y femorales (C)")
-        # Filtramos el dataframe para Gluteos y femorales y graficamos para cada persona
-        st.session_state['Progreso_ind'].groupby(['dia', 'persona'])['peso'].sum().unstack().plot(kind='area', color=[colores['Carlos'], colores['Cinthia']])
+        # Filtramos el dataframe para Gluteos y femorales y graficamos para cada Persona
+        st.session_state['Progreso_ind'].groupby(['dia', 'Persona'])['peso'].sum().unstack().plot(kind='area', color=[colores['Carlos'], colores['Cinthia']])
         plt.title('Volumen de Entrenamiento en Gluteos y femorales')
         plt.xlabel('Día')
         plt.ylabel('Volumen de Peso')
@@ -187,10 +187,10 @@ if 'Progreso_ind' in st.session_state:
     
     with tab4:
         st.header("Pectorales, hombros y triceps (D)")
-        # Filtramos el dataframe para Pectorales, hombros y triceps y graficamos para cada persona
-        for persona in st.session_state['Progreso_ind']['persona'].unique():
-            st_persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['grupo_muscular'] == 'D') & (st.session_state['Progreso_ind']['persona'] == persona)]
-            plt.plot(st_persona['dia'], st_persona['peso'], marker='o', color=colores[persona], label=persona)
+        # Filtramos el dataframe para Pectorales, hombros y triceps y graficamos para cada Persona
+        for Persona in st.session_state['Progreso_ind']['Persona'].unique():
+            st_Persona = st.session_state['Progreso_ind'][(st.session_state['Progreso_ind']['grupo_muscular'] == 'D') & (st.session_state['Progreso_ind']['Persona'] == Persona)]
+            plt.plot(st_Persona['dia'], st_Persona['peso'], marker='o', color=colores[Persona], label=Persona)
         plt.legend()
         plt.title('Progresión de Peso en Pectorales, hombros y triceps')
         plt.xlabel('Día')
