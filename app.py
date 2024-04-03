@@ -153,9 +153,6 @@ if 'Progreso_ind' in st.session_state:
     df.rename(columns={'Dia': 'dia', 'Persona': 'persona', 'Maquina': 'maquina',
                        'Peso': 'peso', 'Repeticiones': 'repeticiones', 'Descanso': 'descanso',
                        'GM': 'grupo_muscular'}, inplace=True)
-    
-    # Definir los colores para cada persona
-    colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
 
     # Calcula el promedio de peso levantado por día y máquina
     df['promedio_peso'] = df.groupby(['dia', 'maquina'])['peso'].transform('mean')
@@ -181,6 +178,8 @@ if 'Progreso_ind' in st.session_state:
         df_pectoral_hombros_triceps = df[df['grupo_muscular'] == 'D']
         crear_graficos(df_pectoral_hombros_triceps, colores)
 
+# Definir los colores para cada persona
+colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
     for persona in ['Carlos', 'Cinthia']:
