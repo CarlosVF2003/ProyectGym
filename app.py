@@ -73,7 +73,7 @@ def crear_graficos(df_grupo, colores):
     line_chart = alt.Chart(df_grupo).mark_line().encode(
         x='Dia_ordenado:T',  # Utiliza el tipo de dato 'temporal' para el eje X
         y=alt.Y('promedio_peso:Q', title='Promedio de Peso'),  # Utiliza el promedio de peso para el eje Y
-        color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue'])),
+        color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue']), title='Persona'),  # Diferenciar las líneas por persona
         tooltip=['Persona', 'Dia', 'promedio_peso']  # Utiliza el promedio de peso para la etiqueta del tooltip
     ).properties(
         title="Promedio de Peso Levantado"
@@ -84,7 +84,7 @@ def crear_graficos(df_grupo, colores):
     bar_chart = alt.Chart(df_grupo).mark_bar().encode(
         x='Dia_ordenado:T',  # Utiliza el tipo de dato 'temporal' para el eje X
         y=alt.Y('sum(Repeticiones):Q', title='Total de Repeticiones'),
-        color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue'])),
+        color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue']), title='Persona'),  # Diferenciar las barras por persona
         tooltip=['Persona', 'Dia', 'sum(Repeticiones)']
     ).properties(
         title="Total de Repeticiones"
