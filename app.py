@@ -59,12 +59,15 @@ def crear_graficos(df_grupo, colores):
     df_carlos = df_grupo[df_grupo['Persona'] == 'Carlos']
     df_cinthia = df_grupo[df_grupo['Persona'] == 'Cinthia']
 
+    # Calcula el promedio de peso levantado por día y máquina
+    df_grupo['promedio_peso'] = df_grupo.groupby(['Dia', 'Maquina']).apply(lambda x: (x['Peso'] * x['Sets'] * x['Repeticiones']).sum() / (x['Sets'] * x['Repeticiones']).sum()).reset_index(name='Promedio de Peso')
+
     # Gráfico de líneas del promedio de peso levantado por día para ambas personas
     line_chart = alt.Chart(df_grupo).mark_line().encode(
         x='Dia:O',
-        y=alt.Y('mean(Peso):Q', title='Promedio de Peso'),
+        y=alt.Y('promedio_peso:Q', title='Promedio de Peso'),
         color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue'])),
-        tooltip=['Persona', 'Dia', 'mean(Peso)']
+        tooltip=['Persona', 'Dia', 'promedio_peso']
     ).properties(
         title="Promedio de Peso Levantado"
     )
@@ -80,8 +83,6 @@ def crear_graficos(df_grupo, colores):
         title="Total de Repeticiones"
     )
     st.altair_chart(bar_chart, use_container_width=True)
-
-
 
 
 
