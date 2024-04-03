@@ -144,29 +144,52 @@ if 'Progreso_ind' in st.session_state:
 
     with tab1:
         st.header("Cuadriceps (A)")
-        # Filtramos el dataframe para Cuadriceps y graficamos para cada Persona
         df_cuadriceps = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'A']
+        df_cuadriceps_promedio = calcular_promedio(df_cuadriceps)
+        
+        # Gráfico de líneas del promedio de peso por día
         for Persona in df_cuadriceps['Persona'].unique():
-            st_Persona = df_cuadriceps[df_cuadriceps['Persona'] == Persona]
-            st.line_chart(st_Persona[['Dia', 'Peso']].set_index('Dia'), width=0, height=300)
-    
+            st_Persona = df_cuadriceps_promedio[df_cuadriceps_promedio['Persona'] == Persona]
+            st.line_chart(st_Persona[['Dia', 'Promedio']].set_index('Dia'), width=0, height=300, use_container_width=True)
+        
+        # Gráfico de barras del total de repeticiones por día
+        st.bar_chart(df_cuadriceps.groupby(['Dia', 'Persona'])['Repeticiones'].sum().unstack(), width=0, height=300, use_container_width=True)
+
     with tab2:
         st.header("Espalda y Biceps (B)")
-        # Filtramos el dataframe para Espalda y Biceps y graficamos para cada Persona
         df_espalda_biceps = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'B']
-        st.bar_chart(df_espalda_biceps.groupby(['Dia', 'Persona'])['Peso'].sum().unstack(), width=0, height=300)
+        df_espalda_biceps_promedio = calcular_promedio(df_espalda_biceps)
+        
+        # Gráfico de líneas del promedio de peso por día
+        for Persona in df_espalda_biceps['Persona'].unique():
+            st_Persona = df_espalda_biceps_promedio[df_espalda_biceps_promedio['Persona'] == Persona]
+            st.line_chart(st_Persona[['Dia', 'Promedio']].set_index('Dia'), width=0, height=300, use_container_width=True)
+        
+        # Gráfico de barras del total de repeticiones por día
+        st.bar_chart(df_espalda_biceps.groupby(['Dia', 'Persona'])['Repeticiones'].sum().unstack(), width=0, height=300, use_container_width=True)
     
     with tab3:
         st.header("Gluteos y femorales (C)")
-        # Filtramos el dataframe para Gluteos y femorales y graficamos para cada Persona
         df_gluteos_femorales = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'C']
-        st.area_chart(df_gluteos_femorales.groupby(['Dia', 'Persona'])['Peso'].sum().unstack(), width=0, height=300)
+        df_gluteos_femorales_promedio = calcular_promedio(df_gluteos_femorales)
+        
+        # Gráfico de líneas del promedio de peso por día
+        for Persona in df_gluteos_femorales['Persona'].unique():
+            st_Persona = df_gluteos_femorales_promedio[df_gluteos_femorales_promedio['Persona'] == Persona]
+            st.line_chart(st_Persona[['Dia', 'Promedio']].set_index('Dia'), width=0, height=300, use_container_width=True)
+        
+        # Gráfico de barras del total de repeticiones por día
+        st.bar_chart(df_gluteos_femorales.groupby(['Dia', 'Persona'])['Repeticiones'].sum().unstack(), width=0, height=300, use_container_width=True)
     
     with tab4:
         st.header("Pectorales, hombros y triceps (D)")
-        # Filtramos el dataframe para Pectorales, hombros y triceps y graficamos para cada Persona
         df_pectoral_hombros_triceps = st.session_state['Progreso_ind'][st.session_state['Progreso_ind']['GM'] == 'D']
+        df_pectoral_hombros_triceps_promedio = calcular_promedio(df_pectoral_hombros_triceps)
+        
+        # Gráfico de líneas del promedio de peso por día
         for Persona in df_pectoral_hombros_triceps['Persona'].unique():
-            st_Persona = df_pectoral_hombros_triceps[df_pectoral_hombros_triceps['Persona'] == Persona]
-            st.line_chart(st_Persona[['Dia', 'Peso']].set_index('Dia'), width=0, height=300)
-    
+            st_Persona = df_pectoral_hombros_triceps_promedio[df_pectoral_hombros_triceps_promedio['Persona'] == Persona]
+            st.line_chart(st_Persona[['Dia', 'Promedio']].set_index('Dia'), width=0, height=300, use_container_width=True)
+        
+        # Gráfico de barras del total de repeticiones por día
+        st.bar_chart(df_pectoral_hombros_triceps.groupby(['Dia', 'Persona'])['Repeticiones'].sum().unstack(), width=0, height=300, use_container_width=True)
