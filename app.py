@@ -141,10 +141,11 @@ with st.expander('📝 Registro de Datos'):
 
 with st.expander('📓 Datos Registrados'):
     st.subheader("Visualización de datos registrados")
-    # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los Sets    
-    unique_values = st.session_state['Progreso_ind'].drop_duplicates()
+    # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
+    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso','Sets', 'Repeticiones','Descanso'])
     st.dataframe(unique_values.reset_index(drop=True))
     st.markdown(download_csv(unique_values, 'Progreso'), unsafe_allow_html=True)
+    df_filtred = unique_values
 
 
          
