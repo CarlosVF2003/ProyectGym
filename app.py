@@ -165,7 +165,7 @@ if 'Progreso_ind' in st.session_state:
     df.rename(columns={'Dia': 'dia', 'Persona': 'persona', 'Maquina': 'maquina',
                        'Peso': 'peso', 'Repeticiones': 'repeticiones', 'Descanso': 'descanso',
                        'GM': 'grupo_muscular'}, inplace=True)
-    df['Promedio'] = df.groupby(['Dia', 'Maquina'])['Peso'].transform('mean')
+    df['promedio_peso'] = df.groupby(['dia', 'maquina'])['peso'].transform('mean')
 
     # Crear pestañas para los diferentes grupos musculares
     tabs_titles = ["Cuadriceps (A)", "Espalda y Biceps (B)", "Gluteos y femorales (C)", "Hombro, tricep y pecho (D)"]
