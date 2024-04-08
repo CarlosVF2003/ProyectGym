@@ -173,6 +173,7 @@ with st.expander('🙍 Tabla de datos de Cinthia'):
 # %%
 # Crear pestañas con los nombres proporcionados
 tab1, tab2, tab3, tab4 = st.columns(4)
+colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
 
 with tab1:
     st.header("Cuadriceps (A)")
