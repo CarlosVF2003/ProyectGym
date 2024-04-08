@@ -57,7 +57,6 @@ def calcular_promedio(df):
     )
     return promedio_ponderado_por_dia
 
-# %%
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
     # Reiniciar el índice para evitar problemas con Altair
@@ -72,11 +71,12 @@ def crear_graficos(df_grupo, colores):
     df_grupo = calcular_promedio(df_grupo)
     
     # Calcular el orden de los días dentro de cada grupo muscular usando rank
+    df_grupo = df_grupo.reset_index()
     df_grupo['Dia_ordenado'] = df_grupo.groupby('Dia').cumcount() + 1
     
     # Gráfico de líneas del promedio de peso levantado por día para ambas personas
     line_chart = alt.Chart(df_grupo).mark_line().encode(
-        x='Dia_ordenado:T',  # Utiliza el tipo de dato 'temporal' para el eje X
+        x='Dia_ordenado:O',  # Utiliza el tipo de dato 'ordinal' para el eje X
         y=alt.Y('promedio_peso:Q', title='Promedio de Peso'),  # Utiliza el promedio de peso para el eje Y
         color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue']), title='Persona'),  # Diferenciar las líneas por persona
         tooltip=['Persona', 'Dia', 'promedio_peso']  # Utiliza el promedio de peso para la etiqueta del tooltip
@@ -84,17 +84,6 @@ def crear_graficos(df_grupo, colores):
         title="Promedio de Peso Levantado"
     )
     st.altair_chart(line_chart, use_container_width=True)
-
-    # Gráfico de barras del total de repeticiones por día para ambas personas
-    bar_chart = alt.Chart(df_grupo).mark_bar().encode(
-        x='Dia_ordenado:T',  # Utiliza el tipo de dato 'temporal' para el eje X
-        y=alt.Y('sum(Repeticiones):Q', title='Total de Repeticiones'),
-        color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue']), title='Persona'),  # Diferenciar las barras por persona
-        tooltip=['Persona', 'Dia', 'sum(Repeticiones)']
-    ).properties(
-        title="Total de Repeticiones"
-    )
-    st.altair_chart(bar_chart, use_container_width=True)
 
 # %%
 # Título de la aplicación
