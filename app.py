@@ -1,9 +1,11 @@
 # %%
 # Importamos librerias
+# Importamos librerias
 import pandas as pd
 import streamlit as st
 from pathlib import Path
 from base64 import b64encode
+import altair as alt
 
 # %%
 # Cargar el archivo Progreso.csv si existe
@@ -57,6 +59,7 @@ def calcular_promedio(df):
     )
     return promedio_ponderado_por_dia
 
+# %%
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
     # Reiniciar el índice para evitar problemas con Altair
@@ -68,10 +71,9 @@ def crear_graficos(df_grupo, colores):
         return
     
     # Calcular el promedio de peso por día y máquina
-    df_grupo = calcular_promedio(df_grupo)
+    df_grupo = calcular_promedio(df_grupo).reset_index()
     
     # Calcular el orden de los días dentro de cada grupo muscular usando rank
-    df_grupo = df_grupo.reset_index()
     df_grupo['Dia_ordenado'] = df_grupo.groupby('Dia').cumcount() + 1
     
     # Gráfico de líneas del promedio de peso levantado por día para ambas personas
@@ -144,40 +146,13 @@ with st.expander('📓 Datos Registrados'):
     df= unique_values
 
 # %%
-# Mostrar tablas de datos de Carlos y Cinthia
-with st.expander('🤵‍♂️ Tabla de datos de Carlos'):
-    if 'Progreso_ind' in st.session_state:
-        st.header('Datos de Carlos')
-        df_carlos = df[df['Persona'] == 'Carlos']
-        st.dataframe(df_carlos.reset_index(drop=True))
-
-with st.expander('🙍 Tabla de datos de Cinthia'):
-    if 'Progreso_ind' in st.session_state:
-        st.header('Datos de Cinthia')
-        df_cinthia = df[df['Persona'] == 'Cinthia']
-        st.dataframe(df_cinthia.reset_index(drop=True))
-
-# %%
-# Crear pestañas con los nombres proporcionados
-tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
-
-# %%
-df.loc[df['Maquina'].isin(['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal']), 'GM'] = 'D'
-df.loc[df['Maquina'].isin(['Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo']), 'GM'] = 'B'
-    
-df.loc[df['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina']), 'GM'] = 'C'
-df.loc[df['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'GM'] = 'A'
-
-# %%
-df
-
-# %%
 # Gráficos
 if 'Progreso_ind' in st.session_state:       
     colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
     # Suponiendo que 'st.session_state['Progreso_ind']' ya contiene el DataFrame con los datos necesarios
 
     df = df.sort_values(by='Dia')
+    
     
     with tab1:
         st.header("Cuadriceps (A)")
