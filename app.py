@@ -1,6 +1,5 @@
 # %%
 # Importamos librerias
-# Importamos librerias
 import pandas as pd
 import streamlit as st
 from pathlib import Path
@@ -144,6 +143,7 @@ with st.expander('📓 Datos Registrados'):
     unique_values = gym_original.drop_duplicates(subset=['Dia', 'Persona', 'Maquina','Peso','Sets', 'Repeticiones','Descanso'])
     st.dataframe(unique_values.reset_index(drop=True))
     df= unique_values
+
 
 # %%
 # Gráficos
