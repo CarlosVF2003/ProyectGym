@@ -4,6 +4,8 @@ import pandas as pd
 import streamlit as st
 from pathlib import Path
 from base64 import b64encode
+import altair as alt
+
 
 # %%
 # Cargar el archivo Progreso.csv si existe
