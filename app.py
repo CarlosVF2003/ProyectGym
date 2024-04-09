@@ -167,6 +167,9 @@ with st.expander('📓 Datos Registrados'):
     unique_values = gym_original.drop_duplicates(subset=['Dia', 'Persona', 'Maquina','Peso','Sets', 'Repeticiones','Descanso'])
     st.dataframe(unique_values.reset_index(drop=True))
     df = unique_values
+    # Botón para descargar la tabla de datos
+    if st.button("Descargar tabla de datos como CSV"):
+        st.markdown(download_csv(df, "datos_registrados"), unsafe_allow_html=True)
 
 # %%
 # Mostrar tablas de datos de Carlos y Cinthia
