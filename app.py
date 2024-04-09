@@ -45,7 +45,7 @@ def formulario_hipertrofia_muscular(Sets):
 
 # Función para descargar DataFrame como CSV
 def download_csv(df, filename):
-    required_columns = ['Dia', 'Persona', 'Maquina', 'Peso', 'Sets', 'Repeticiones', 'Descanso']
+    required_columns = ['Dia', 'Persona', 'Maquina', 'Peso', 'Descanso', 'Sets', 'Repeticiones']
     
     # Verificar si todas las columnas requeridas están presentes en el DataFrame
     if all(col in df.columns for col in required_columns):
