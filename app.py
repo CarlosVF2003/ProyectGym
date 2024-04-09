@@ -68,8 +68,6 @@ def calcular_promedio(df):
     promedio_ponderado_por_persona, on=['Persona', 'Dia'])
     return resultado_final
 
-# %%
-# Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
     # Reiniciar el índice para evitar problemas con Altair
     df_grupo = df_grupo.reset_index(drop=True)
@@ -87,25 +85,30 @@ def crear_graficos(df_grupo, colores):
     
     # Gráfico de líneas del promedio de peso levantado por día para ambas personas
     line_chart = alt.Chart(resultado_final).mark_line().encode(
-        x='Dia_ordenado:T',  # Utiliza el tipo de dato 'temporal' para el eje X
-        y=alt.Y('Promedio_Ponderado', title='Promedio de Peso'),  # Utiliza el promedio de peso para el eje Y
-        color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue']), title='Persona'),  # Diferenciar las líneas por persona
+        x=alt.X('Dia_ordenado:T', title='Día'),  # Utiliza el tipo de dato 'temporal' para el eje X
+        y=alt.Y('Promedio_Ponderado', title='Promedio de Peso (kg)'),  # Utiliza el promedio de peso para el eje Y
+        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),  # Diferenciar las líneas por persona
         tooltip=['Persona', 'Dia', 'Promedio_Ponderado']  # Utiliza el promedio de peso para la etiqueta del tooltip
     ).properties(
-        title="Promedio de Peso Levantado"
+        width=600,
+        height=400,
+        title="Promedio de Peso Levantado por Día"
     )
     st.altair_chart(line_chart, use_container_width=True)
 
     # Gráfico de barras del total de repeticiones por día para ambas personas
     bar_chart = alt.Chart(resultado_final).mark_bar().encode(
-        x='Dia_ordenado:T',  # Utiliza el tipo de dato 'temporal' para el eje X
+        x=alt.X('Dia_ordenado:T', title='Día'),  # Utiliza el tipo de dato 'temporal' para el eje X
         y=alt.Y('Suma_Repeticiones', title='Total de Repeticiones'),
-        color=alt.Color('Persona:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue']), title='Persona'),  # Diferenciar las barras por persona
+        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),  # Diferenciar las barras por persona
         tooltip=['Persona', 'Dia', 'Suma_Repeticiones']
     ).properties(
-        title="Total de Repeticiones"
+        width=600,
+        height=400,
+        title="Total de Repeticiones por Día"
     )
     st.altair_chart(bar_chart, use_container_width=True)
+
 
 # %%
 # Título de la aplicación
