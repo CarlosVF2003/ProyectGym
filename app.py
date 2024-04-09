@@ -50,13 +50,23 @@ def download_csv(df, filename):
 
 # Función para calcular el promedio de peso por día y máquina
 def calcular_promedio(df):    
+    df['Sets_x_Reps'] = df['Sets'] * df['Repeticiones']
     df['Peso_Total'] = df['Peso'] * df['Sets'] * df['Repeticiones']
-    df['Sets_x_Reps'] = df['Sets'] * df['Repeticiones']    
-    promedio_ponderado_por_dia = df.groupby(['Persona', 'Dia']).apply(
-    lambda x: x['Peso_Total'].sum() / x['Sets_x_Reps'].sum()
-    )
-    return promedio_ponderado_por_dia
+    
+    # Calcula la suma de repeticiones por persona y día
+    df['Suma_Repeticiones'] = df.groupby(['Persona', 'Dia'])['Repeticiones'].transform('sum')
+        
+    # Agrupa por persona y día, y calcula el promedio ponderado
+    promedio_ponderado_por_persona = df.groupby(['Persona', 'Dia']).apply(
+    lambda x: (x['Peso_Total'].sum() / x['Sets_x_Reps'].sum())
+    ).reset_index(name='Promedio_Ponderado')
+        
+    # Une los resultados con la suma de repeticiones
+    resultado_final = df[['Persona', 'Dia', 'Suma_Repeticiones']].drop_duplicates().merge(
+    promedio_ponderado_por_persona, on=['Persona', 'Dia'])
+    return resultado_final
 
+# %%
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
     # Reiniciar el índice para evitar problemas con Altair
@@ -209,3 +219,5 @@ if 'Progreso_ind' in st.session_state:
         df_pectoral_hombros_triceps = df[df['GM'] == 'D']
         df_pectoral_hombros_triceps = df_pectoral_hombros_triceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
         crear_graficos(df_pectoral_hombros_triceps, colores)
+
+
