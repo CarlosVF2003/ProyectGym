@@ -165,19 +165,19 @@ with st.expander('📓 Datos Registrados'):
     st.dataframe(unique_values.reset_index(drop=True))
     df= unique_values
 
-# %%
 # Mostrar tablas de datos de Carlos y Cinthia
 with st.expander('🤵‍♂️ Tabla de datos de Carlos'):
     if 'Progreso_ind' in st.session_state:
         st.header('Datos de Carlos')
-        df_carlos = df[df['Persona'] == 'Carlos']
+        df_carlos = df[df['Persona'] == 'Carlos'] if 'Persona' in df.columns else pd.DataFrame()  # Check if 'Persona' column exists
         st.dataframe(df_carlos.reset_index(drop=True))
 
 with st.expander('🙍 Tabla de datos de Cinthia'):
     if 'Progreso_ind' in st.session_state:
         st.header('Datos de Cinthia')
-        df_cinthia = df[df['Persona'] == 'Cinthia']
+        df_cinthia = df[df['Persona'] == 'Cinthia'] if 'Persona' in df.columns else pd.DataFrame()  # Check if 'Persona' column exists
         st.dataframe(df_cinthia.reset_index(drop=True))
+
 
 # %%
 # Crear pestañas con los nombres proporcionados
