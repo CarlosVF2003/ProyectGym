@@ -96,8 +96,7 @@ def crear_graficos(df_grupo, colores):
         color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),  # Diferenciar las líneas por persona
         tooltip=['Persona', 'Dia_ordenado', 'Promedio_Ponderado']  # Utiliza el promedio de peso para la etiqueta del tooltip
     ).properties(
-        width=600,
-        height=400,
+        
         title="Promedio de Peso Levantado por Día"
     )
     st.altair_chart(line_chart, use_container_width=True)
@@ -109,8 +108,7 @@ def crear_graficos(df_grupo, colores):
         color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),  # Diferenciar las barras por persona
         tooltip=['Persona', 'Dia_ordenado', 'Suma_Repeticiones']
     ).properties(
-        width=600,
-        height=400,
+        
         title="Total de Repeticiones por Día"
     )
     st.altair_chart(bar_chart, use_container_width=True)
