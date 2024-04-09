@@ -165,36 +165,30 @@ with st.expander('📓 Datos Registrados'):
     st.dataframe(unique_values.reset_index(drop=True))
     df= unique_values
 
+# %%
 # Mostrar tablas de datos de Carlos y Cinthia
 with st.expander('🤵‍♂️ Tabla de datos de Carlos'):
     if 'Progreso_ind' in st.session_state:
         st.header('Datos de Carlos')
-        df_carlos = df[df['Persona'] == 'Carlos'] if 'Persona' in df.columns else pd.DataFrame()  # Check if 'Persona' column exists
+        df_carlos = df[df['Persona'] == 'Carlos']
         st.dataframe(df_carlos.reset_index(drop=True))
 
 with st.expander('🙍 Tabla de datos de Cinthia'):
     if 'Progreso_ind' in st.session_state:
         st.header('Datos de Cinthia')
-        df_cinthia = df[df['Persona'] == 'Cinthia'] if 'Persona' in df.columns else pd.DataFrame()  # Check if 'Persona' column exists
+        df_cinthia = df[df['Persona'] == 'Cinthia']
         st.dataframe(df_cinthia.reset_index(drop=True))
-
 
 # %%
 # Crear pestañas con los nombres proporcionados
 tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
 
-# Update the line where you're accessing the 'Maquina' column
-df['GM'] = ''  # Initialize the 'GM' column
-
-# Check if 'Maquina' column exists before accessing it
-if 'Maquina' in df.columns:
-    df.loc[df['Maquina'].isin(['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal']), 'GM'] = 'D'
-    df.loc[df['Maquina'].isin(['Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo']), 'GM'] = 'B'
-    df.loc[df['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina']), 'GM'] = 'C'
-    df.loc[df['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'GM'] = 'A'
-else:
-    st.error("Column 'Maquina' does not exist in the DataFrame.")
-
+# %%
+df.loc[df['Maquina'].isin(['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal']), 'GM'] = 'D'
+df.loc[df['Maquina'].isin(['Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo']), 'GM'] = 'B'
+    
+df.loc[df['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina']), 'GM'] = 'C'
+df.loc[df['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'GM'] = 'A'
 
 # %%
 # Gráficos
@@ -227,5 +221,3 @@ if 'Progreso_ind' in st.session_state:
         df_pectoral_hombros_triceps = df[df['GM'] == 'D']
         df_pectoral_hombros_triceps = df_pectoral_hombros_triceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
         crear_graficos(df_pectoral_hombros_triceps, colores)
-
-
