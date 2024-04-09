@@ -163,7 +163,7 @@ with st.expander('📓 Datos Registrados'):
     # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
     unique_values = gym_original.drop_duplicates(subset=['Dia', 'Persona', 'Maquina','Peso','Sets', 'Repeticiones','Descanso'])
     st.dataframe(unique_values.reset_index(drop=True))
-    df= unique_values
+    df = unique_values
 
 # %%
 # Mostrar tablas de datos de Carlos y Cinthia
