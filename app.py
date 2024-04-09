@@ -94,7 +94,7 @@ def crear_graficos(df_grupo, colores):
         x=alt.X('Dia_ordenado:T', title='Día'),  # Utiliza el tipo de dato 'temporal' para el eje X
         y=alt.Y('Promedio_Ponderado', title='Promedio de Peso (kg)'),  # Utiliza el promedio de peso para el eje Y
         color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),  # Diferenciar las líneas por persona
-        tooltip=['Persona', 'Dia', 'Promedio_Ponderado']  # Utiliza el promedio de peso para la etiqueta del tooltip
+        tooltip=['Persona', 'Dia_ordenado', 'Promedio_Ponderado']  # Utiliza el promedio de peso para la etiqueta del tooltip
     ).properties(
         width=600,
         height=400,
@@ -107,7 +107,7 @@ def crear_graficos(df_grupo, colores):
         x=alt.X('Dia_ordenado:T', title='Día'),  # Utiliza el tipo de dato 'temporal' para el eje X
         y=alt.Y('Suma_Repeticiones', title='Total de Repeticiones'),
         color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),  # Diferenciar las barras por persona
-        tooltip=['Persona', 'Dia', 'Suma_Repeticiones']
+        tooltip=['Persona', 'Dia_ordenado', 'Suma_Repeticiones']
     ).properties(
         width=600,
         height=400,
