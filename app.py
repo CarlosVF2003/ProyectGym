@@ -45,10 +45,16 @@ def formulario_hipertrofia_muscular(Sets):
 
 # Función para descargar DataFrame como CSV
 def download_csv(df, filename):
-    df = df[['Dia', 'Persona', 'Maquina', 'Peso', 'Sets', 'Repeticiones', 'Descanso']]
-    csv = df.to_csv(index=False, sep=',', encoding='utf-8').encode('utf-8')
-    href = f'<a href="data:text/csv;base64,{b64encode(csv).decode()}" download="{filename}.csv">Descargar</a>'
-    return href
+    required_columns = ['Dia', 'Persona', 'Maquina', 'Peso', 'Sets', 'Repeticiones', 'Descanso']
+    
+    # Verificar si todas las columnas requeridas están presentes en el DataFrame
+    if all(col in df.columns for col in required_columns):
+        df_subset = df[required_columns]
+        csv = df_subset.to_csv(index=False, sep=',', encoding='utf-8').encode('utf-8')
+        href = f'<a href="data:text/csv;base64,{b64encode(csv).decode()}" download="{filename}.csv">Descargar</a>'
+        return href
+    else:
+        return "No se pueden descargar los datos debido a columnas faltantes."
 
 # Función para calcular el promedio de peso por día y máquina
 def calcular_promedio(df):    
