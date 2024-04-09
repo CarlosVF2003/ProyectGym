@@ -175,7 +175,7 @@ with st.expander('📓 Datos Registrados'):
     df = unique_values
     # Botón para descargar la tabla de datos
     if st.button("Descargar tabla de datos como CSV"):
-        st.markdown(download_csv(df, "datos_registrados"), unsafe_allow_html=True)
+        st.markdown(download_csv(unique_values, "datos_registrados"), unsafe_allow_html=True)
 
 # %%
 # Mostrar tablas de datos de Carlos y Cinthia
