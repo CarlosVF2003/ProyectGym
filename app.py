@@ -156,11 +156,11 @@ with st.expander('📝 Registro de Datos'):
 
             # Guardar el DataFrame actualizado en un archivo CSV
             # Guardar solo si los datos se han modificado correctamente
-            try:
-                st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)
-                st.success('¡Datos registrados con éxito!')
-            except Exception as e:
-                st.error(f'Error al guardar los datos: {e}')
+            if Enfoque != 'Hipertrofia Muscular':
+                gym_original['Sets'] = gym_original.groupby(['Dia', 'Persona', 'Maquina', 'Peso','Descanso','Repeticiones'])[['Peso', 'Repeticiones']].transform('size')
+            st.success('¡Datos registrados con éxito!')
+            st.session_state['show_enfoque_form'] = False 
+            st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)
 
 # %%
 # Datos generales registrados
