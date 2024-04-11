@@ -156,13 +156,13 @@ with st.expander('📝 Registro de Datos'):
             })
             gym_original = st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], Progreso_new], ignore_index=True)
 
-        # Guardar el DataFrame actualizado en un archivo CSV
-        # Guardar solo si los datos se han modificado correctamente
-        try:
-            st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)
-            st.success('¡Datos registrados con éxito!')
-        except Exception as e:
-            st.error(f'Error al guardar los datos: {e}')
+            # Guardar el DataFrame actualizado en un archivo CSV
+            # Guardar solo si los datos se han modificado correctamente
+            try:
+                st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)
+                st.success('¡Datos registrados con éxito!')
+            except Exception as e:
+                st.error(f'Error al guardar los datos: {e}')
 
 # %%
 # Datos generales registrados
