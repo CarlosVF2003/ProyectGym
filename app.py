@@ -9,7 +9,10 @@ import altair as alt
 
 # %%
 # Cargar el archivo Progreso.csv si existe
-gym_original = st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv")
+if 'Progreso_ind' not in st.session_state and Path("Progreso.csv").exists():
+    gym_original = st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv")
+else:
+    gym_original = st.session_state['Progreso_ind'] = pd.DataFrame()
 
 
 
