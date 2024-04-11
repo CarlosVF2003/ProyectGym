@@ -203,8 +203,6 @@ df.loc[df['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extensio
 if 'Progreso_ind' in st.session_state:       
     colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
     # Suponiendo que 'st.session_state['Progreso_ind']' ya contiene el DataFrame con los datos necesarios
-
-    df = df.sort_values(by='Dia')
     
     with tab1:
         st.header("Cuadriceps (A)")
