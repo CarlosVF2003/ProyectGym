@@ -172,7 +172,7 @@ with st.expander('📝 Registro de Datos'):
                 'Descanso': descansos
             })
             st.session_state['Progreso_ind'] = gym_original = pd.concat([gym_original, Progreso_new], ignore_index=True)
-            st.session_state.to_csv('Progreso.csv', index=False)  # Guardar el DataFrame actualizado en un archivo CSV
+            st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)  # Guardar el DataFrame actualizado en un archivo CSV
             st.success('¡Datos registrados con éxito!')
 
 
