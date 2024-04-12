@@ -17,10 +17,7 @@ else:
 
 
 # Lista de máquinas que requieren multiplicar el peso por 2
-maquinas_doble_peso = [
-    'Leg press', 'Hack squat', 'Peso muerto', 'Leg extension', 'Leg curl', 'Hip thrust', 'Curl biceps',
-    # Agrega aquí las otras máquinas que requieren este ajuste
-]
+maquinas_doble_peso = ['Extensión lateral','Extensión frontal','Curl biceps','Curl martillo','Glúteo en maquina','Hack squat','Hip thrust']
 
 # Función para ajustar el peso según la máquina
 def ajustar_peso(peso, maquina):
