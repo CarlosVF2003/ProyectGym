@@ -7,6 +7,7 @@ from base64 import b64encode
 import altair as alt
 
 
+# %%
 # Cargar el archivo Progreso.csv si existe
 if 'Progreso_ind' not in st.session_state and Path("Progreso.csv").exists():
     gym_original = st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv")
@@ -140,12 +141,14 @@ def crear_graficos(df_grupo, colores):
     ).properties(title="Total de Repeticiones por Día")
     st.altair_chart(bar_chart, use_container_width=True)
 
-
-
 # %%
 # Título de la aplicación
 st.title('🏋️‍♂️ Nuestro Progreso en el Gym 🏋️‍♀️')
 
+# %%
+# Formulario de registro de datos
+with st.expander('📝 Registro de Datos'):
+    formulario_registro_datos()
 
 # %%
 # Datos generales registrados
