@@ -49,7 +49,7 @@ def calcular_peso_ajustado(pesos, maquina, unidad_peso):
     # Duplicar el peso si la máquina está en la lista específica
     maquinas_multiplicar_peso = [
         'Extensión lateral', 'Extensión frontal', 'Curl biceps',
-        'Curl martillo', 'Glúteo en maquina', 'Hack squat', 'Hip thrust'
+        'Curl martillo', 'Glúteo en maquina', 'Hack squat', 'Hip thrust','Leg press'
     ]
     
     if maquina in maquinas_multiplicar_peso:
