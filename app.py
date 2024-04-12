@@ -16,33 +16,87 @@ else:
 
 
 
-# %%
-# Definiremos las funciones 
+# Lista de máquinas que requieren multiplicar el peso por 2
+maquinas_doble_peso = [
+    'Leg press', 'Hack squat', 'Peso muerto', 'Leg extension', 'Leg curl', 'Hip thrust', 'Curl biceps',
+    # Agrega aquí las otras máquinas que requieren este ajuste
+]
+
+# Función para ajustar el peso según la máquina
+def ajustar_peso(peso, maquina):
+    # Si la máquina está en la lista de máquinas que requieren peso por 2
+    if maquina in maquinas_doble_peso:
+        return peso * 2  # Multiplicar el peso por 2
+    else:
+        return peso  # Si no, retornar el peso tal cual
+
+# ...
+# Modifica las funciones de formulario para ajustar el peso según la máquina
+
 def formulario_desarrollo_fuerza(Sets):
     pesos = []
+    # Agregar opción para elegir unidad de peso (kg o lb)
+    unidad_peso = st.selectbox('Elige la unidad de peso:', ('kg', 'lb'))
+    
     for i in range(Sets):
-        peso = st.number_input(f'💪 Peso para el Sets {i+1}:', min_value=0.0, step=0.1, format="%.1f")
-        pesos.append(peso)
+        # Pedir el peso según la unidad seleccionada
+        peso = st.number_input(f'💪 Peso para el Sets {i + 1} ({unidad_peso}):', min_value=0.0, step=0.1, format="%.1f")
+        
+        # Convertir el peso a kg si la unidad seleccionada es lb
+        if unidad_peso == 'lb':
+            peso = peso * 0.453592
+        
+        # Ajustar el peso según la máquina
+        peso_ajustado = ajustar_peso(peso, Maquina)
+        pesos.append(peso_ajustado)
 
+    # Las demás preguntas permanecen iguales
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return pesos, [repeticiones] * Sets, [descanso] * Sets
 
 def formulario_mejora_resistencia(Sets):
     pesos = []
+    # Agregar opción para elegir unidad de peso (kg o lb)
+    unidad_peso = st.selectbox('Elige la unidad de peso:', ('kg', 'lb'))
+    
     for i in range(Sets):
-        peso = st.number_input(f'💪 Peso para el Sets {i+1}:', min_value=0.0, step=0.1, format="%.1f")
-        pesos.append(peso)
+        # Pedir el peso según la unidad seleccionada
+        peso = st.number_input(f'💪 Peso para el Sets {i + 1} ({unidad_peso}):', min_value=0.0, step=0.1, format="%.1f")
+        
+        # Convertir el peso a kg si la unidad seleccionada es lb
+        if unidad_peso == 'lb':
+            peso = peso * 0.453592
+        
+        # Ajustar el peso según la máquina
+        peso_ajustado = ajustar_peso(peso, Maquina)
+        pesos.append(peso_ajustado)
 
-    repeticiones = [st.number_input(f'🏃 Repeticiones para el Sets {i+1}:', min_value=1, max_value=30, step=1) for i in range(Sets)]
-    descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return pesos, repeticiones, [descanso] * Sets
+    # Las demás preguntas permanecen iguales
+    repeticiones son [st.number_input(f'🏃 Repeticiones para el Sets {i + 1}:', min_value=1, max_value=30, step=1) para i en rango (Sets)]
+    descanso es st.selectbox ('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
+    devolver pesos, repeticiones, [descanso] * Sets
 
 def formulario_hipertrofia_muscular(Sets):
-    peso = st.number_input('💪 Peso (kg):', min_value=0.0, step=0.1, format="%.1f")
-    repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
-    descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return [peso] * Sets, [repeticiones] * Sets, [descanso] * Sets
+    # Agregar opción para elegir unidad de peso (kg o lb)
+    unidad_peso = st.selectbox('Elige la unidad de peso:', ('kg', 'lb'))
+    
+    # Pedir el peso según la unidad seleccionada
+    peso = st.number_input(f'💪 Peso ({unidad_peso}):', min_value=0.0, step=0.1, format="%.1f")
+    
+    # Convertir el peso a kg si la unidad seleccionada es lb
+    if unidad_peso == 'lb':
+        peso = peso * 0.453592
+        
+    # Ajustar el peso según la máquina
+    peso_ajustado = ajustar_peso(peso, Maquina)
+    
+    # Las demás preguntas permanecen iguales
+    repeticiones son st.number_input ('Repeticiones:', min_value=1, max_value=30, step=1)
+    descanso es st.selectbox ('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
+    return [peso_ajustado] * Sets, [repeticiones] * Sets, [descanso] * Sets
+
+
 
 # Función para descargar DataFrame como CSV
 def download_csv(df, filename):
