@@ -146,51 +146,6 @@ def crear_graficos(df_grupo, colores):
 # Título de la aplicación
 st.title('🏋️‍♂️ Nuestro Progreso en el Gym 🏋️‍♀️')
 
-# %%
-# Formulario desplegable y botón de guardar
-with st.expander('📝 Registro de Datos'):
-    Dia = st.text_input('Ingresa el Día 📆:')
-    Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
-    Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Press de pecho','Extensión de hombro','Extensión de tríceps en polea','Extensión lateral'
-                                                            ,'Extensión frontal','Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea'
-                                                            ,'Curl biceps','Curl martillo','Peso muerto','Leg Curl','Abducción','Glúteo en maquina','Leg press'
-                                                            ,'Hack squat','Aducción','Leg extension','Hip thrust'))
-    Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
-    Sets = st.number_input('Número de Sets:', min_value=1, max_value=10, step=1, value=4)
-    
-    # Capturar datos según el enfoque de entrenamiento seleccionado
-    if Enfoque == 'Desarrollo de Fuerza':
-        pesos, repeticiones, descansos = formulario_desarrollo_fuerza(Sets)
-    elif Enfoque == 'Mejora de la Resistencia':
-        pesos, repeticiones, descansos = formulario_mejora_resistencia(Sets)
-    else:  # Hipertrofia Muscular
-        pesos, repeticiones, descansos = formulario_hipertrofia_muscular(Sets)
-        
-    # Verificar que ambos formularios estén completos
-    form_completo = all(pesos) and all(repeticiones) and all(descansos)
-    
-
-    # Si el formulario está completo, guardar los datos
-    if form_completo:
-        if st.button('Guardar'):
-            Progreso_new = pd.DataFrame({
-                'Dia': [Dia] * Sets,
-                'Persona': [Persona] * Sets,
-                'Maquina': [Maquina] * Sets,
-                'Sets' : Sets,
-                'Peso': pesos,
-                'Repeticiones': repeticiones,
-                'Descanso': descansos
-            })
-            gym_original = st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], Progreso_new], ignore_index=True)
-
-            # Guardar el DataFrame actualizado en un archivo CSV
-            # Guardar solo si los datos se han modificado correctamente
-            if Enfoque != 'Hipertrofia Muscular':
-                gym_original['Sets'] = gym_original.groupby(['Dia', 'Persona', 'Maquina', 'Peso','Descanso','Repeticiones'])[['Peso', 'Repeticiones']].transform('size')
-            st.success('¡Datos registrados con éxito!')
-            st.session_state['show_enfoque_form'] = False 
-            st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)
 
 # %%
 # Datos generales registrados
