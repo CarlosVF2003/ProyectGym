@@ -196,64 +196,59 @@ with st.expander('📝 Registro de Datos'):
 # Datos generales registrados
 with st.expander('📓 Datos Registrados'):
     st.subheader("Visualización de datos registrados")
-    # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
-    unique_values = gym_original.drop_duplicates(subset=['Dia', 'Persona', 'Maquina','Peso','Sets', 'Repeticiones','Descanso'])
-    st.dataframe(unique_values.reset_index(drop=True))
+    # Mostrar el DataFrame sin duplicados
+    unique_values = gym_original.drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Repeticiones', 'Descanso'])
+    st.dataframe(unique_values)
     st.markdown(download_csv(unique_values, "Progreso"), unsafe_allow_html=True)
-    df = unique_values
-    # Botón para descargar la tabla de datos
 
 # %%
 # Mostrar tablas de datos de Carlos y Cinthia
 with st.expander('🤵‍♂️ Tabla de datos de Carlos'):
-    if 'Progreso_ind' in st.session_state:
-        st.header('Datos de Carlos')
-        df_carlos = df[df['Persona'] == 'Carlos']
-        st.dataframe(df_carlos.reset_index(drop=True))
+    df_carlos = gym_original[gym_original['Persona'] == 'Carlos']
+    st.dataframe(df_carlos)
 
 with st.expander('🙍 Tabla de datos de Cinthia'):
-    if 'Progreso_ind' in st.session_state:
-        st.header('Datos de Cinthia')
-        df_cinthia = df[df['Persona'] == 'Cinthia']
-        st.dataframe(df_cinthia.reset_index(drop=True))
+    df_cinthia = gym_original[gym_original['Persona'] == 'Cinthia']
+    st.dataframe(df_cinthia)
 
 # %%
-# Crear pestañas con los nombres proporcionados
-tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
+# Crear pestañas con los nombres de las categorías de entrenamiento
+tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Bíceps", "Glúteos y Femorales", "Pectorales, Hombros y Tríceps"])
 
 # %%
-df.loc[df['Maquina'].isin(['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal']), 'GM'] = 'D'
-df.loc[df['Maquina'].isin(['Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo']), 'GM'] = 'B'
-    
-df.loc[df['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina']), 'GM'] = 'C'
-df.loc[df['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'GM'] = 'A'
+# Clasificar las máquinas según los grupos musculares
+df = gym_original.copy()
+df['GM'] = df['Maquina'].apply(lambda x: 'A' if x in ['Leg press', 'Hack squat', 'Aducción', 'Leg extension'] else
+                                'B' if x in ['Jalón polea alta prono', 'Jalón polea alta supino', 'Remo sentado con polea', 'Curl biceps', 'Curl martillo'] else
+                                'C' if x in ['Peso muerto', 'Leg Curl', 'Hip thrust', 'Abducción', 'Glúteo en máquina'] else
+                                'D' if x in ['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal'] else
+                                'Otro')
 
 # %%
-# Gráficos
-if 'Progreso_ind' in st.session_state:       
+# Gráficos para cada pestaña
+if 'Progreso_ind' in st.session_state:
     colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
-    # Suponiendo que 'st.session_state['Progreso_ind']' ya contiene el DataFrame con los datos necesarios
     
+    # Cuadriceps (A)
     with tab1:
         st.header("Cuadriceps (A)")
         df_cuadriceps = df[df['GM'] == 'A']
-        df_cuadriceps = df_cuadriceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
         crear_graficos(df_cuadriceps, colores)
 
+    # Espalda y Bíceps (B)
     with tab2:
-        st.header("Espalda y Biceps (B)")
+        st.header("Espalda y Bíceps (B)")
         df_espalda_biceps = df[df['GM'] == 'B']
-        df_espalda_biceps = df_espalda_biceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
         crear_graficos(df_espalda_biceps, colores)
 
+    # Glúteos y Femorales (C)
     with tab3:
-        st.header("Gluteos y femorales (C)")
+        st.header("Glúteos y Femorales (C)")
         df_gluteos_femorales = df[df['GM'] == 'C']
-        df_gluteos_femorales = df_gluteos_femorales.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
         crear_graficos(df_gluteos_femorales, colores)
 
+    # Pectorales, Hombros y Tríceps (D)
     with tab4:
-        st.header("Pectorales, hombros y triceps (D)")
+        st.header("Pectorales, Hombros y Tríceps (D)")
         df_pectoral_hombros_triceps = df[df['GM'] == 'D']
-        df_pectoral_hombros_triceps = df_pectoral_hombros_triceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
         crear_graficos(df_pectoral_hombros_triceps, colores)
