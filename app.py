@@ -180,7 +180,7 @@ with st.expander('📝 Registro de Datos'):
                 'Descanso': descansos
             })
             
-            # Agregar los nuevos datos a 'Progreso_ind' y actualizar CSV
+            # Concatenar DataFrames y reiniciar el índice
             st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], Progreso_new], ignore_index=True)
             st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)
             
