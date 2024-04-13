@@ -15,9 +15,6 @@ if 'Progreso_ind' not in st.session_state:
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
-# Mostrar el DataFrame cargado para verificar si los datos están en `st.session_state`
-st.write("DataFrame en `st.session_state`:", st.session_state['Progreso_ind'])
-
 
 def formulario_desarrollo_fuerza(Sets):
     pesos = []
