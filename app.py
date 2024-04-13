@@ -8,11 +8,15 @@ import altair as alt
 
 
 # %%
-# Cargar el archivo Progreso.csv si existe
-if 'Progreso_ind' not in st.session_state and Path("Progreso.csv").exists():
-    gym_original = st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv")
-else:
-    gym_original = st.session_state['Progreso_ind'] = pd.DataFrame()
+# Cargar datos solo una vez
+if 'Progreso_ind' not in st.session_state:
+    if Path("Progreso.csv").exists():
+        st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv")
+    else:
+        st.session_state['Progreso_ind'] = pd.DataFrame()
+
+# Mostrar el DataFrame cargado para verificar si los datos están en `st.session_state`
+st.write("DataFrame en `st.session_state`:", st.session_state['Progreso_ind'])
 
 
 def formulario_desarrollo_fuerza(Sets):
