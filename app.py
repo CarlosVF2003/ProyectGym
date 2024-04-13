@@ -141,7 +141,10 @@ with st.expander('📝 Registro de Datos'):
                                                          'Jalón polea alta supino', 'Remo sentado con polea', 'Curl biceps',
                                                          'Curl martillo', 'Peso muerto', 'Leg Curl', 'Abducción',
                                                          'Glúteo en maquina', 'Leg press', 'Hack squat', 'Aducción', 'Leg extension', 'Hip thrust'))
+
     Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
+
+    # Define Sets, pesos, repeticiones, y descansos basados en el enfoque
     Sets = st.number_input('Número de Sets:', min_value=1, max_value=10, step=1, value=4)
     unidad_peso = st.selectbox('Unidad de Peso:', ('kg', 'lb'))
 
@@ -158,10 +161,11 @@ with st.expander('📝 Registro de Datos'):
 
     # Verificar que los formularios estén completos
     form_completo = all(pesos) and all(repeticiones) and all(descansos)
-    
+
     # Si el formulario está completo, guardar los datos
     if form_completo:
         if st.button('Guardar'):
+            # Crea un DataFrame con los nuevos datos
             Progreso_new = pd.DataFrame({
                 'Dia': [Dia] * Sets,
                 'Persona': [Persona] * Sets,
@@ -171,11 +175,12 @@ with st.expander('📝 Registro de Datos'):
                 'Repeticiones': repeticiones,
                 'Descanso': descansos
             })
-            # Concatenar los nuevos datos con los datos existentes en 'Progreso_ind'
+            
+            # Agregar los nuevos datos a 'Progreso_ind' y actualizar CSV
             st.session_state['Progreso_ind'] = pd.concat([st.session_state['Progreso_ind'], Progreso_new], ignore_index=True)
-            gym_original = st.session_state['Progreso_ind']
-            # Guardar el DataFrame actualizado en Progreso.csv
             st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)
+            
+            # Mostrar mensaje de éxito
             st.success('¡Datos registrados con éxito!')
 
 
