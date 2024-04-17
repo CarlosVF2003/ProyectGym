@@ -1,96 +1,96 @@
-Dia,Persona,Maquina,Peso,Descanso,Sets,Repeticiones,,
-1,Carlos,Press de pecho,26,2-3 min,1,15,,
-1,Carlos,Press de pecho,33,2-3 min,2,15,,
-1,Carlos,Press de pecho,38,2-3 min,1,15,,
-1,Cinthia,Press de pecho,5,2-3 min,1,15,,
-1,Cinthia,Press de pecho,12,2-3 min,3,15,,
-1,Carlos,Extensi贸n de hombro,15,2-3 min,3,15,,
-1,Cinthia,Extensi贸n de hombro,5,2-3 min,3,15,,
-1,Carlos,Extensi贸n de tr铆ceps en polea,13.75,2-3 min,1,15,,
-1,Carlos,Extensi贸n de tr铆ceps en polea,16.25,2-3 min,3,15,,
-1,Cinthia,Extensi贸n de tr铆ceps en polea,6.25,2-3 min,4,15,,
-1,Carlos,Extensi贸n lateral,6.25,2-3 min,3,10,,
-1,Cinthia,Extensi贸n lateral,1.25,2-3 min,3,10,,
-1,Carlos,Extensi贸n frontal,3.75,2-3 min,3,10,,
-1,Cinthia,Extensi贸n frontal,1.25,2-3 min,3,10,,
-2,Carlos,Peso muerto,22,3-4 min,4,15,,
-2,Carlos,Leg Curl,47.5,3-4 min,4,20,,
-2,Carlos,Abducci贸n,50,1-2 min,1,20,,
-2,Carlos,Abducci贸n,60,1-2 min,1,20,,
-2,Carlos,Abducci贸n,70,1-2 min,1,20,,
-2,Carlos,Abducci贸n,80,1-2 min,1,20,,
-2,Carlos,Gl煤teo en maquina,30,2-3 min,1,15,,
-2,Carlos,Gl煤teo en maquina,32.5,2-3 min,1,15,,
-2,Carlos,Gl煤teo en maquina,35,2-3 min,1,15,,
-2,Cinthia,Peso muerto,10,3-4 min,4,15,,
-2,Cinthia,Leg Curl,17.5,3-4 min,1,20,,
-2,Cinthia,Leg Curl,20,3-4 min,3,20,,
-2,Cinthia,Abducci贸n,27.5,1-2 min,1,15,,
-2,Cinthia,Abducci贸n,30,1-2 min,2,15,,
-2,Cinthia,Abducci贸n,35,1-2 min,1,15,,
-2,Cinthia,Gl煤teo en maquina,20,2-3 min,3,15,,
-3,Carlos,Leg press,80,3-4 min,4,20,,
-3,Carlos,Hack squat,40,2-3 min,4,15,,
-3,Carlos,Aducci贸n,80,1-2 min,4,20,,
-3,Carlos,Leg extension,80,2-3 min,4,20,,
-4,Carlos,Jal贸n polea alta prono,33,3-4 min,4,15,,
-4,Carlos,Jal贸n polea alta supino,33,3-4 min,4,15,,
-4,Carlos,Remo sentado con polea,65,3-4 min,4,15,,
-4,Carlos,Curl biceps,10,3-4 min,4,10,,
-4,Carlos,Curl martillo,7,3-4 min,4,10,,
-5,Carlos,Abducci贸n,80,3-4 min,4,20,,
-5,Carlos,Gl煤teo en maquina,40,3-4 min,3,15,,
-5,Carlos,Hip thrust,15,3-4 min,2,15,,
-5,Carlos,Hip thrust,20,3-4 min,2,15,,
-5,Carlos,Leg Curl,42.5,3-4 min,3,20,,
-5,Carlos,Peso muerto,22,3-4 min,3,15,,
-3,Cinthia,Abducci贸n,35,3-4 min,1,20,,
-3,Cinthia,Abducci贸n,40,3-4 min,2,20,,
-3,Cinthia,Abducci贸n,42.5,3-4 min,1,20,,
-3,Cinthia,Gl煤teo en maquina,20,3-4 min,1,15,,
-3,Cinthia,Gl煤teo en maquina,25,3-4 min,2,15,,
-3,Cinthia,Hip thrust,5,3-4 min,1,15,,
-3,Cinthia,Hip thrust,10,3-4 min,3,15,,
-3,Cinthia,Leg Curl,15,3-4 min,3,15,,
-3,Cinthia,Peso muerto,12,3-4 min,3,15,,
-6,Carlos,Leg extension,80,2-3 min,4,20,,
-6,Carlos,Leg press,80,3-4 min,4,20,,
-6,Carlos,Aducci贸n,80,3-4 min,4,20,,
-7,Carlos,Press de pecho,40,2-3 min,4,20,,
-7,Carlos,Extensi贸n de hombro,26,2-3 min,4,15,,
-7,Carlos,Extensi贸n de tr铆ceps en polea,27.5,3-4 min,4,15,,
-7,Carlos,Extensi贸n lateral,7.5,3-4 min,3,15,,
-7,Carlos,Extensi贸n frontal,4,3-4 min,1,15,,
-7,Carlos,Extensi贸n frontal,7.5,3-4 min,2,15,,
-8,Carlos,Jal贸n polea alta prono,31.75,2-3 min,4,15,,
-8,Carlos,Jal贸n polea alta supino,31.75,2-3 min,4,15,,
-8,Carlos,Remo sentado con polea,65,2-3 min,4,15,,
-8,Carlos,Curl biceps,6,2-3 min,4,15,,
-8,Carlos,Curl martillo,6,2-3 min,4,15,,
-9,Carlos,Jal贸n polea alta prono,33,3-4 min,3,15,,
-9,Carlos,Jal贸n polea alta prono,40,3-4 min,1,15,,
-9,Carlos,Jal贸n polea alta supino,33,3-4 min,3,15,,
-9,Carlos,Jal贸n polea alta supino,40,3-4 min,1,15,,
-9,Carlos,Remo sentado con polea,65,2-3 min,4,15,,
-9,Carlos,Curl biceps,10,3-4 min,4,15,,
-9,Carlos,Curl martillo,7,3-4 min,4,15,,
-10,Carlos,Leg press,80,3-4 min,4,20,,
-10,Carlos,Hack squat,40,2-3 min,4,15,,
-10,Carlos,Aducci贸n,79,37,1-2 min,4,20,,
-10,Carlos,Leg extension,36,28,2-3 min,4,20,,
-11,Carlos,Press de pecho,40,2-3 min,4,20,,
-11,Carlos,Extensi贸n de hombro,25,2-3 min,4,15,,
-11,Carlos,Extensi贸n de tr铆ceps en polea,13.75,3-4 min,1,15,,
-11,Carlos,Extensi贸n de tr铆ceps en polea,16.25,3-4 min,3,15,,
-11,Carlos,Extensi贸n lateral,6.25,3-4 min,3,15,,
-11,Carlos,Extensi贸n frontal,6.25,3-4 min,1,15,,
-12,Carlos,Peso muerto,22,3-4 min,4,15,,
-12,Carlos,Leg Curl,47,62,3-4 min,4,20,,
-12,Carlos,Abducci贸n,81,64,1-2 min,4,20,,
-12,Carlos,Gl煤teo en maquina,40,2-3 min,1,15,,
-12,Carlos,Gl煤teo en maquina,42.5,2-3 min,2,15,,
-13,Carlos,Jal贸n polea alta prono,28.5,3-4 min,4,15,,
-13,Carlos,Jal贸n polea alta supino,28.5,3-4 min,4,15,,
-13,Carlos,Remo sentado con polea,42.5,3-4 min,4,15,,
-13,Carlos,Curl biceps,10,3-4 min,3,10,,
-13,Carlos,Curl martillo,6,3-4 min,3,10,,
+Dia;Persona;Maquina;Peso;Descanso;Sets;Repeticiones;;
+1;Carlos;Press de pecho;26;2-3 min;1;15;;
+1;Carlos;Press de pecho;33;2-3 min;2;15;;
+1;Carlos;Press de pecho;38;2-3 min;1;15;;
+1;Cinthia;Press de pecho;5;2-3 min;1;15;;
+1;Cinthia;Press de pecho;12;2-3 min;3;15;;
+1;Carlos;Extensi髇 de hombro;15;2-3 min;3;15;;
+1;Cinthia;Extensi髇 de hombro;5;2-3 min;3;15;;
+1;Carlos;Extensi髇 de tr韈eps en polea;13.75;2-3 min;1;15;;
+1;Carlos;Extensi髇 de tr韈eps en polea;16.25;2-3 min;3;15;;
+1;Cinthia;Extensi髇 de tr韈eps en polea;6.25;2-3 min;4;15;;
+1;Carlos;Extensi髇 lateral;6.25;2-3 min;3;10;;
+1;Cinthia;Extensi髇 lateral;1.25;2-3 min;3;10;;
+1;Carlos;Extensi髇 frontal;3.75;2-3 min;3;10;;
+1;Cinthia;Extensi髇 frontal;1.25;2-3 min;3;10;;
+2;Carlos;Peso muerto;22;3-4 min;4;15;;
+2;Carlos;Leg Curl;47.5;3-4 min;4;20;;
+2;Carlos;Abducci髇;50;1-2 min;1;20;;
+2;Carlos;Abducci髇;60;1-2 min;1;20;;
+2;Carlos;Abducci髇;70;1-2 min;1;20;;
+2;Carlos;Abducci髇;80;1-2 min;1;20;;
+2;Carlos;Gl鷗eo en maquina;30;2-3 min;1;15;;
+2;Carlos;Gl鷗eo en maquina;32.5;2-3 min;1;15;;
+2;Carlos;Gl鷗eo en maquina;35;2-3 min;1;15;;
+2;Cinthia;Peso muerto;10;3-4 min;4;15;;
+2;Cinthia;Leg Curl;17.5;3-4 min;1;20;;
+2;Cinthia;Leg Curl;20;3-4 min;3;20;;
+2;Cinthia;Abducci髇;27.5;1-2 min;1;15;;
+2;Cinthia;Abducci髇;30;1-2 min;2;15;;
+2;Cinthia;Abducci髇;35;1-2 min;1;15;;
+2;Cinthia;Gl鷗eo en maquina;20;2-3 min;3;15;;
+3;Carlos;Leg press;80;3-4 min;4;20;;
+3;Carlos;Hack squat;40;2-3 min;4;15;;
+3;Carlos;Aducci髇;80;1-2 min;4;20;;
+3;Carlos;Leg extension;80;2-3 min;4;20;;
+4;Carlos;Jal髇 polea alta prono;33;3-4 min;4;15;;
+4;Carlos;Jal髇 polea alta supino;33;3-4 min;4;15;;
+4;Carlos;Remo sentado con polea;65;3-4 min;4;15;;
+4;Carlos;Curl biceps;10;3-4 min;4;10;;
+4;Carlos;Curl martillo;7;3-4 min;4;10;;
+5;Carlos;Abducci髇;80;3-4 min;4;20;;
+5;Carlos;Gl鷗eo en maquina;40;3-4 min;3;15;;
+5;Carlos;Hip thrust;15;3-4 min;2;15;;
+5;Carlos;Hip thrust;20;3-4 min;2;15;;
+5;Carlos;Leg Curl;42.5;3-4 min;3;20;;
+5;Carlos;Peso muerto;22;3-4 min;3;15;;
+3;Cinthia;Abducci髇;35;3-4 min;1;20;;
+3;Cinthia;Abducci髇;40;3-4 min;2;20;;
+3;Cinthia;Abducci髇;42.5;3-4 min;1;20;;
+3;Cinthia;Gl鷗eo en maquina;20;3-4 min;1;15;;
+3;Cinthia;Gl鷗eo en maquina;25;3-4 min;2;15;;
+3;Cinthia;Hip thrust;5;3-4 min;1;15;;
+3;Cinthia;Hip thrust;10;3-4 min;3;15;;
+3;Cinthia;Leg Curl;15;3-4 min;3;15;;
+3;Cinthia;Peso muerto;12;3-4 min;3;15;;
+6;Carlos;Leg extension;80;2-3 min;4;20;;
+6;Carlos;Leg press;80;3-4 min;4;20;;
+6;Carlos;Aducci髇;80;3-4 min;4;20;;
+7;Carlos;Press de pecho;40;2-3 min;4;20;;
+7;Carlos;Extensi髇 de hombro;26;2-3 min;4;15;;
+7;Carlos;Extensi髇 de tr韈eps en polea;27.5;3-4 min;4;15;;
+7;Carlos;Extensi髇 lateral;7.5;3-4 min;3;15;;
+7;Carlos;Extensi髇 frontal;4;3-4 min;1;15;;
+7;Carlos;Extensi髇 frontal;7.5;3-4 min;2;15;;
+8;Carlos;Jal髇 polea alta prono;31.75;2-3 min;4;15;;
+8;Carlos;Jal髇 polea alta supino;31.75;2-3 min;4;15;;
+8;Carlos;Remo sentado con polea;65;2-3 min;4;15;;
+8;Carlos;Curl biceps;6;2-3 min;4;15;;
+8;Carlos;Curl martillo;6;2-3 min;4;15;;
+9;Carlos;Jal髇 polea alta prono;33;3-4 min;3;15;;
+9;Carlos;Jal髇 polea alta prono;40;3-4 min;1;15;;
+9;Carlos;Jal髇 polea alta supino;33;3-4 min;3;15;;
+9;Carlos;Jal髇 polea alta supino;40;3-4 min;1;15;;
+9;Carlos;Remo sentado con polea;65;2-3 min;4;15;;
+9;Carlos;Curl biceps;10;3-4 min;4;15;;
+9;Carlos;Curl martillo;7;3-4 min;4;15;;
+10;Carlos;Leg press;80;3-4 min;4;20;;
+10;Carlos;Hack squat;40;2-3 min;4;15;;
+10;Carlos;Aducci髇;79,37;1-2 min;4;20;;
+10;Carlos;Leg extension;36,28;2-3 min;4;20;;
+11;Carlos;Press de pecho;40;2-3 min;4;20;;
+11;Carlos;Extensi髇 de hombro;25;2-3 min;4;15;;
+11;Carlos;Extensi髇 de tr韈eps en polea;13.75;3-4 min;1;15;;
+11;Carlos;Extensi髇 de tr韈eps en polea;16.25;3-4 min;3;15;;
+11;Carlos;Extensi髇 lateral;6.25;3-4 min;3;15;;
+11;Carlos;Extensi髇 frontal;6.25;3-4 min;1;15;;
+12;Carlos;Peso muerto;22;3-4 min;4;15;;
+12;Carlos;Leg Curl;47,62;3-4 min;4;20;;
+12;Carlos;Abducci髇;81,64;1-2 min;4;20;;
+12;Carlos;Gl鷗eo en maquina;40;2-3 min;1;15;;
+12;Carlos;Gl鷗eo en maquina;42.5;2-3 min;2;15;;
+13;Carlos;Jal髇 polea alta prono;28.5;3-4 min;4;15;;
+13;Carlos;Jal髇 polea alta supino;28.5;3-4 min;4;15;;
+13;Carlos;Remo sentado con polea;42.5;3-4 min;4;15;;
+13;Carlos;Curl biceps;10;3-4 min;3;10;;
+13;Carlos;Curl martillo;6;3-4 min;3;10;;
