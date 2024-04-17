@@ -103,7 +103,7 @@ def crear_graficos(df_grupo, colores):
     line_chart = alt.Chart(resultado_final).mark_line().encode(
         x=alt.X('Dia_ordenado:T', title='Día'),
         y=alt.Y('Promedio_Ponderado:Q', title='Promedio de Peso (kg)'),
-        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),
+        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores, colores]), title='Persona'),
         tooltip=['Persona', 'Dia_ordenado', 'Promedio_Ponderado']
     ).properties(
         title="Promedio de Peso Levantado por Día"
@@ -114,7 +114,7 @@ def crear_graficos(df_grupo, colores):
     bar_chart = alt.Chart(resultado_final).mark_bar().encode(
         x=alt.X('Dia_ordenado:T', title='Día'),
         y=alt.Y('Suma_Repeticiones:Q', title='Total de Repeticiones'),
-        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),
+        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores, colores]), title='Persona'),
         tooltip=['Persona', 'Dia_ordenado', 'Suma_Repeticiones']
     ).properties(
         title="Total de Repeticiones por Día"
@@ -132,7 +132,7 @@ def crear_grafico_cascada(df_grupo, colores):
     cascada_chart = alt.Chart(resultado_final).mark_bar().encode(
         x=alt.X('Dia_ordenado:O', title='Día'),  # Mostrar días como categorías ordenadas
         y='Diferencia_Acumulada:Q',
-        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),
+        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores, colores]), title='Persona'),
         tooltip=['Persona', 'Dia_ordenado', 'Diferencia_Acumulada', 'Promedio_Ponderado']
     ).properties(
         title="Gráfico de Cascada del Promedio de Peso Levantado"
@@ -241,25 +241,25 @@ if 'Progreso_ind' in st.session_state:
         df_cuadriceps = df[df['GM'] == 'A']
         df_cuadriceps = df_cuadriceps.reset_index(drop=True)
         crear_graficos(df_cuadriceps, colores)
-        crear_grafico_cascada(df_cuadriceps, colores['Carlos'])
+        crear_grafico_cascada(df_cuadriceps, colores)
 
     with tab2:
         st.header("Espalda y Biceps (B)")
         df_espalda_biceps = df[df['GM'] == 'B']
         df_espalda_biceps = df_espalda_biceps.reset_index(drop=True)
         crear_graficos(df_espalda_biceps, colores)
-        crear_grafico_cascada(df_espalda_biceps, colores['Cinthia'])
+        crear_grafico_cascada(df_espalda_biceps, colores)
 
     with tab3:
         st.header("Gluteos y Femorales (C)")
         df_gluteos_femorales = df[df['GM'] == 'C']
         df_gluteos_femorales = df_gluteos_femorales.reset_index(drop=True)
         crear_graficos(df_gluteos_femorales, colores)
-        crear_grafico_cascada(df_gluteos_femorales, colores['Carlos'])
+        crear_grafico_cascada(df_gluteos_femorales, colores)
 
     with tab4:
         st.header("Pectorales, Hombros y Tríceps (D)")
         df_pectoral_hombros_triceps = df[df['GM'] == 'D']
         df_pectoral_hombros_triceps = df_pectoral_hombros_triceps.reset_index(drop=True)
         crear_graficos(df_pectoral_hombros_triceps, colores)
-        crear_grafico_cascada(df_pectoral_hombros_triceps, colores['Cinthia'])
+        crear_grafico_cascada(df_pectoral_hombros_triceps, colores)
