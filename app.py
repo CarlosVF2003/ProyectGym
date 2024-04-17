@@ -1,7 +1,7 @@
 # Importar bibliotecas necesarias
 import pandas as pd
 import streamlit as st
-import plotly.express as px
+import plotly as px
 from pathlib import Path
 from base64 import b64encode
 
