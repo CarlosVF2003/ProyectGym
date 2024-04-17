@@ -7,4 +7,4 @@ demoji
 scikit-learn
 matplotlib
 altair
-plotly.express
+waterfall_chart
