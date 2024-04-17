@@ -11,7 +11,7 @@ import altair as alt
 # Cargar datos solo una vez
 if 'Progreso_ind' not in st.session_state:
     if Path("Progreso.csv").exists():
-        st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv", sep=',')
+        st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv")
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
