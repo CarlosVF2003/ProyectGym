@@ -128,6 +128,34 @@ def crear_graficos(df_grupo, colores):
         title="Total de Repeticiones por Día"
     )
     st.altair_chart(bar_chart, use_container_width=True)
+def crear_grafico_cascada(df_grupo, color):
+    # Agrupar datos por 'Dia' y sumar 'Peso_Total'
+    df_cascada = df_grupo.groupby('Dia')['Peso_Total'].sum().reset_index()
+    
+    # Calcular la diferencia acumulada
+    df_cascada['Diferencia'] = df_cascada['Peso_Total'].cumsum()
+    
+    # Crear un gráfico de cascada
+    cascada_chart = alt.Chart(df_cascada).transform_calculate(
+        # Utilizar una condición para determinar si el valor es positivo o negativo
+        color=alt.expr.if_(alt.datum.Diferencia >= 0, 'positivo', 'negativo')
+    ).mark_rule(
+        # Estilo de la regla (barra) del gráfico
+        color=color
+    ).encode(
+        x='Dia:T',
+        y='Diferencia:Q',
+        color=alt.Color(
+            'color:N',
+            scale=alt.Scale(domain=['positivo', 'negativo'], range=['green', 'red'])
+        ),
+        tooltip=['Dia:T', 'Diferencia:Q', 'Peso_Total:Q']
+    ).properties(
+        title="Gráfico de Cascada por Grupo Muscular"
+    )
+    
+    # Mostrar el gráfico en Streamlit
+    st.altair_chart(cascada_chart, use_container_width=True)
 
 
 # %%
@@ -233,21 +261,26 @@ if 'Progreso_ind' in st.session_state:
         df_cuadriceps = df[df['GM'] == 'A']
         df_cuadriceps = df_cuadriceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
         crear_graficos(df_cuadriceps, colores)
+        crear_grafico_cascada(df_cuadriceps, colores)
 
     with tab2:
         st.header("Espalda y Biceps (B)")
         df_espalda_biceps = df[df['GM'] == 'B']
         df_espalda_biceps = df_espalda_biceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
         crear_graficos(df_espalda_biceps, colores)
+        crear_grafico_cascada(df_espalda_biceps, colores)
+
 
     with tab3:
         st.header("Gluteos y femorales (C)")
         df_gluteos_femorales = df[df['GM'] == 'C']
         df_gluteos_femorales = df_gluteos_femorales.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
         crear_graficos(df_gluteos_femorales, colores)
-
+        crear_grafico_cascada(df_gluteos_femorales, colores)
+        
     with tab4:
         st.header("Pectorales, hombros y triceps (D)")
         df_pectoral_hombros_triceps = df[df['GM'] == 'D']
         df_pectoral_hombros_triceps = df_pectoral_hombros_triceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
         crear_graficos(df_pectoral_hombros_triceps, colores)
+        crear_grafico_cascada(df_pectoral_hombros_triceps, colores)
