@@ -4,6 +4,7 @@ import pandas as pd
 import streamlit as st
 from pathlib import Path
 from base64 import b64encode
+import plotly.express as px
 import altair as alt
 
 # %%
@@ -118,25 +119,24 @@ def crear_graficos(df_grupo, colores):
     st.altair_chart(bar_chart, use_container_width=True)
 
 # Función para crear gráfico de cascada
-def crear_grafico_cascada(df_grupo, colores):
+def crear_grafico_cascada(df, colores):
     # Calcular el promedio de peso levantado por día
-    resultado_final = calcular_promedio(df_grupo)
+    resultado_final = calcular_promedio(df)
     
-    # Calcular la diferencia acumulada del promedio de peso levantado
-    resultado_final['Diferencia_Acumulada'] = resultado_final.groupby('Persona')['Promedio_Ponderado'].cumsum()
-    
-    # Crear gráfico de cascada
-    cascada_chart = alt.Chart(resultado_final).mark_bar().encode(
-        x=alt.X('Dia_ordenado:O', title='Día'),  # Categorizar días como ordinales
-        y='Diferencia_Acumulada:Q',
-        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),
-        tooltip=['Persona', 'Dia_ordenado', 'Diferencia_Acumulada', 'Promedio_Ponderado']
-    ).properties(
-        title="Gráfico de Cascada del Promedio de Peso Levantado"
+    # Crear gráfico de cascada con Plotly
+    fig = px.waterfall(
+        resultado_final,
+        x='Dia_ordenado',
+        y='Promedio_Ponderado',
+        base=0,
+        color='Persona',
+        title='Gráfico de Cascada del Promedio de Peso Levantado',
+        labels={'Persona': 'Persona', 'Dia_ordenado': 'Día', 'Promedio_Ponderado': 'Promedio Ponderado'},
+        color_discrete_map=colores,
     )
     
-    # Mostrar gráfico en Streamlit
-    st.altair_chart(cascada_chart, use_container_width=True)
+    # Mostrar el gráfico en Streamlit
+    st.plotly_chart(fig)
 
 # %%
 # Título de la aplicación
