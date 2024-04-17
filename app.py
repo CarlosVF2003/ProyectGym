@@ -2,6 +2,7 @@
 import pandas as pd
 import streamlit as st
 from pathlib import Path
+import waterfall_chart
 from base64 import b64encode
 import plotly.graph_objects as go
 
@@ -75,46 +76,24 @@ def calcular_promedio(df):
     ).reset_index(name='Promedio_Ponderado')
     return promedio_df
 
-def crear_grafico_cascada(df, colores):
-    # Crear una figura
-    fig = go.Figure()
+def crear_grafico_cascada(df_grupo, colores):
+    # Calcular el promedio de peso levantado por día
+    resultado_final = calcular_promedio(df_grupo)
+    
+    # Calcula las diferencias acumuladas de peso levantado para cada persona
+    # También calculamos las diferencias por cada día para crear el gráfico de cascada
+    resultado_final['Diferencia_Acumulada'] = resultado_final.groupby('Persona')['Promedio_Ponderado'].cumsum()
+    diferencias = resultado_final.groupby('Persona')['Promedio_Ponderado'].apply(lambda x: x.diff().fillna(x))
 
-    # Configurar gráfico de cascada para Carlos
-    df_carlos = df[df['Persona'] == 'Carlos']
-    fig.add_trace(go.Waterfall(
-        name='Carlos',
-        orientation='v',
-        measure=['relative'] * len(df_carlos),
-        x=df_carlos['Dia'],
-        y=df_carlos['Promedio_Ponderado'],
-        base=0,
-        showlegend=True,
-        marker_color=colores['Carlos']
-    ))
+    # Crear gráficos de cascada separados para Carlos y Cinthia usando waterfall_chart
+    for persona in ['Carlos', 'Cinthia']:
+        df_persona = resultado_final[resultado_final['Persona'] == persona]
+        deltas = diferencias.loc[persona]
+        dias = df_persona['Dia']
+        
+        st.subheader(f"Gráfico de Cascada para {persona}")
+        waterfall_chart.plot(dias, deltas, title=f"Progreso de {persona}", xlabel='Días', ylabel='Cambio en Peso Levantado (kg)')
 
-    # Configurar gráfico de cascada para Cinthia
-    df_cinthia = df[df['Persona'] == 'Cinthia']
-    fig.add_trace(go.Waterfall(
-        name='Cinthia',
-        orientation='v',
-        measure=['relative'] * len(df_cinthia),
-        x=df_cinthia['Dia'],
-        y=df_cinthia['Promedio_Ponderado'],
-        base=0,
-        showlegend=True,
-        marker_color=colores['Cinthia']
-    ))
-
-    # Configurar título y etiquetas de los ejes
-    fig.update_layout(
-        title='Gráfico de Cascada del Promedio de Peso Levantado por Día',
-        xaxis_title='Día',
-        yaxis_title='Promedio de Peso (kg)',
-        showlegend=True
-    )
-
-    # Mostrar el gráfico de cascada en Streamlit
-    st.plotly_chart(fig)
 
 # Título de la aplicación
 st.title('🏋️‍♂️ Análisis de Progreso en el Gimnasio 🏋️‍♀️')
