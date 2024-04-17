@@ -1,9 +1,10 @@
 # Importar bibliotecas necesarias
 import pandas as pd
 import streamlit as st
-import plotly as px
 from pathlib import Path
 from base64 import b64encode
+import plotly.graph_objects as go
+
 
 # Configuración inicial y carga de datos
 def cargar_datos():
@@ -74,24 +75,45 @@ def calcular_promedio(df):
     ).reset_index(name='Promedio_Ponderado')
     return promedio_df
 
-# Función para crear gráficos de cascada
 def crear_grafico_cascada(df, colores):
-    # Calcular el promedio de peso levantado por día
-    promedio_df = calcular_promedio(df)
-    
-    # Crear gráfico de cascada usando Plotly
-    fig = px.waterfall(
-        promedio_df,
-        x='Dia',
-        y='Promedio_Ponderado',
+    # Crear una figura
+    fig = go.Figure()
+
+    # Configurar gráfico de cascada para Carlos
+    df_carlos = df[df['Persona'] == 'Carlos']
+    fig.add_trace(go.Waterfall(
+        name='Carlos',
+        orientation='v',
+        measure=['relative'] * len(df_carlos),
+        x=df_carlos['Dia'],
+        y=df_carlos['Promedio_Ponderado'],
         base=0,
-        color='Persona',
-        title='Gráfico de Cascada del Promedio de Peso Levantado',
-        labels={'Persona': 'Persona', 'Dia': 'Día', 'Promedio_Ponderado': 'Promedio de Peso (kg)'},
-        color_discrete_map=colores,
+        showlegend=True,
+        marker_color=colores['Carlos']
+    ))
+
+    # Configurar gráfico de cascada para Cinthia
+    df_cinthia = df[df['Persona'] == 'Cinthia']
+    fig.add_trace(go.Waterfall(
+        name='Cinthia',
+        orientation='v',
+        measure=['relative'] * len(df_cinthia),
+        x=df_cinthia['Dia'],
+        y=df_cinthia['Promedio_Ponderado'],
+        base=0,
+        showlegend=True,
+        marker_color=colores['Cinthia']
+    ))
+
+    # Configurar título y etiquetas de los ejes
+    fig.update_layout(
+        title='Gráfico de Cascada del Promedio de Peso Levantado por Día',
+        xaxis_title='Día',
+        yaxis_title='Promedio de Peso (kg)',
+        showlegend=True
     )
-    
-    # Mostrar el gráfico en Streamlit
+
+    # Mostrar el gráfico de cascada en Streamlit
     st.plotly_chart(fig)
 
 # Título de la aplicación
