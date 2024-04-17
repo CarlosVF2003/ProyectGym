@@ -121,27 +121,26 @@ def crear_graficos(df_grupo, colores):
     )
     st.altair_chart(bar_chart, use_container_width=True)
 
-# Función para crear gráficos de cascada
-def crear_grafico_cascada(df_grupo, color):
-    # Agrupar datos por 'Dia' y sumar 'Peso_Total'
-    df_cascada = df_grupo.groupby('Dia')['Peso_Total'].sum().reset_index()
+def crear_grafico_cascada(df_grupo, colores):
+    # Calcular el promedio de peso por día y máquina
+    resultado_final = calcular_promedio(df_grupo)
     
-    # Calcular la diferencia acumulada
-    df_cascada['Diferencia'] = df_cascada['Peso_Total'].cumsum()
+    # Calcular la diferencia acumulada para cada persona a lo largo del tiempo
+    resultado_final['Diferencia_Acumulada'] = resultado_final.groupby('Persona')['Promedio_Ponderado'].cumsum()
     
     # Crear un gráfico de cascada
-    cascada_chart = alt.Chart(df_cascada).mark_rule(
-        color=color
-    ).encode(
-        x='Dia:T',
-        y='Diferencia:Q',
-        tooltip=['Dia:T', 'Diferencia:Q', 'Peso_Total:Q']
+    cascada_chart = alt.Chart(resultado_final).mark_bar().encode(
+        x=alt.X('Dia_ordenado:O', title='Día'),  # Mostrar días como categorías ordenadas
+        y='Diferencia_Acumulada:Q',
+        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),
+        tooltip=['Persona', 'Dia_ordenado', 'Diferencia_Acumulada', 'Promedio_Ponderado']
     ).properties(
-        title="Gráfico de Cascada por Grupo Muscular"
+        title="Gráfico de Cascada del Promedio de Peso Levantado"
     )
     
     # Mostrar el gráfico en Streamlit
     st.altair_chart(cascada_chart, use_container_width=True)
+
 
 # %%
 # Título de la aplicación
