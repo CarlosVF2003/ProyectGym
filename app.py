@@ -23,7 +23,7 @@ def formulario_desarrollo_fuerza(Sets):
 
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return pesos, [repeticiones] * Sets, [descansos] * Sets
+    return pesos, [repeticiones] * Sets, [descanso] * Sets
 
 def formulario_mejora_resistencia(Sets):
     pesos = []
@@ -33,13 +33,13 @@ def formulario_mejora_resistencia(Sets):
 
     repeticiones = [st.number_input(f'🏃 Repeticiones para el Sets {i + 1}:', min_value=1, max_value=30, step=1) for i in range(Sets)]
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return pesos, repeticiones, [descansos] * Sets
+    return pesos, repeticiones, [descanso] * Sets
 
 def formulario_hipertrofia_muscular(Sets):
     peso = st.number_input('💪 Peso (kg):', min_value=0.0, step=0.1, format="%.1f")
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
-    return [peso] * Sets, [repeticiones] * Sets, [descansos] * Sets
+    return [peso] * Sets, [repeticiones] * Sets, [descanso] * Sets
 
 def calcular_peso_ajustado(pesos, maquina, unidad_peso):
     # Convertir el peso de lb's a kg si es necesario
@@ -153,23 +153,23 @@ with st.expander('📝 Registro de Datos'):
 
     Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
 
-    # Define Sets, pesos, repeticiones, y descansos basados en el enfoque
+    # Define Sets, pesos, repeticiones, y descanso basados en el enfoque
     Sets = st.number_input('Número de Sets:', min_value=1, max_value=10, step=1, value=4)
     unidad_peso = st.selectbox('Unidad de Peso:', ('kg', 'lb'))
 
     # Capturar datos según el enfoque de entrenamiento seleccionado
     if Enfoque == 'Desarrollo de Fuerza':
-        pesos, repeticiones, descansos = formulario_desarrollo_fuerza(Sets)
+        pesos, repeticiones, descanso = formulario_desarrollo_fuerza(Sets)
     elif Enfoque == 'Mejora de la Resistencia':
-        pesos, repeticiones, descansos = formulario_mejora_resistencia(Sets)
+        pesos, repeticiones, descanso = formulario_mejora_resistencia(Sets)
     else:
-        pesos, repeticiones, descansos = formulario_hipertrofia_muscular(Sets)
+        pesos, repeticiones, descanso = formulario_hipertrofia_muscular(Sets)
 
     # Calcular peso ajustado
     pesos = calcular_peso_ajustado(pesos, Maquina, unidad_peso)
 
     # Verificar que los formularios estén completos
-    form_completo = all(pesos) and all(repeticiones) and all(descansos)
+    form_completo = all(pesos) and all(repeticiones) and all(descanso)
 
     # Si el formulario está completo, guardar los datos
     if form_completo:
@@ -182,7 +182,7 @@ with st.expander('📝 Registro de Datos'):
                 'Sets': Sets,
                 'Peso': pesos,
                 'Repeticiones': repeticiones,
-                'Descanso': descansos
+                'Descanso': descanso
             })
             
             # Concatenar DataFrames y reiniciar el índice
