@@ -199,21 +199,22 @@ if 'Progreso_ind' in st.session_state:
         df_cuadriceps = df[df['GM'] == 'A']
         df_cuadriceps = df_cuadriceps.reset_index(drop=True)
         crear_grafico_cascada(df_cuadriceps, colores)
-
+    
     with tab2:
         st.header("Espalda y Biceps (B)")
         df_espalda_biceps = df[df['GM'] == 'B']
         df_espalda_biceps = df_espalda_biceps.reset_index(drop=True)
         crear_grafico_cascada(df_espalda_biceps, colores)
-
+    
     with tab3:
         st.header("Gluteos y femorales (C)")
         df_gluteos_femorales = df[df['GM'] == 'C']
         df_gluteos_femorales = df_gluteos_femorales.reset_index(drop=True)
         crear_grafico_cascada(df_gluteos_femorales, colores)
-
+    
     with tab4:
         st.header("Pectorales, hombros y triceps (D)")
         df_pectoral_hombros_triceps = df[df['GM'] == 'D']
         df_pectoral_hombros_triceps = df_pectoral_hombros_triceps.reset_index(drop=True)
         crear_grafico_cascada(df_pectoral_hombros_triceps, colores)
+
