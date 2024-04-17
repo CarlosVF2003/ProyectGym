@@ -1,11 +1,10 @@
 # %%
-# Importamos librerias
+# Importamos librerías
 import pandas as pd
 import streamlit as st
 from pathlib import Path
 from base64 import b64encode
 import altair as alt
-
 
 # %%
 # Cargar datos solo una vez
@@ -15,7 +14,7 @@ if 'Progreso_ind' not in st.session_state:
     else:
         st.session_state['Progreso_ind'] = pd.DataFrame()
 
-
+# Formulario para Desarrollo de Fuerza
 def formulario_desarrollo_fuerza(Sets):
     pesos = []
     for i in range(Sets):
@@ -26,6 +25,7 @@ def formulario_desarrollo_fuerza(Sets):
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return pesos, [repeticiones] * Sets, [descanso] * Sets
 
+# Formulario para Mejora de la Resistencia
 def formulario_mejora_resistencia(Sets):
     pesos = []
     for i in range(Sets):
@@ -36,28 +36,29 @@ def formulario_mejora_resistencia(Sets):
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return pesos, repeticiones, [descanso] * Sets
 
+# Formulario para Hipertrofia Muscular
 def formulario_hipertrofia_muscular(Sets):
     peso = st.number_input('💪 Peso (kg):', min_value=0.0, step=0.1, format="%.1f")
     repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
     descanso = st.selectbox('Tiempo de descanso:', ('1-2 min', '2-3 min', '3-4 min'))
     return [peso] * Sets, [repeticiones] * Sets, [descanso] * Sets
 
+# Función para calcular el peso ajustado
 def calcular_peso_ajustado(pesos, maquina, unidad_peso):
-    # Convertir el peso de lb's a kg si es necesario
+    # Convertir el peso de lb a kg si es necesario
     if unidad_peso == 'lb':
         pesos = [peso * 0.453592 for peso in pesos]
 
-    # Duplicar el peso si la máquina está en la lista específica
+    # Multiplicar el peso si la máquina está en la lista específica
     maquinas_multiplicar_peso = [
         'Extensión lateral', 'Extensión frontal', 'Curl biceps',
-        'Curl martillo', 'Glúteo en maquina', 'Hack squat', 'Hip thrust','Leg press'
+        'Curl martillo', 'Glúteo en maquina', 'Hack squat', 'Hip thrust', 'Leg press'
     ]
     
     if maquina in maquinas_multiplicar_peso:
         pesos = [peso * 2 for peso in pesos]
 
     return pesos
-
 
 # Función para descargar DataFrame como CSV
 def download_csv(df, filename):
@@ -87,47 +88,40 @@ def calcular_promedio(df):
         
     # Une los resultados con la suma de repeticiones
     resultado_final = df[['Persona', 'Dia', 'Suma_Repeticiones']].drop_duplicates().merge(
-    promedio_ponderado_por_persona, on=['Persona', 'Dia'])
+        promedio_ponderado_por_persona, on=['Persona', 'Dia'])
     return resultado_final
 
+# Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
-    # Reiniciar el índice para evitar problemas con Altair
-    df_grupo = df_grupo.reset_index(drop=True)
-    
-    # Verificar si hay suficientes datos para crear gráficos
-    if len(df_grupo) == 0:
-        st.warning("No hay suficientes datos disponibles para mostrar los gráficos.")
-        return
-    
     # Calcular el promedio de peso por día y máquina
     resultado_final = calcular_promedio(df_grupo)
     
-    # Calcular el orden de los días dentro de cada grupo muscular usando rank
+    # Calcular el orden de los días dentro de cada grupo muscular
     resultado_final['Dia_ordenado'] = resultado_final.groupby('Persona').cumcount() + 1
     
     # Gráfico de líneas del promedio de peso levantado por día para ambas personas
     line_chart = alt.Chart(resultado_final).mark_line().encode(
-        x=alt.X('Dia_ordenado:T', title='Día'),  # Utiliza el tipo de dato 'temporal' para el eje X
-        y=alt.Y('Promedio_Ponderado', title='Promedio de Peso (kg)'),  # Utiliza el promedio de peso para el eje Y
-        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),  # Diferenciar las líneas por persona
-        tooltip=['Persona', 'Dia_ordenado', 'Promedio_Ponderado']  # Utiliza el promedio de peso para la etiqueta del tooltip
+        x=alt.X('Dia_ordenado:T', title='Día'),
+        y=alt.Y('Promedio_Ponderado:Q', title='Promedio de Peso (kg)'),
+        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),
+        tooltip=['Persona', 'Dia_ordenado', 'Promedio_Ponderado']
     ).properties(
-        
         title="Promedio de Peso Levantado por Día"
     )
     st.altair_chart(line_chart, use_container_width=True)
 
     # Gráfico de barras del total de repeticiones por día para ambas personas
     bar_chart = alt.Chart(resultado_final).mark_bar().encode(
-        x=alt.X('Dia_ordenado:T', title='Día'),  # Utiliza el tipo de dato 'temporal' para el eje X
-        y=alt.Y('Suma_Repeticiones', title='Total de Repeticiones'),
-        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),  # Diferenciar las barras por persona
+        x=alt.X('Dia_ordenado:T', title='Día'),
+        y=alt.Y('Suma_Repeticiones:Q', title='Total de Repeticiones'),
+        color=alt.Color('Persona:N', scale=alt.Scale(range=[colores['Carlos'], colores['Cinthia']]), title='Persona'),
         tooltip=['Persona', 'Dia_ordenado', 'Suma_Repeticiones']
     ).properties(
-        
         title="Total de Repeticiones por Día"
     )
     st.altair_chart(bar_chart, use_container_width=True)
+
+# Función para crear gráficos de cascada
 def crear_grafico_cascada(df_grupo, color):
     # Agrupar datos por 'Dia' y sumar 'Peso_Total'
     df_cascada = df_grupo.groupby('Dia')['Peso_Total'].sum().reset_index()
@@ -136,19 +130,11 @@ def crear_grafico_cascada(df_grupo, color):
     df_cascada['Diferencia'] = df_cascada['Peso_Total'].cumsum()
     
     # Crear un gráfico de cascada
-    cascada_chart = alt.Chart(df_cascada).transform_calculate(
-        # Utilizar una condición para determinar si el valor es positivo o negativo
-        color=alt.expr.if_(alt.datum.Diferencia >= 0, 'positivo', 'negativo')
-    ).mark_rule(
-        # Estilo de la regla (barra) del gráfico
+    cascada_chart = alt.Chart(df_cascada).mark_rule(
         color=color
     ).encode(
         x='Dia:T',
         y='Diferencia:Q',
-        color=alt.Color(
-            'color:N',
-            scale=alt.Scale(domain=['positivo', 'negativo'], range=['green', 'red'])
-        ),
         tooltip=['Dia:T', 'Diferencia:Q', 'Peso_Total:Q']
     ).properties(
         title="Gráfico de Cascada por Grupo Muscular"
@@ -157,21 +143,25 @@ def crear_grafico_cascada(df_grupo, color):
     # Mostrar el gráfico en Streamlit
     st.altair_chart(cascada_chart, use_container_width=True)
 
-
 # %%
 # Título de la aplicación
 st.title('🏋️‍♂️ Nuestro Progreso en el Gym 🏋️‍♀️')
 
+# Registro de datos
 with st.expander('📝 Registro de Datos'):
     Dia = st.text_input('Ingresa el Día 📆:')
     Persona = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', ('Carlos', 'Cinthia'))
-    Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', ('Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea',
-                                                         'Extensión lateral', 'Extensión frontal', 'Jalón polea alta prono',
-                                                         'Jalón polea alta supino', 'Remo sentado con polea', 'Curl biceps',
-                                                         'Curl martillo', 'Peso muerto', 'Leg Curl', 'Abducción',
-                                                         'Glúteo en maquina', 'Leg press', 'Hack squat', 'Aducción', 'Leg extension', 'Hip thrust'))
+    Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', (
+        'Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea',
+        'Extensión lateral', 'Extensión frontal', 'Jalón polea alta prono',
+        'Jalón polea alta supino', 'Remo sentado con polea', 'Curl biceps',
+        'Curl martillo', 'Peso muerto', 'Leg Curl', 'Abducción',
+        'Glúteo en maquina', 'Leg press', 'Hack squat', 'Aducción', 'Leg extension', 'Hip thrust'
+    ))
 
-    Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
+    Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', (
+        'Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'
+    ))
 
     # Define Sets, pesos, repeticiones, y descansos basados en el enfoque
     Sets = st.number_input('Número de Sets:', min_value=1, max_value=10, step=1, value=4)
@@ -212,21 +202,16 @@ with st.expander('📝 Registro de Datos'):
             # Mostrar mensaje de éxito
             st.success('¡Datos registrados con éxito!')
 
-
-
-# %%
 # Datos generales registrados
 with st.expander('📓 Datos Registrados'):
     st.subheader("Visualización de datos registrados")
-    # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
-    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina','Peso','Sets', 'Repeticiones','Descanso'])
+    # Eliminar filas duplicadas basadas en las columnas específicas
+    unique_values = st.session_state['Progreso_ind'].drop_duplicates(subset=['Dia', 'Persona', 'Maquina', 'Peso', 'Sets', 'Repeticiones', 'Descanso'])
     st.dataframe(unique_values.reset_index(drop=True))
     st.markdown(download_csv(unique_values, "Progreso"), unsafe_allow_html=True)
     df = unique_values
-    # Botón para descargar la tabla de datos
 
-# %%
-# Mostrar tablas de datos de Carlos y Cinthia
+# Tablas de datos de Carlos y Cinthia
 with st.expander('🤵‍♂️ Tabla de datos de Carlos'):
     if 'Progreso_ind' in st.session_state:
         st.header('Datos de Carlos')
@@ -239,48 +224,43 @@ with st.expander('🙍 Tabla de datos de Cinthia'):
         df_cinthia = df[df['Persona'] == 'Cinthia']
         st.dataframe(df_cinthia.reset_index(drop=True))
 
-# %%
 # Crear pestañas con los nombres proporcionados
-tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
+tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y Femorales", "Pectorales, Hombros y Tríceps"])
 
-# %%
+# Clasificación por grupo muscular
 df.loc[df['Maquina'].isin(['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal']), 'GM'] = 'D'
 df.loc[df['Maquina'].isin(['Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo']), 'GM'] = 'B'
-    
 df.loc[df['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina']), 'GM'] = 'C'
 df.loc[df['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'GM'] = 'A'
 
-# %%
-# Gráficos
-if 'Progreso_ind' in st.session_state:       
+# Gráficos por grupo muscular
+if 'Progreso_ind' in st.session_state:
     colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
-    # Suponiendo que 'st.session_state['Progreso_ind']' ya contiene el DataFrame con los datos necesarios
     
     with tab1:
         st.header("Cuadriceps (A)")
         df_cuadriceps = df[df['GM'] == 'A']
-        df_cuadriceps = df_cuadriceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
+        df_cuadriceps = df_cuadriceps.reset_index(drop=True)
         crear_graficos(df_cuadriceps, colores)
         crear_grafico_cascada(df_cuadriceps, colores['Carlos'])
 
     with tab2:
         st.header("Espalda y Biceps (B)")
         df_espalda_biceps = df[df['GM'] == 'B']
-        df_espalda_biceps = df_espalda_biceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
+        df_espalda_biceps = df_espalda_biceps.reset_index(drop=True)
         crear_graficos(df_espalda_biceps, colores)
-        crear_grafico_cascada(df_espalda_biceps, colores['Carlos'])
-
+        crear_grafico_cascada(df_espalda_biceps, colores['Cinthia'])
 
     with tab3:
-        st.header("Gluteos y femorales (C)")
+        st.header("Gluteos y Femorales (C)")
         df_gluteos_femorales = df[df['GM'] == 'C']
-        df_gluteos_femorales = df_gluteos_femorales.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
+        df_gluteos_femorales = df_gluteos_femorales.reset_index(drop=True)
         crear_graficos(df_gluteos_femorales, colores)
         crear_grafico_cascada(df_gluteos_femorales, colores['Carlos'])
-        
+
     with tab4:
-        st.header("Pectorales, hombros y triceps (D)")
+        st.header("Pectorales, Hombros y Tríceps (D)")
         df_pectoral_hombros_triceps = df[df['GM'] == 'D']
-        df_pectoral_hombros_triceps = df_pectoral_hombros_triceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
+        df_pectoral_hombros_triceps = df_pectoral_hombros_triceps.reset_index(drop=True)
         crear_graficos(df_pectoral_hombros_triceps, colores)
-        crear_grafico_cascada(df_pectoral_hombros_triceps, colores['Carlos'])
+        crear_grafico_cascada(df_pectoral_hombros_triceps, colores['Cinthia'])
