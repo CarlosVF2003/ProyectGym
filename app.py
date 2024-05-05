@@ -191,26 +191,6 @@ df.loc[df['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción',
 df.loc[df['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension']), 'GM'] = 'A'
 
 # %%
-df = df[df['GM'] == 'A']
-df['Sets_x_Reps'] = df['Sets'] * df['Repeticiones']
-df['Peso_Total'] = df['Peso'] * df['Sets'] * df['Repeticiones']
-    
-    # Calcula la suma de repeticiones por persona y día
-df['Suma_Repeticiones'] = df.groupby(['Persona', 'Dia'])['Repeticiones'].transform('sum')
-        
-    # Agrupa por persona y día, y calcula el promedio ponderado
-promedio_ponderado_por_persona = df.groupby(['Persona', 'Dia']).apply(
-lambda x: (x['Peso_Total'].sum() / x['Sets_x_Reps'].sum())
-).reset_index(name='Promedio_Ponderado')
-        
-    # Une los resultados con la suma de repeticiones
-resultado_final = df[['Persona', 'Dia', 'Suma_Repeticiones']].drop_duplicates().merge(
-promedio_ponderado_por_persona, on=['Persona', 'Dia'])
-
-resultado_final['Dia_ordenado'] = resultado_final.groupby('Persona').cumcount() + 1
-print(resultado_final)
-
-# %%
 # Gráficos
 if 'Progreso_ind' in st.session_state:       
     colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
