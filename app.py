@@ -1,4 +1,3 @@
-# %%
 # Importamos librerias
 import pandas as pd
 import streamlit as st
@@ -6,18 +5,13 @@ from pathlib import Path
 from base64 import b64encode
 import altair as alt
 
-
-# %%
-# Cargar los archivos CSV si existen
+# Cargar los dataframes desde los archivos CSV
+df_progreso = pd.read_csv("Progreso.csv")
 df_usuarios = pd.read_csv("Usuarios.csv")
-df_grupo_muscular = pd.read_csv("Grupo_muscular.csv")
-if 'Progreso_ind' not in st.session_state and Path("Progreso.csv").exists():
-    gym_original = st.session_state['Progreso_ind'] = pd.read_csv("Progreso.csv")
-else:
-    gym_original = st.session_state['Progreso_ind'] = pd.DataFrame()
 
+# Unir el dataframe de progreso con el dataframe de usuarios utilizando 'Id_Usuario' como clave de unión
+df_merged = pd.merge(df_progreso, df_usuarios, on='Id_Usuario', how='left')
 
-# %%
 # Definiremos las funciones 
 def formulario_desarrollo_fuerza(Sets):
     pesos = []
@@ -70,7 +64,6 @@ def calcular_promedio(df):
     promedio_ponderado_por_persona, on=['Nombre', 'Dia'])
     return resultado_final
 
-# %%
 # Función para crear gráficos de líneas y barras
 def crear_graficos(df_grupo, colores):
     # Reiniciar el índice para evitar problemas con Altair
@@ -91,7 +84,7 @@ def crear_graficos(df_grupo, colores):
     line_chart = alt.Chart(resultado_final).mark_line().encode(
         x='Dia_ordenado:T',  # Utiliza el tipo de dato 'temporal' para el eje X
         y=alt.Y('Promedio_Ponderado', title='Promedio de Peso'),  # Utiliza el promedio de peso para el eje Y
-        color=alt.Color('Nombre:N', scale=alt.Scale(domain=df_usuarios['Nombre'].tolist(), range=df_usuarios['Color'].tolist()), title='Persona'),  # Diferenciar las líneas por persona
+        color=alt.Color('Nombre:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue']), title='Nombre'),  # Diferenciar las líneas por persona
         tooltip=['Nombre', 'Dia', 'Promedio_Ponderado']  # Utiliza el promedio de peso para la etiqueta del tooltip
     ).properties(
         title="Promedio de Peso Levantado"
@@ -102,79 +95,101 @@ def crear_graficos(df_grupo, colores):
     bar_chart = alt.Chart(resultado_final).mark_bar().encode(
         x='Dia_ordenado:T',  # Utiliza el tipo de dato 'temporal' para el eje X
         y=alt.Y('Suma_Repeticiones', title='Total de Repeticiones'),
-        color=alt.Color('Nombre:N', scale=alt.Scale(domain=df_usuarios['Nombre'].tolist(), range=df_usuarios['Color'].tolist()), title='Persona'),  # Diferenciar las barras por persona
+        color=alt.Color('Nombre:N', scale=alt.Scale(domain=['Carlos', 'Cinthia'], range=['black', 'lightblue']), title='Nombre'),  # Diferenciar las barras por persona
         tooltip=['Nombre', 'Dia', 'Suma_Repeticiones']
     ).properties(
         title="Total de Repeticiones"
     )
     st.altair_chart(bar_chart, use_container_width=True)
 
-# %%
 # Título de la aplicación
 st.title('🏋️‍♂️ Nuestro Progreso en el Gym 🏋️‍♀️')
 
-# %%
 # Formulario desplegable y botón de guardar
 with st.expander('📝 Registro de Datos'):
     Dia = st.text_input('Ingresa el Día 📆:')
-    Nombre_usuario = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', df_usuarios['Nombre'].tolist())
-    Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', df_grupo_muscular['Maquina'].tolist())
+    usuario = st.selectbox('Selecciona tu nombre 🤵‍♂️🙍:', df_merged['Nombre'].unique())
+    Maquina = st.selectbox('Selecciona una máquina 🏋️‍♀️🏋️‍♂️:', df_merged['Maquina'].unique())
+    Enfoque = st.selectbox('Selecciona el enfoque de entrenamiento:', ('Desarrollo de Fuerza', 'Mejora de la Resistencia', 'Hipertrofia Muscular'))
     Sets = st.number_input('Número de Sets:', min_value=1, max_value=10, step=1, value=4)
-    Peso = st.number_input('Peso (kg):', min_value=0.0, step=0.1, format="%.1f")
-    Repeticiones = st.number_input('Repeticiones:', min_value=1, max_value=30, step=1)
-    Medida = st.text_input('Medida:', value='kg')
+    
+    # Capturar datos según el enfoque de entrenamiento seleccionado
+    if Enfoque == 'Desarrollo de Fuerza':
+        pesos, repeticiones, descansos = formulario_desarrollo_fuerza(Sets)
+    elif Enfoque == 'Mejora de la Resistencia':
+        pesos, repeticiones, descansos = formulario_mejora_resistencia(Sets)
+    else:  # Hipertrofia Muscular
+        pesos, repeticiones, descansos = formulario_hipertrofia_muscular(Sets)
+        
+    # Verificar que ambos formularios estén completos
+    form_completo = all(pesos) and all(repeticiones) and all(descansos)
+    
 
-    # Guardar los datos
-    if st.button('Guardar'):
-        Progreso_new = pd.DataFrame({
-            'Dia': [Dia] * Sets,
-            'Nombre': [Nombre_usuario] * Sets,
-            'Maquina': [Maquina] * Sets,
-            'Peso': [Peso] * Sets,
-            'Sets': [Sets] * Sets,
-            'Repeticiones': [Repeticiones] * Sets,
-            'Medida': [Medida] * Sets
-        })
-        gym_original = pd.concat([gym_original, Progreso_new], ignore_index=True)
-        st.success('¡Datos registrados con éxito!')
-        st.session_state['Progreso_ind'].to_csv('Progreso.csv', index=False)
+    # Si el formulario está completo, guardar los datos
+    if form_completo:
+        if st.button('Guardar'):
+            Progreso_new = pd.DataFrame({
+                'Dia': [Dia] * Sets,
+                'Nombre': [usuario] * Sets,
+                'Maquina': [Maquina] * Sets,
+                'Sets' : Sets,
+                'Peso': pesos,
+                'Repeticiones': repeticiones,
+                'Medida': [descansos[0]] * Sets
+            })
+            df_progreso = pd.concat([df_progreso, Progreso_new], ignore_index=True)
+            # Guardar el DataFrame actualizado en un archivo CSV
+            # Utiliza transform para agregar la columna de conteo directamente al DataFrame existente
+            if Enfoque != 'Hipertrofia Muscular':
+                df_progreso['Sets'] = df_progreso.groupby(['Dia', 'Nombre', 'Maquina', 'Peso','Medida','Repeticiones'])[['Peso', 'Repeticiones']].transform('size')
+            st.success('¡Datos registrados con éxito!')
+            df_progreso.to_csv('Progreso.csv', index=False)
 
-# %%
 # Datos generales registrados
 with st.expander('📓 Datos Registrados'):
     st.subheader("Visualización de datos registrados")
-    st.dataframe(gym_original.reset_index(drop=True))
+    # Eliminar filas duplicadas basadas en las columnas específicas y actualizar los sets
+    unique_values = df_progreso.drop_duplicates(subset=['Dia', 'Nombre', 'Maquina','Peso','Sets', 'Repeticiones','Medida'])
+    st.dataframe(unique_values.reset_index(drop=True))
+    df= unique_values
 
-# %%
 # Mostrar tablas de datos de cada usuario
-for usuario in df_usuarios['Nombre']:
+for usuario in df['Nombre'].unique():
     with st.expander(f'🤵‍♂️ Tabla de datos de {usuario}'):
         st.header(f'Datos de {usuario}')
-        df_usuario = gym_original[gym_original['Nombre'] == usuario]
+        df_usuario = df[df['Nombre'] == usuario]
         st.dataframe(df_usuario.reset_index(drop=True))
 
-# %%
-# Crear pestañas con los grupos musculares
-tab_dict = {}
-for grupo in df_grupo_muscular['Grupo_Muscular'].unique():
-    df_grupo_muscular_filtrado = df_grupo_muscular[df_grupo_muscular['Grupo_Muscular'] == grupo]
-    tab_dict[grupo] = st.tab_item(label=grupo)
-    df_maquinas = df_grupo_muscular_filtrado[['Maquina']]
-    df_maquinas['GM'] = grupo[0]
-    df_maquinas.columns = ['Maquina', 'GM']
-    df = pd.merge(df, df_maquinas, on='Maquina', how='left')
-    
-    df.loc[df['GM'].isnull(), 'GM'] = grupo[0]
+# Crear pestañas con los nombres proporcionados
+tab1, tab2, tab3, tab4 = st.tabs(["Cuadriceps", "Espalda y Biceps", "Gluteos y femorales", "Pectorales, hombros y triceps"])
 
-# %%
 # Gráficos
 if 'Progreso_ind' in st.session_state:       
     colores = {'Carlos': 'black', 'Cinthia': 'lightblue'}
+    # Suponiendo que 'st.session_state['Progreso_ind']' ya contiene el DataFrame con los datos necesarios
+
     df = df.sort_values(by='Dia')
     
-    for grupo, tab in tab_dict.items():
-        with tab:
-            st.header(f"{grupo} ({grupo[0]})")
-            df_grupo = df[df['GM'] == grupo[0]]
-            df_grupo = df_grupo.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
-            crear_graficos(df_grupo, colores)
+    with tab1:
+        st.header("Cuadriceps (A)")
+        df_cuadriceps = df[df['Maquina'].isin(['Leg press', 'Hack squat', 'Aducción', 'Leg extension'])]
+        df_cuadriceps = df_cuadriceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
+        crear_graficos(df_cuadriceps, colores)
+
+    with tab2:
+        st.header("Espalda y Biceps (B)")
+        df_espalda_biceps = df[df['Maquina'].isin(['Jalón polea alta prono','Jalón polea alta supino','Remo sentado con polea','Curl biceps','Curl martillo'])]
+        df_espalda_biceps = df_espalda_biceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
+        crear_graficos(df_espalda_biceps, colores)
+
+    with tab3:
+        st.header("Gluteos y femorales (C)")
+        df_gluteos_femorales = df[df['Maquina'].isin(['Peso muerto', 'Leg Curl','Hip thrust', 'Abducción', 'Glúteo en maquina'])]
+        df_gluteos_femorales = df_gluteos_femorales.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
+        crear_graficos(df_gluteos_femorales, colores)
+
+    with tab4:
+        st.header("Pectorales, hombros y triceps (D)")
+        df_pectoral_hombros_triceps = df[df['Maquina'].isin(['Press de pecho', 'Extensión de hombro', 'Extensión de tríceps en polea', 'Extensión lateral', 'Extensión frontal'])]
+        df_pectoral_hombros_triceps = df_pectoral_hombros_triceps.reset_index(drop=True)  # Resetear el índice para evitar problemas con Altair
+        crear_graficos(df_pectoral_hombros_triceps, colores)
